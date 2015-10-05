@@ -9,8 +9,8 @@ default: &defaults
 # Be sure to use new-style password hashing:
 #   http://dev.mysql.com/doc/refman/5.0/en/old-client.html
 development:
-  database: hc_development
-  username: hc
+  database: wrisbi_development
+  username: wrisbi
   password: s3cr3t
   <<: *defaults
 
@@ -18,13 +18,13 @@ development:
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  database: hc_test
-  username: hc
+  database: wrisbi_test
+  username: wrisbi
   password: s3cr3t
   <<: *defaults
 
 production:
-  database: hc_production
-  username: hc
+  database: wrisbi_production
+  username: wrisbi
   password: s3cr3t
   <<: *defaults
