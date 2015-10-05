@@ -16,7 +16,7 @@ Felveszed a párod a kincstárba, mint személyt. Vegyél fel egy új egyezsége
 Ezután már csak a megfelelő kategóriába kell tenni a személyes költését, terhelje az bármelyk számlát és a "Készpénz (HUF)" követelés számlán megjelenik, hogy mennyi az annyi. A teendő már csak annyi, hogy havonta leírod a neki szánt összeget a követelésedből a számlára létrehozott új tranzakcióval.
 
 # A főbérlő
-Tegyük fel, hogy egy külföldi rokon helyett beszeded az albidíjat kápéban. Kiadás is van, festés, vízóra 16 évre, ingatlanadó - befizeted. A kápét persze közben költöd magadra is, hisz minek vennél le a bankszámláról ha egyszer ott a képé a kredencbe. A fáradozásaidért jár 10% a haszonból, ez a deal.
+Tegyük fel, hogy egy külföldi rokon helyett beszeded az albidíjat kápéban. Kiadás is van, festés, vízóra 16 évre, ingatlanadó - befizeted. A kápét persze közben költöd magadra is, hisz minek vennél le a bankszámláról ha egyszer ott a kápé a kredencbe. A fáradozásaidért jár 10% a haszonból, ez a deal.
 
 Hogy lehet megoldani, hogy a rokon mindig tudja, hogy épp hogy áll és te is tudd, hogy mennyit kell neki adni mikor hazatoppan?
 
