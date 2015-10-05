@@ -1,0 +1,3 @@
+require 'plugin'
+
+Plugin.load

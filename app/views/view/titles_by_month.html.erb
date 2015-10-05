@@ -1,0 +1,51 @@
+<%= render partial: 'lead' %>
+
+<h2>Tételek havi csoportban</h2>
+
+<iframe id="form" src=""></iframe>
+<%= link_to "X", '#', id: 'iframe-form-close' %>
+
+<iframe id="balances" src="<%= treasury_url(@treasury, iframe: 1) %>"></iframe>
+
+<div class="view titles_by_month">
+  <% Rails.logger.debug ">>> table.titles" -%>
+  <% benchmark 'table.titles', level: :debug do -%>
+    <% Rails.logger.silence() do -%>  <%# Logger::DEBUG %>
+      <table class="titles_by_month">
+        <tr>
+          <th>Számla</th>
+          <th>Célja</th>
+          <th>Egyezség</th>
+      		<th>Összeg</th>
+          <th>ÁFA kulcs</th>
+      		<th>Megjegyzés</th>
+        </tr>
+        <% @level2.sort.reverse.each do |group1, groups| %>
+          <tr class="group1 <%= group1 -%>"><td colspan="6"><%= group1 -%></td></tr>
+          <% groups.sort{|a,b| a[0][:label] <=> b[0][:label]}.each do |group2, titles| %>
+            <tr class="group2 <%= group2[:html_class] -%>"><td colspan="6"><%= group2[:label] -%></td></tr>
+            <% titles.each do |title| %>
+              <tr class="transaction_title <%= title.class.model_name.param_key -%>"
+                  data-id="<%= title.transaction.id -%>"
+              >
+                <td class="account">
+                  <%= link_to(print_account(title.transaction.account), title.transaction.account) -%>
+                </td>
+                <%= render partial: title -%>
+                <td class="amount"><%= print_amount title.amount -%></td>
+                <td class="amount_vat"><%= title.attributes['amount_vat'] %></td>
+                <td><%= title.comment -%></td>
+                <td class="touched_accounts">
+                  <%= title.operations.sort{|a,b| b.amount.abs <=> a.amount.abs}.map{|o| print_account(o.account)+': '+o.amount.to_s}.join('; ') -%>
+                </td>
+              </tr>
+            <% end %>
+          <% end %>
+        <% end %>
+      </table>
+    <% end -%>
+  <% end -%>
+  <% Rails.logger.debug "<<< table.transactions" -%>
+
+  <%= render partial: 'transactions_popup', locals: { transactions: @titles.map(&:transaction) } %>
+</div>

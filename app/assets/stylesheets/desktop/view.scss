@@ -1,0 +1,277 @@
+.no-touchevents {
+  .noscroll {
+    /* a scrollbar helye */
+    margin-right: 28px;
+  }
+  .fixed_header.float {
+    position: fixed;
+    background-color: #eef;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    border-top: 4px solid blue;
+    padding-left: 5px;
+  }
+  .fixed_header.float.top {
+    bottom: auto;
+    border-top: none;
+    top: 0px;
+    border-bottom: 4px solid blue;
+  }
+  .static_controls > span > a {
+    border-right: 1px solid;
+    padding-right: 5px;
+  }
+  .static_controls > span > *:last-child {
+    border-right: none;
+    padding-right: 0px;
+  }
+  .static_controls > span.right {
+    position: absolute;
+    right: 10px;
+    top: 3px;
+    background-color: #CECEF4;
+    padding: 1px;
+  }
+  .fixed_header .balance .negative {
+    color: red;
+  }
+  div.data {
+    margin-top: 60px;
+  }
+
+  .treasury_headline .account {
+    margin-right: 8px;
+    background-color: #CECEF4;
+  }
+  .treasury_headline a.new_transaction {
+    text-decoration: none;
+  }
+
+  .new_transaction_templates {
+    position: fixed;
+    background-color: white;
+    border: 2px solid red;
+    padding: 3px;
+  }
+  .new_transaction_templates a {
+    border-right: 1px solid;
+    padding-right: 5px;
+  }
+  .new_transaction_templates a:last-of-type {
+    border-right: none;
+    padding-right: 0px;
+  }
+
+  th.sort_column,
+  th.sort_column > * {
+    color: red;
+  }
+  td a {
+    text-decoration: none;
+  }
+  td.day,
+  td.title,
+  td.account
+  {
+    white-space: nowrap;
+  }
+  td.amount.positive {
+    color: green;
+  }
+  td.amount.negative {
+    color: brown;
+  }
+  span.balance {
+    font-weight: bold;
+  }
+  span.category {
+    background-color: #eee;
+    margin-right: 5px;
+  }
+  table.family .title_date {
+    display: none;
+  }
+  .treasury_totals.currency {
+    font-weight: bold;
+  }
+
+  tr.selected {
+    background-color: yellow;
+  }
+
+  tr.party[data-titles="1"] .amount {
+    display: none;
+  }
+
+  iframe#balances {
+    position: fixed;
+    right: 0px;
+    /*top: 30px;*/
+    height: 95%;
+    background: white;
+    display: none;
+  }
+
+  td.last_touch,
+  td.last_touch > *,
+  td.touched_accounts
+  { /* debug */
+    font-size: 8pt;
+    color: gray;
+  }
+  table:not(.debug) td.touched_accounts {
+    display: none;
+  }
+  tr.latest_updated {
+    background-color: #F5FF82;
+  }
+
+  /*
+   * titles
+   */
+  /*tr.transaction_title.liability {
+    display: table-row;
+  }*/
+  td.title{
+    background-color: gold;
+  }
+  .kft_title_salary td.title {
+    background-color: pink;
+  }
+  .kft_title_apport td.title,
+  .kft_title_zedding2 td.title
+  {
+    background-color: #ccc;
+  }
+  .kft_title_tax_pay td.title{
+    background-color: #fee;
+  }
+  .title_transfer_head td.title{
+    background-color: lightgreen;
+  }
+
+  /*
+   * table.titles
+   */
+  table.titles {
+    border-collapse: collapse;
+  }
+  table.titles td {
+    border: 1px solid #ddd;
+  }
+  table.titles .transaction_comment {
+    color: blue;
+  }
+
+  /*
+   * table.titles_by_month
+   */
+  table.titles_by_month {
+    border-collapse: collapse;
+  }
+  table.titles_by_month td {
+    border: 1px solid #ddd;
+  }
+  table.titles_by_month tr.group1 td {
+    background-color: yellow;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  table.titles_by_month tr.group2 td {
+    background-color: cyan;
+    padding-left: 10px;
+  }
+  table.titles_by_month tr.title td:first-child {
+    padding-left: 20px;
+  }
+
+  table.titles_by_month tr.group2.MoneyTransfer td {
+    background-color: pink;
+  }
+
+  /*
+   * table.transactions
+   */
+  table.transactions {
+    border-collapse: collapse;
+  }
+  table.transactions td {
+    border: 1px solid #ddd;
+  }
+  table.transactions td.date {
+    font-weight: bold;
+  }
+  table.transactions td.balance {
+    vertical-align: bottom;
+  }
+  table.transactions td.blank {
+    border: none;
+    background-color: #eee;
+  }
+  table.transactions tr.multiline.transaction td.amount {
+    font-style: italic;
+  }
+  table.transactions th.person, table.transactions tr.second th, table.account.transactions th {
+    border: 1px solid #aaa;
+  }
+  table.transactions tr.day td {
+    font-weight: bold;
+    border: none;
+  }
+  table.transactions button.ack {
+    border: none;
+    background: transparent;
+    padding: 0px;
+    margin: 0px;
+    color: green;
+    font-size: 16pt;
+  }
+  table.transactions tr:not(.unacked) button.ack {
+    display: none;
+  }
+  table.transactions tr.unacked td.date a {
+    color: green;
+  }
+
+  /*
+   * .op_popup
+   */
+  .op_popup {
+    position: absolute;
+    background: white;
+    border: 2px solid black;
+    padding: 10px;
+    left: 25%;
+    font-size: 2em;
+    display: none;
+  }
+  .op_popup a {
+    border-right: 1px solid;
+    padding-right: 10px;
+  }
+  .op_popup:not(.unacked) .ack {
+    display: none;
+  }
+
+  div.operations_popup.person, div.operations_popup.account {
+    left: auto;
+    margin-left: 30px;
+  }
+
+  /*
+   * pager
+   */
+  div.pager {
+    margin-top: 25px;
+  }
+  div.pager a {
+    white-space: nowrap;
+    line-height: 200%;
+    padding: 4px;
+    background-color: #eee;
+  }
+  div.pager a.active {
+    background-color: #dde;
+  }
+}

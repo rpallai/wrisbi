@@ -1,0 +1,12 @@
+Category: <%= print_category(@category_link.category) %>
+bound to
+Row#<%= @title.transaction.id %>
+
+Account: <%= print_account(@title.party.account) %>
+Amount: <%= @title.amount %>
+Comment: <%= @title.comment %>
+Transaction comment: <%= @title.transaction.comment %>
+Transaction date: <%= @title.transaction.date %>
+
+--
+ Wrisbi

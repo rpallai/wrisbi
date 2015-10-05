@@ -1,0 +1,41 @@
+<%= form_for(@category, html: {autocomplete: 'off'}) do |f| %>
+  <% if @category.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@category.errors.count, "error") %> prohibited this category from being saved:</h2>
+
+      <ul>
+        <% @category.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if @category.new_record? and @category.parent_id %>
+    SzülőID: <%= @category.parent.name %>#<%= @category.parent_id %>
+    <%= f.hidden_field :parent_id, :value => @category.parent_id %>
+  <% else %>
+    <%= f.label :parent_id, "Szülő" %>
+    <%= f.select :parent_id, prepend_options_wzero(treasury_categories(@category.treasury, @category.class)) %>
+    <span class="help">Opcionális.</span>
+  <% end %>
+  <%= f.hidden_field :treasury_id if f.object.new_record? %>
+  <div class="fields">
+    <%= f.label :name, 'Neve' %>
+    <%= f.text_field :name %>
+  </div>
+  <div class="fields">
+    <%= f.label :business_id, "Egyezség" %>
+    <%= f.select(:business_id, prepend_options_wzero(businesses(@category.treasury))) %>
+    <span class="help">Opcionális. A kincstár követelést jegyez be a tétellel szemben az egyezség arányában.</span>
+  </div>
+  <div class="field">
+    <%= f.label :exporter_id, "Exporter" -%>
+    <%= f.select(:exporter_id, prepend_options_wzero(exporters(@category.treasury))) -%>
+    <span class="help">Opcionális. A kategóriához kapcsolódó tételek exportálásra kerülnek (pl emailben).</span>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

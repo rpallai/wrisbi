@@ -1,0 +1,52 @@
+<%= form_for(@account) do |f| %>
+  <% if @account.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@account.errors.count, "error") %> prohibited this account from being saved:</h2>
+
+      <ul>
+      <% @account.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.hidden_field :person_id %>
+  <div class="field">
+    <%= f.label :name, "Név" %>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :currency, "Pénznem" %>
+    <%= f.text_field :currency, :size => 3 %>
+  </div>
+  <% unless @account.new_record? %>
+    <div class="field">
+      <%= f.label :closed, "Lezárt?" %>
+      <%= f.check_box :closed %>
+    </div>
+  <% end %>
+  <%= f.hidden_field :type_user %>
+  <% unless @model.possible_type_user.empty? %>
+    <div class="field">
+      <%= f.label :type_user, "Számla típusa" %>
+      <%= f.select(:type_user, @model.possible_type_user, { disabled: @model.possible_type_user_disabled }) %>
+      <span class="help">Ez meghatározza az alkalmazandó szabályok és ellenőrzések körét.</span>
+    </div>
+  <% end %>
+  <div class="field">
+		<%= f.label :hidden, "Rejtett" -%>
+		<%= f.check_box :hidden -%>
+    <span class="help">Csak a supervisor láthatja.</span>
+	</div>
+	<div class="field">
+		<%= f.label :foreign_ids, "Távoli azonosítók" -%>
+		<%= f.text_field :foreign_ids -%>
+		<span class="description">
+			Az importer használhatja, opcionális. Space-szel elválasztott lista.
+		</span>
+	</div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

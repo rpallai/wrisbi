@@ -1,0 +1,27 @@
+Új tétel:
+
+<% template_found = false %>
+<% titles_template_for_everybody = Rails.root.to_s + "/customizations/%s/templates/_%s_titles" % [@treasury.name, 'everybody'] -%>
+<% titles_template_for_current_user = Rails.root.to_s + "/customizations/%s/templates/_%s_titles" % [@treasury.name, @current_user.email] -%>
+
+<% if File.exist?(titles_template_for_everybody+'.html.erb') %>
+<%= render(:file => titles_template_for_everybody, locals: { party_idx: party_idx }) -%>
+<% template_found = true %>
+<% end %>
+
+<% if File.exist?(titles_template_for_current_user+'.html.erb') %>
+<%= render(:file => titles_template_for_current_user, locals: { party_idx: party_idx }) -%>
+<% template_found = true %>
+<% end %>
+
+<% unless template_found %>
+  <% @treasury.class.const_get(:Titles).each do |title_klass| -%>
+    <%=
+      link_to(title_klass.display_name,
+        polymorphic_url([:build_new_title, current_namespace, @transaction],
+            new_title_attributes: { type: title_klass.to_s },
+            party_idx: party_idx
+          ), class: 'build_new_title')
+    %>
+  <% end -%>
+<% end %>

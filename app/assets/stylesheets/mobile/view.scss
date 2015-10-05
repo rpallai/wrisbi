@@ -1,0 +1,100 @@
+.touchevents {
+  .data {
+    font-size: 0.8em;
+    /*background: #FBFEE2;*/
+  }
+  .data a {
+    color: black;
+    text-decoration: none;
+  }
+
+  .data div.transaction {
+    padding-bottom: 5px;
+    padding-top: 5px;
+    border-bottom: 1px solid #aaa;
+  }
+
+  .data .positive {
+    color: green;
+  }
+  .data .negative {
+    color: red;
+  }
+
+  .data div.transaction div {
+    margin-left: 6px;
+  }
+
+  .data div.transaction {
+    /*background: #F4FACF;*/
+  }
+  .data div.transaction > .day {
+    font-weight: bold;
+    color: blue;
+  }
+  .data div.transaction > .updated_at {
+    float: right;
+    font-size: 0.8em;
+  }
+  .data div.transaction > .comment {
+    /*background: #FFE0C2;*/
+  }
+
+  .data div.transaction .parties .party .account {
+    width: 40%;
+    display: inline-block;
+    /*white-space: nowrap;*/
+  }
+  .data div.transaction .parties[count="1"] .party .account {
+    width: auto;
+    display: initial;
+  }
+
+  .data div.transaction .party {
+    /*background: #D1F2A5;*/
+  }
+  .data div.transaction .party > .account {
+  }
+  .data div.transaction .party > .amount {
+    /*background: #EAF6D7;*/
+  }
+
+  .data div.transaction .party .title {
+    /*background: #E1FBDD;*/
+  }
+  .data div.transaction .party .titles[count="1"],
+  .data div.transaction .party .titles[count="1"] *
+  {
+    display: inline;
+  }
+  .data div.transaction .titles[count="1"] {
+    margin-left: 0px;
+  }
+
+  .data div.transaction .party .titles .title > .amount {
+    width: 55px;
+    display: inline-block;
+  }
+  .data div.transaction .party .titles[count="1"] .title > .amount {
+    display: none;
+  }
+  .data div.transaction .party .title > .amount {
+  }
+  .data div.transaction .party .title > .title_display {
+  }
+  .data div.transaction .party .title > .categories {
+  }
+  .data div.transaction .party .title .category {
+    font-size: 0.9em;
+    background: #eee;
+  }
+  .data div.transaction .party .title > .date {
+  }
+  .data div.transaction .party .title > .comment {
+    margin-left: 3px;
+    color: #555;
+  }
+  .data div.transaction .party .title > .touched_accounts {
+    display: none;
+  }
+}

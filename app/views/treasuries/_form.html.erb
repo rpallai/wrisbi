@@ -1,0 +1,25 @@
+<%= form_for(@treasury) do |f| %>
+  <% if @treasury.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@treasury.errors.count, "error") %> prohibited this treasury from being saved:</h2>
+
+      <ul>
+      <% @treasury.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="fields">
+    <%= f.label :name, 'Név' %>
+    <%= f.text_field :name %>
+  </div>
+  <div class="fields">
+    <%= f.label :supervisors_ids, "Főkönyvelők" %>
+    <%= f.select(:supervisor_ids, users, { :include_blank => true }, :multiple => true) %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

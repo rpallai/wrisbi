@@ -1,0 +1,29 @@
+root:
+  id: 1
+  email: root@
+  password_digest: x
+  password_salt: x
+
+supervisor1:
+  id: 2
+  email: supervisor1@
+  password_digest: x
+  password_salt: x
+
+supervisor2:
+  id: 3
+  email: supervisor2@
+  password_digest: x
+  password_salt: x
+
+bookkeeper1:
+  id: 4
+  email: bookkeeper1@
+  password_digest: x
+  password_salt: x
+
+bookkeeper2:
+  id: 5
+  email: bookkeeper2@
+  password_digest: x
+  password_salt: x

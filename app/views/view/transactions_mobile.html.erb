@@ -1,0 +1,63 @@
+<h2>Tranzakciók
+  <% if @account %>
+    a <%= print_account(@account) %> számlán
+    <% if @category %>
+      amelyeknek van <%= print_category(@category, false) %> kategóriás tételük
+    <% end %>
+  <% end %>
+</h2>
+
+<%# balance = @this_interval[0][1] -%>
+<% current_user_is_supervisor = @treasury.supervisors.include?(@current_user) %>
+
+<% @transactions.each do |transaction| %>
+  <div class="transaction
+    <%= ' unacked' unless transaction.supervised? -%>
+    <%= ' latest_updated' if @latest_updated_transaction == transaction -%>
+  " data-id="<%= transaction.id -%>" data-parties="<%=parties_of(transaction).length%>">
+    <span class="day"><%= transaction.date.strftime("%Y-%m-%d, %a") -%></span>
+    <%#= link_to(, [:edit, current_namespace, transaction], class: 'edit') %>
+    <span class="updated_at"><%= transaction.updated_at.localtime.strftime("%Y-%m-%d %Hh") %></span>
+    <%# if @show_balance -%>
+      <%#= print_amount(balance += parties_of(transaction).to_a.sum(&:amount)) -%>
+    <%# end %>
+    <% if current_user_is_supervisor and not transaction.supervised? -%>
+      <%= button_tag(raw("&#x2713;"), href: do_ack_transaction_path(transaction), class: 'ack', 'data-id' => transaction.id) %>
+    <% end -%>
+    <span class="comment"><%= transaction.comment -%></span>
+
+    <div class="parties" count="<%= parties_of(transaction).length %>">
+      <% parties_of(transaction).each do |party| -%>
+        <div class="party <%= account_to_classes(party.account) %>">
+          <span class="account"><%= link_account(party.account) %></span>
+          <span class="amount <%= print_sign(party.amount) %>"><%= print_amount party.amount -%></span>
+          <div class="titles" count="<%= party.titles.length %>">
+            <% party.titles.each do |m| -%>
+              <div class="title<%-%>
+                <%= m.class.model_name.param_key -%>
+              ">
+                <span class="amount <%= print_sign(m.amount) %>"><%= print_amount m.amount -%></span>
+                <span class="title_display"><%= render partial: m, locals: { view: @account ? 'transactions_of_account' : 'transactions' } -%></span>
+                <span class="categories">
+                  <% m.categories.each do |category| -%>
+                    <span class="category">
+                      <%= link_to(print_category(category), url_with_time_dimension(transactions_category_link(category)), class: 'category') %>
+                    </span>
+                  <% end -%>
+                </span>
+                <span class="day date"><%= m.date.strftime("%Y-%m-%d") if m.date %></span>
+                <span class="comment"><%= m.comment -%></span>
+
+                <span class="touched_accounts">
+                  <%= m.operations.sort{|a,b| b.amount.abs <=> a.amount.abs}.map{|o| print_account(o.account)+': '+o.amount.to_s}.join('; ') -%>
+                </span>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<%= render partial: 'pager' %>

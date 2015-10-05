@@ -1,0 +1,124 @@
+<%= form_for([current_namespace, @transaction], html: {autocomplete: 'off',
+      class: action_name == 'as_template' ? 'from_template' : ''}) do |f| %>
+  <% if @transaction.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@transaction.errors.count, "error") %> prohibited this transaction from being saved:</h2>
+
+      <ul>
+      <% @transaction.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= hidden_field_tag :iframe, 1 if params[:iframe] %>
+	<%= f.hidden_field :treasury_id if f.object.new_record? %>
+	<div class="field">
+		<%= f.label :date, "Dátum" %>
+		<%= f.date_select(:date, start_year: 2005, end_year: Date.today.year) %>
+	</div>
+<%# unless params[:hide_invert] -%>
+	<div class="field">
+		<%= f.label :invert, "Előjelfordítás" -%>
+		<%= f.check_box :invert -%>
+	</div>
+<%# else -%>
+	<%#= f.hidden_field :invert -%>
+<%# end -%>
+
+<% if @transaction.parties.length > 1 %>
+	<div class="field">
+    <%= f.label :comment, 'Esemény leírása', class: 'transaction comment' %>
+		<%= f.text_field :comment, class:'transaction comment' -%>
+	</div>
+<% end %>
+
+  <div class="field parties<%-%>
+    <%= "account_id_changed" if @transaction.new_record? and @transaction.parties.any?{|p| p.account_id_changed? } -%>
+    ">
+<% i = 0 %>
+<%= f.fields_for(:parties) do |party| %>
+    <% Rails.logger.debug "party.object.account: #{party.object.account.inspect}" %>
+    <div class="party <%= 'empty_account' if party.object.account.nil? %>">
+      <div class="field" id="_destroy">
+        <%= party.label :_destroy, "Töröl" -%>
+        <%= party.check_box :_destroy, class: 'destroy', tabindex: "-1" -%>
+      </div>
+      <div class="field">
+        <%= party.label :account_id, 'Alany' %>
+        <%= party.select(:account_id, accounts_for_transaction, {}, class: 'account') %>
+      </div>
+      <div class="field">
+        <%= party.label :amount, 'Összeg' %>
+        <%= party.number_field :amount, :size => 6, step: 0, class: 'amount' %>
+      </div>
+      <div class="titles">
+<% j = 0 %>
+<%= party.fields_for(:titles) do |title| %>
+        <div class="<%-%>
+            title<%-%>
+            <%= title.object.marked_for_destruction?? 'marked_for_destruction' : '' -%>
+            <%= "new_title" if @new_title == title.object -%>
+            ">
+          <!--<div class="title_name"><%= title.object.class.display_name %></div>-->
+          <div class="field" id="title_type">
+            <%=
+              title.select(:type, options_for_select(
+                  party.object.find_compatible_title_klasses.map{|title_klass| [title_klass.display_name, title_klass.name]},
+                  title.object.class.name
+                ), {}, title_input_attributes(title.object).update(class: 'title_type', href:
+                  polymorphic_path([:copy_title, current_namespace, @transaction],
+                                    new_title_attributes: { type: 'TYPE_TEMPLATE' },
+                                    party_idx: i,
+                                    title_idx: j,
+                                    replace: 1)
+                )
+              )
+            %>
+          </div>
+          <div class="field" id="_destroy">
+            <%= title.label :_destroy, "Töröl" -%>
+            <%= title.check_box :_destroy, class: 'destroy', tabindex: "-1" -%>
+          </div>
+          <%= render :partial => title.object.to_partial_form_path, :locals => { :f => title } %>
+          <% unless title.object.marked_for_destruction? -%>
+            <%= link_to("Tétel másolása",
+                  polymorphic_url([:copy_title, current_namespace, @transaction],
+                    new_title_attributes: { type: title.object.type },
+                    party_idx: i,
+                    title_idx: j,
+                  ),
+                class: 'copy_title')
+            %>
+          <% end -%>
+        </div>
+        <% j += 1 %>
+<% end -%>
+      </div>
+<% unless party.object.marked_for_destruction? %>
+      <div class="append_titles">
+        <%= render(partial: 'title_template', locals: { party: party.object, party_idx: i }) -%>
+      </div>
+<% end %>
+    </div>
+    <% i += 1 -%>
+<% end -%>
+  </div>
+<% if active_parties_of(@transaction).length < 2 -%>
+  <%= link_to('Másik fél', [:build_new_party, current_namespace, @transaction], class: 'build_new_party') %>
+<% end -%>
+  <%= link_to('Refresh', [:refresh, current_namespace, @transaction], method: 'post', class: 'refresh') %>
+
+<% if @transaction.parties.length < 2 %>
+	<div class="field">
+    <%= f.label :comment, 'Esemény leírása', class: 'transaction comment' %>
+		<%= f.text_field :comment, style:"display: " + ((not f.object.comment or f.object.comment.empty?)? 'none' : 'initial'),
+      class:'transaction comment' -%>
+	</div>
+<% end %>
+
+  <div class="actions">
+    <%= f.submit "OK" %>
+  </div>
+<% end %>

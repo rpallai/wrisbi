@@ -1,0 +1,21 @@
+<h1>Partnerek</h1>
+
+<table>
+  <tr>
+    <th>Név</th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @payees.each do |payee| %>
+  <tr>
+    <td><%= payee.name %></td>
+    <td><%= link_to 'Módosít', edit_payee_path(payee) %></td>
+    <td><%= link_to 'Töröl', payee, confirm: 'Biztos?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Új partner', new_treasury_payee_path(@treasury) %>

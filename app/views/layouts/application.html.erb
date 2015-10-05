@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <% unless params[:iframe] %>
+      <%#= `hostname` -%>
+      <title><%= @treasury.name rescue 'Wrisbi' -%><%= @page_title %></title>
+    <% end %>
+    <%= stylesheet_link_tag("application") %>
+    <%= stylesheet_link_tag("customizations.css") %>
+
+    <%= javascript_include_tag "application" %>
+
+    <%= javascript_include_tag controller_name \
+      if File.exist?(Rails.root.to_s+"/app/assets/javascripts/#{controller_name}.js.coffee") %>
+
+    <%= stylesheet_link_tag 'chosen_v1.1.0/chosen.min.css' %>
+    <%= javascript_include_tag 'chosen_v1.1.0/chosen.jquery.min.js' %>
+    <%= javascript_include_tag 'modernizr/modernizr.js' %>
+
+    <%= csrf_meta_tags %>
+    <% unless params[:iframe] %>
+      <meta http-equiv="refresh" content="3600">
+    <% end %>
+
+    <meta name="viewport" content="width=device-width, maximum-scale=1.0, user-scalable=yes">
+  </head>
+
+  <body class="<%= @treasury.name rescue 'no_treasury' %>">
+  <% unless params[:iframe] %>
+    <div class="fixed_header float top">
+      <div class="static_controls">
+        <span class="left">
+          <% if @treasury and not @treasury.new_record? %>
+            <span class="treasury_name"><%= link_to(@treasury.name, @treasury) -%></span>
+            /
+            <%= link_to('UMT', polymorphic_url([@treasury,:transactions], sort: 'last_touch'),
+              title: 'Utoljára módosított tranzakciók') -%>
+            <%= link_to('UMNT', polymorphic_path([@treasury,:transactions], unacked: true, sort: 'last_touch'),
+              title: 'Utoljára módosított nem-nyugtázott tranzakciók') -%>
+            <%= link_to 'kategóriák', treasury_categories_path(@treasury) -%>
+            <%= link_to 'egyezségek', treasury_businesses_path(@treasury) -%>
+          <% end %>
+
+            <% if controller_name == "view" %>
+            <% benchmark 'templates', level: :debug do -%>
+              <% Rails.logger.silence do -%>
+                <%= link_to 'új tranzakció', [:new, @treasury, :transaction], class: 'new_transaction' %>
+                <span class="template_by_category_selector container">
+                  <%= select_tag('template_by_category_id',
+                    options_for_select(prepend_options_wzero(treasury_categories_with_title(@treasury))),
+                    class: 'leftValues', 'data-placeholder' => "Tranzakció klónozás...",
+                      href: eval("as_template_#{current_namespace}_transaction_path(-1)")) %>
+                </span>
+                <%#= button_tag('float', class: 'float_switch') %>
+                <%#= button_tag('top', class: 'float_top_switch') %>
+                <%= button_tag('templates', class: 'templates_switch') %>
+                <%= button_tag('debug', class: 'debug_switch') %>
+              <% end -%>
+            <% end -%>
+          <% end %>
+
+        </span>
+        <span class="right instance">
+          <%= link_to 'Kincstárak', root_path %>
+          <% if @current_user %>
+            <span class="username">
+              <%= @current_user.email %>
+              <%= link_to 'logout', session_path, method: :delete %>
+            </span>
+          <% end %>
+        </span>
+      </div>
+      <% if controller_name == "view" %>
+        <div class="new_transaction_templates hidden">
+          <% Rails.logger.silence(Logger::INFO) do -%>
+            <%= render :partial => 'treasuries/transaction_template' -%>
+          <% end -%>
+        </div>
+      <% end %>
+      <% if @treasury and not @treasury.new_record? %>
+        <div class="treasury_headline">
+          <% benchmark 'treasury headline', level: :debug do -%>
+            <% Rails.logger.silence do -%>
+              <% treasury_headline = Rails.root.to_s + "/customizations/%s/templates/_%s_headline" % [@treasury.name, @current_user.email] -%>
+              <%= render :file => treasury_headline if File.exist?(treasury_headline+'.html.erb') -%>
+            <% end -%>
+          <% end -%>
+        </div>
+      <% end %>
+    </div>
+
+  <iframe id="form" src=""></iframe>
+  <%= link_to "X", '#', id: 'iframe-form-close' %>
+
+  <div class="content with_header data">
+  <% else %>
+  <div class="content without_header">
+  <% end %>
+<%= yield %>
+  </div>
+</body>
+</html>

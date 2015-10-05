@@ -1,0 +1,5 @@
+<% titles_template = Rails.root.to_s + "/customizations/%s/templates/_%s_transactions" % [@treasury.name, 'everybody'] -%>
+<%= render :file => titles_template if File.exist?(titles_template+'.html.erb') -%>
+
+<% titles_template = Rails.root.to_s + "/customizations/%s/templates/_%s_transactions" % [@treasury.name, @current_user.email] -%>
+<%= render :file => titles_template if File.exist?(titles_template+'.html.erb') -%>

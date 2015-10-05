@@ -1,0 +1,88 @@
+<h1>
+  <% if @account %>
+    <%= print_account @account -%> számla egyenlegének alakulása
+  <% elsif @person %>
+    <%= @person.name %> egyenlegének alakulása
+  <% end %>
+  <% if params[:category_id] %>
+    a
+    <strong><%= print_category(Category.find(params[:category_id]), false) %></strong>
+    kategórián belül
+  <% end %>
+  <%= time_dimension_as_text %>
+</h1>
+
+<div class="view titles">
+  <table class="<%=current_namespace%> titles operations">
+    <tr>
+      <th class="<%= 'sort_column' if @order=='transactions.date' %>">Fizetés dátuma</th>
+      <% if @order=='titles.date' -%>
+        <th class="title_date <%= 'sort_column' if @order=='titles.date' %>">Kelt</th>
+      <% end -%>
+      <th>Egyenleg</th>
+      <th>Összeg</th>
+      <th>Számla</th>
+      <th>Osztály</th>
+      <th>Kategóriák</th>
+      <th>Megjegyzés</th>
+    </tr>
+
+  <% balance = @this_interval[0][1] -%>
+  <% prev_operation = nil -%>
+  <% @operations.each do |operation| %>
+  <!--
+    <% if not prev_operation or prev_operation.transaction.date != operation.transaction.date -%>
+      <tr class="day"><td colspan="5"><%= operation.transaction.date.strftime("%Y-%m-%d, %a") -%></td></tr>
+    <% end -%>
+  -->
+    <tr class="transaction_title <%-%>
+      <%= operation.title.class.model_name.param_key -%>
+      <%= ' unacked' unless operation.transaction.supervised? -%>
+    " data-id="<%= operation.transaction.id -%>">
+      <td class="day">
+        <%= link_to(operation.transaction.date.strftime("%Y-%m-%d"),
+          [:edit, current_namespace, operation.transaction], class: 'edit') -%>
+      </td>
+      <% if @order=='titles.date' -%>
+        <td class="day title_date"><%= operation.title.date.strftime("%Y-%m-%d") if operation.title.date -%></td>
+      <% end -%>
+      <td><%= print_amount(balance += operation.amount) -%></td>
+      <td class="amount <%= print_sign(operation.amount) %> "><%= print_amount operation.amount -%></td>
+      <td class="account <%= account_to_classes(operation.title.party.account) %>">
+        <%= link_account(operation.title.party.account) -%>
+      </td>
+      <td class="title"><%= render partial: operation.title, locals: { view: 'operations' } -%></td>
+      <td class="categories">
+<% operation.title.categories.each do |category| %>
+        <% if params[:category_id] %>
+          <span class="category"><%= print_category(category) %></span>
+        <% else %>
+          <% if @person %>
+            <% u = url_with_time_dimension([current_namespace, @person.becomes(Person), category, :operations]) %>
+          <% elsif @account %>
+            <% u = url_with_time_dimension([current_namespace, @account.becomes(Account), category, :operations]) %>
+          <% else %>
+            <% u = url_with_time_dimension([current_namespace, category, :titles]) %>
+          <% end %>
+          <span class="category"><%= link_to(print_category(category), u, class: 'category') -%></span>
+        <% end %>
+<% end %>
+      </td>
+      <td class="comment">
+        <span class="title_comment"><%= operation.title.comment -%></span>
+        <span class="transaction_comment"><%= operation.transaction.comment -%></span>
+      </td>
+      <td class="touched_accounts">
+        <%= operation.title.operations.sort{|a,b| b.amount.abs <=> a.amount.abs}.map{|o| print_account(o.account)+': '+o.amount.to_s}.join('; ') -%>
+      </td>
+    </tr>
+    <% prev_operation = operation -%>
+  <% end -%>
+  </table>
+
+  <%= render partial: 'pager' %>
+
+  <%#= render partial: 'transaction_popup' %>
+</div>
+
+<p><%= link_to '.csv', format: 'csv' -%></p>

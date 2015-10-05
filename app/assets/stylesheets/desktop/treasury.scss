@@ -1,0 +1,47 @@
+.no-touchevents {
+  // treasury#show
+  table.balances {
+    border-collapse: collapse;
+
+    tr.person {
+      td:first-child {
+        font-weight: bold;
+      }
+      td:last-child a {
+        color: gray;
+        font-size: 0.8em;
+      }
+    }
+
+    tr.account {
+      td {
+        border-bottom: 1px dashed #ccc;
+        padding-left: 30px;
+      }
+      td:last-child a {
+        color: gray;
+        font-size: 0.8em;
+      }
+    }
+    tr.account.asset {
+      color: green;
+    }
+    tr.account.liability {
+      color: brown;
+    }
+
+    a {
+      text-decoration: underline;
+    }
+  }
+
+  table.treasuries {
+    td:first-child a {
+      font-weight: bold;
+    }
+    td:last-child a {
+      color: gray;
+      font-size: 0.8em;
+    }
+  }
+}

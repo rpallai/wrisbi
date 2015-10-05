@@ -1,0 +1,29 @@
+.touchevents {
+  /* header */
+  .template_by_category_selector {
+    display: none;
+  }
+
+  /* initial */
+  iframe {
+    display: none;
+    position: fixed;
+    background: white;
+    height: 100%;
+    width: 100%;
+    left: 0px;
+    top: 0px;
+  }
+  #iframe-form-close {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: red;
+    z-index: 1;
+    display: none;
+    text-align: center;
+    font-size: 24px;
+    width: 24px;
+    height: 24p;
+  }
+}

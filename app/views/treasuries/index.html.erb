@@ -1,0 +1,31 @@
+<h1>Kincstárak</h1>
+
+<table class="treasuries">
+<% @treasuries.each do |treasury| %>
+  <tr>
+    <td><%= link_to(treasury.name, treasury) %></td>
+    <td>(<%= treasury.class.type_name %>)</td>
+    <% if @current_user.root? or treasury.supervisors.include?(@current_user) -%>
+      <td>
+      <% if @current_user.root? -%>
+        <%= link_to 'Módosít', [:edit, treasury] -%>
+        <%= link_to 'Töröl', treasury, confirm: 'Biztos?', method: :delete %>
+      <% end -%>
+      <% if treasury.supervisors.include?(@current_user) -%>
+        <%= link_to 'Exportálók', treasury_exporters_path(treasury) -%>
+      <% end -%>
+      </td>
+    <% end %>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<% if @current_user.root? -%>
+  <% Plugin.registered_plugins.keys.each do |plugin_name| %>
+    <%= link_to 'Új '+plugin_name.to_s, [:new, plugin_name, :treasury] %><br/>
+  <% end %>
+
+  <%= link_to 'Felhasználók', admin_users_path %><br/>
+<% end -%>

@@ -1,0 +1,73 @@
+# encoding: utf-8
+module ViewHelper
+  def print_sign(number)
+    if number < 0
+      'negative'
+    elsif number > 0
+      'positive'
+    end
+  end
+
+  def account_to_classes(account)
+    "p%d a%d" % [account.person.id, account.id]
+  end
+
+  def print_category(category, with_business = true)
+    r = nil
+    if category
+      Rails.logger.silence do
+        r = category.ancestors.push(category).map(&:name).join('/')
+      end
+      r << " [#{category.applied_business.name}]" if with_business and category.applied_business
+    end
+    r
+  end
+
+  def link_account(account)
+    link_to(account.person.name, [account.person, :operations])+'/'+
+      link_to(account.name, url_with_time_dimension([account, :operations]))
+  end
+
+  def transaction_rowspan(transaction)
+    1 + parties_of(transaction).length + parties_of(transaction).to_a.sum{|p| p.titles.length }
+    #1 + transaction.titles.length + transaction.parties.length
+  end
+
+  def transaction_comment_rowspan(transaction)
+    unless parties_of(transaction).any?{|p| p.titles.any?{|m| not m.comment.blank?} }
+      transaction_rowspan(transaction)
+    else
+      1
+    end
+  end
+
+  def parties_of(transaction)
+    # ha accounts/:id/transactions nezetben vagyunk, akkor csak az adott party erdekes,
+    # maskepp a balance nem lesz franko
+    if @account and @show_balance
+      transaction.parties.find_all{|p| p.account == @account }
+    else
+      transaction.parties
+    end
+  end
+
+  def transactions_category_link(category)
+    if @account
+      [@account, category, :transactions]
+    else
+      [current_namespace, category, :titles]
+    end
+  end
+
+  def time_dimension_as_text
+    if params[:year]
+      if params[:year].ends_with? 'ge'
+        "az úr #{params[:year].to_i}-edik esztendejében és előtte"
+      elsif params[:year].ends_with? 'le'
+        "az úr #{params[:year].to_i}-edik esztendejében és utána"
+      else
+        "az úr #{params[:year].to_i}-edik esztendejében"
+      end
+    end
+  end
+end

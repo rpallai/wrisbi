@@ -1,0 +1,6 @@
+<td class="categories">
+<% deal.categories.each do |category| %>
+  <%= link_to(print_category(category), [current_namespace, category]) -%>
+<% end %>
+</td>
+<td class="business"><%= deal.applied_business.name if deal.applied_business %></td>

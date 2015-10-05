@@ -1,0 +1,11 @@
+.touchevents {
+  form div.field,
+  form div.actions
+  {
+    margin-bottom: 7px;
+  }
+
+  form div.actions input[type=submit] {
+    width: 100%;
+  }
+}

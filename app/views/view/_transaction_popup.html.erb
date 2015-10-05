@@ -1,0 +1,9 @@
+<div class="op_popup">
+  <%= link_to("Ack", '', method: :post, :class => :ack,
+    href_template: do_ack_transaction_path(-1)) -%>
+  <%= link_to('Módosít', '', :class => 'edit',
+    href_template: eval("edit_#{current_namespace}_transaction_path(-1)")) %>
+  <%= link_to('Töröl', '', method: :delete, data: { confirm: 'Biztos?' },
+    href_template: transaction_path(-1)) %>
+  <%= button_tag("X", class: 'close') -%>
+</div>

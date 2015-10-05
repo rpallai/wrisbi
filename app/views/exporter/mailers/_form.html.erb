@@ -1,0 +1,18 @@
+<%= form_for(@exporter) do |f| %>
+  <% if @exporter.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@exporter.errors.count, "error") %> prohibited this exporter from being saved:</h2>
+
+      <ul>
+      <% @exporter.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+	<%= render :partial => 'fields', :locals => { :f => f } -%>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

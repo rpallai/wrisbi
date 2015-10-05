@@ -1,0 +1,6 @@
+<h1>
+  Módosítás vagy
+  <%= link_to('törlés', polymorphic_url(@transaction, iframe: 1), method: :delete, data: { confirm: 'Biztos?' }) %><br/>
+</h1>
+
+<%= render 'form' %>

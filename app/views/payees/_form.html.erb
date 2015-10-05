@@ -1,0 +1,30 @@
+<%= form_for(@payee) do |f| %>
+  <% if @payee.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@payee.errors.count, "error") %> prohibited this payee from being saved:</h2>
+
+      <ul>
+      <% @payee.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.hidden_field :treasury_id if f.object.new_record? %>
+  <div class="fields">
+    <%= f.label :name, 'Név' %>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+		<%= f.label :aliases, "Álnevek" -%><br/>
+		<%= f.text_field :aliases -%>
+		<span class="description">
+			Az importer használja, hogy a külső forrásból megkapott nevet párosítani tudja az itteni partnerrel.
+			Pontosvesszővel elválasztott lista.
+		</span>
+	</div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,36 @@
+.no-touchevents {
+  a {
+    color: #000;
+  }
+
+  .alert {
+    color: red;
+  }
+
+  /* layout header */
+
+  div.header {
+    background: cyan;
+  }
+  div.header ul {
+    margin: 0px;
+    padding: 0px;
+    display: inline;
+  }
+  div.header li {
+    display: inline;
+  }
+  div.header .treasury_name {
+    font-weight: bold;
+  }
+  div.header .username {
+    float: right;
+  }
+
+  // http://stackoverflow.com/questions/3975769/disable-webkits-spin-buttons-on-input-type-number
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+  }
+}

@@ -1,0 +1,74 @@
+<% Rails.logger.debug ">>> div.balances" -%>
+<% benchmark 'div.balances', level: :debug do -%>
+<% Rails.logger.silence() do -%>  <%# Logger::DEBUG  %>
+<h2>
+  <% if @treasury.date_scope %>
+    Változások (<%= @treasury.date_scope.first %> - <%= @treasury.date_scope.last %>)
+  <% end %>
+</h2>
+
+<div class="balances">
+  <h3>Kincstári egyenlegek</h3>
+  <table class="balances">
+  <% balances = @treasury.operations.scope_date.group("operations.account_id").sum(:amount) -%>
+  <% @treasury.people.includes(:accounts).each do |person| -%>
+    <tr class="person" data-id="<%= person.id -%>">
+      <td colspan="1"><%= link_to(person.name, [person, :operations], target: "_parent") -%></td>
+      <%# mennyi zseje van a betyarnal %>
+      <td><%= person.equity unless person.equity.zero? %></td>
+      <td>
+        <%= link_to("Módosít", [:edit, person], target: "_parent") -%>
+        <%= link_to('Új számla', [:new, person, :account], target: "_parent") %>
+      </td>
+    </tr>
+
+    <% person.accounts.each do |account| -%>
+      <% next if account.hidden? and not @treasury.supervisors.include? @current_user -%>
+      <tr class="account
+          <%= account.type_name %>
+          <%= "alert" if account.min_zero? and balances[account.id] and balances[account.id] < 0 %>
+          "
+          data-id="<%= account.id -%>"
+      >
+        <td><%= account.name -%><%#= " ("+account.type_code.to_s+"/"+account.subtype_code.to_s+")" -%></td>
+        <td>
+          <%= print_amount balances[account.id] || 0 -%>
+          <%= "(#{print_amount account.foreign_balance})" if account.foreign_balance -%>
+        </td>
+        <td>
+          <%= link_to("Tételek", [account, :operations], target: "_parent") %>
+          <%= link_to("Tranzakciók", [account, :transactions], target: "_parent") %>
+          <%= link_to("Módosít", [:edit, account], target: "_parent") %>
+          <%= link_to("Töröl", account, method: :delete, data: { confirm: 'Biztos?' }) %>
+        </td>
+      </tr>
+    <% end -%>
+
+  <% end -%>
+
+  <% @treasury.currencies.each do |currency| %>
+    <tr class="treasury_totals currency">
+      <td colspan="2"><%= currency %></td>
+    </tr>
+    <tr class="treasury_totals equity">
+      <td colspan="1">Egyenlegek összesítve</td>
+      <td><%= print_amount @treasury.equity_balance(currency) %></td>
+    </tr>
+    <% @treasury.liability_accounts.where(currency: currency).select('accounts.type_code').distinct.map(&:type_code).each do |type_code| %>
+      <tr class="treasury_totals equity_by_subtype">
+        <td colspan="1">
+          ebből típus <%= link_to(type_code.to_s, polymorphic_url([@treasury,:operations], {account_type_code: type_code}), target: "_parent") %>
+        </td>
+        <td><%= print_amount @treasury.liability_accounts.where(type_code: type_code, currency: currency).joins(:operations => :transaction).scope_date.sum('operations.amount') %></td>
+      </tr>
+    <% end %>
+  <% end %>
+  </table>
+</div>
+
+<% if @treasury.supervisors.include? @current_user -%>
+	<p><%= link_to('Új személy hozzáadása', [:new, @treasury, :person], target: "_parent") -%></p>
+<% end -%>
+<% end -%>
+<% end -%>
+<% Rails.logger.debug "<<< div.balances" -%>

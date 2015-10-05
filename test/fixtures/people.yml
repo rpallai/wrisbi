@@ -1,0 +1,19 @@
+family_1_owner:
+  treasury: family_1
+  type: Family::Person
+  name: owner
+  type_code: <%= Family::Person::Owner %>
+
+family_1_laxis:
+  treasury: family_1
+  type: Family::Person
+  name: Laxis
+  type_code: <%= Family::Person::Natural %>
+  payee: payee_family_1_laxis
+
+family_1_niki:
+  treasury: family_1
+  type: Family::Person
+  name: Niki
+  type_code: <%= Family::Person::Natural %>
+  foreign_ids: -5527-

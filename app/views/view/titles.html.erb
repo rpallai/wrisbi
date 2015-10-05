@@ -1,0 +1,79 @@
+<h2>Tételek
+  <% if params[:category_id] %>
+    a
+    <strong><%= print_category(Category.find(params[:category_id]), false) %></strong>
+    kategórián belül
+  <% end %>
+  <%= time_dimension_as_text %>
+</h2>
+
+<div class="view titles">
+  <table class="<%=current_namespace%> titles">
+    <tr>
+      <th class="title_date <%= 'sort_column' if @order=='titles.date DESC' %>">
+        <%= link_to('Kelt', get_permalink(sort: 'title')) %>
+      </th>
+      <th class="<%= 'sort_column' if @order=='transactions.date DESC' %>">
+        <%= link_to('Fizetés dátuma', get_permalink(sort: 'transaction')) %>
+      </th>
+      <th>Számla</th>
+      <th>Osztály</th>
+      <th>Kategóriák</th>
+      <th>Összeg</th>
+<% if @show_balance %><th>Egyenleg</th><% end %>
+      <th>Megjegyzés</th>
+    </tr>
+
+  <% balance = @this_interval[0][1] -%>
+  <% prev_title = nil -%>
+  <% @titles.each do |title| %>
+  <!--
+    <% if not prev_title or prev_title.transaction.date != title.transaction.date -%>
+      <tr class="day"><td colspan="5"><%= title.transaction.date.strftime("%Y-%m-%d, %a") -%></td></tr>
+    <% end -%>
+  -->
+    <tr class="transaction_title <%-%>
+      <%= title.class.model_name.param_key -%>
+      <%= ' unacked' unless title.transaction.supervised? -%>
+    " data-id="<%= title.transaction.id -%>">
+      <td class="day title_date"><%= title.date.strftime("%Y-%m-%d") if title.date -%></td>
+      <td class="day">
+        <%= link_to(title.transaction.date.strftime("%Y-%m-%d"),
+          [:edit, current_namespace, title.transaction], class: 'edit') %>
+      </td>
+      <td class="account <%= account_to_classes(title.party.account) %>">
+        <%= link_account(title.party.account) -%>
+      </td>
+      <td class="title"><%= render partial: title, locals: { view: 'titles' } -%></td>
+      <td class="categories">
+<% title.categories.each do |category| -%>
+        <% if @person %>
+          <% u = url_with_time_dimension([current_namespace, category, @person.becomes(Person)]) %>
+        <% else %>
+          <% u = url_with_time_dimension([current_namespace, category, :titles]) %>
+        <% end %>
+        <span class="category">
+          <%= link_to(print_category(category), u, class: 'category') %>
+        </span>
+<% end -%>
+      </td>
+      <td class="amount <%= print_sign(title.amount) %>"><%= print_amount title.amount -%></td>
+<% if @show_balance %>
+      <td><%= print_amount(balance += title.amount) -%></td>
+<% end %>
+      <td class="comment">
+        <span class="title_comment"><%= title.comment -%></span>
+        <span class="transaction_comment"><%= title.transaction.comment -%></span>
+      </td>
+      <td class="touched_accounts">
+        <%= title.operations.sort{|a,b| b.amount.abs <=> a.amount.abs}.map{|o| print_account(o.account)+': '+o.amount.to_s}.join('; ') -%>
+      </td>
+    </tr>
+    <% prev_title = title -%>
+  <% end -%>
+  </table>
+
+  <%= render partial: 'pager' %>
+
+  <%#= render partial: 'transaction_popup' %>
+</div>

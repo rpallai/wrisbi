@@ -1,0 +1,30 @@
+default: &defaults
+  adapter: mysql2
+  host: localhost
+  encoding: utf8
+  collation: utf8_hungarian_ci
+  #reconnect: false
+  #pool: 5
+
+# Be sure to use new-style password hashing:
+#   http://dev.mysql.com/doc/refman/5.0/en/old-client.html
+development:
+  database: hc_development
+  username: hc
+  password: s3cr3t
+  <<: *defaults
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  database: hc_test
+  username: hc
+  password: s3cr3t
+  <<: *defaults
+
+production:
+  database: hc_production
+  username: hc
+  password: s3cr3t
+  <<: *defaults

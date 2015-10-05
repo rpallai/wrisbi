@@ -1,0 +1,10 @@
+Row# <%= @transaction.id %>
+updated
+
+Transaction comment: <%= @transaction.comment -%>
+<% if @transaction.comment_changed? %> || was: <%= @transaction.comment_was %><%  end %>
+Transaction date: <%= @transaction.date -%>
+<% if @transaction.date_changed? %> || was: <%= @transaction.date_was %><% end %>
+
+--
+ Wrisbi

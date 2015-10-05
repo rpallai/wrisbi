@@ -1,0 +1,5 @@
+<div class="category_ids_selector container">
+  <%= f.select(:new_category_ids, treasury_categories(@treasury, Category), {},
+    {:class => 'leftValues', :multiple => true, 'data-placeholder' => "Kategóriák..."}.
+      update(title_input_attributes(f.object)) ) %>
+</div>

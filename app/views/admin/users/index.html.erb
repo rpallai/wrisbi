@@ -1,0 +1,15 @@
+<h1>Felhasználók</h1>
+
+<table>
+<% @users.each do |user| %>
+  <tr>
+    <td><%= user.email %></td>
+    <td><%= link_to 'Módosít', edit_admin_user_path(user) %></td>
+    <td><%= link_to 'Töröl', [:admin, user], confirm: 'Biztos?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Új felhasználó', new_admin_user_path %><br/>

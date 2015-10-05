@@ -1,0 +1,31 @@
+family_1_citybank_1:
+  type: Family::Account
+  person: family_1_owner
+  name: family_1_citybank_1
+  type_code: <%= Family::Account::CreditCard %>
+  foreign_ids: -7764-
+
+family_1_otp_1:
+  type: Family::Account
+  person: family_1_owner
+  name: family_1_otp_1
+  type_code: <%= Family::Account::Bank %>
+  foreign_ids: -3359--5527-
+
+family_1_laxis_K:
+  type: Family::Account
+  person: family_1_laxis
+  name: family_1_laxis_K
+  type_code: <%= Family::Account::Liability %>
+
+family_1_niki_K:
+  type: Family::Account
+  person: family_1_niki
+  name: family_1_niki_K
+  type_code: <%= Family::Account::Liability %>
+
+family_1_niki_wallet:
+  type: Family::Account
+  person: family_1_niki
+  name: family_1_niki_wallet
+  type_code: <%= Family::Account::Wallet %>

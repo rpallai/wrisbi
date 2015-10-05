@@ -1,0 +1,20 @@
+<h1>Kategóriák</h1>
+
+<%= link_to 'Új gyökér-kategória', [:new, @treasury.becomes(Treasury), @model.name.parameterize.underscore] %><br/>
+<%= link_to("Kategória nélküli tételek", [:no_category, @treasury.namespace, @treasury.becomes(Treasury), :titles]) %><br/>
+
+<ol class="categories">
+  <% @root_categories.each do |root_category| %>
+    <%= raw(traverse(root_category) do |category| %>
+      <%= link_to(category.name, [@treasury.namespace, category, :titles]) %>
+      <% if category.business %>[<%= category.business.name %>]<% end -%>
+      <!-- <% if category.applied_business %>{<%= category.applied_business.name %>}<% end -%> -->
+      <span class="operations">
+				<%= link_to "új alkategória",
+					url_for([:new, @treasury.becomes(Treasury), @model.name.parameterize.underscore])<<"?parent_id=#{category.id}" %> |
+				<%= link_to "módosít", [:edit, category] %> |
+				<%= link_to("töröl", category, data: { confirm: 'Are you sure?' }, method: :delete) %>
+      </span>
+    <% end) %>
+  <% end %>
+</ol>

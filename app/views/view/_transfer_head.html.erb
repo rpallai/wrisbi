@@ -1,0 +1,8 @@
+<% if view == 'transactions' -%>
+Átvezetés
+<% else -%>
+  <%= transfer_head_direction(transfer_head) %>
+  <% if transfer_head.party.other_party -%>
+    <%= print_account(transfer_head.party.other_party.titles[0].account) %>
+  <% end -%>
+<% end -%>

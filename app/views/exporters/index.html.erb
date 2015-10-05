@@ -1,0 +1,28 @@
+<h1>Exporterek</h1>
+
+<table class="exporters">
+  <thead>
+    <tr>
+      <th>Típus</th>
+      <th>Konfig</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @exporters.each do |exporter| %>
+      <tr>
+        <td><%= exporter.type -%></td>
+        <td><%= exporter.cfg -%></td>
+        <td>
+          <%= link_to 'Edit', [:edit, exporter] %>
+          <%= link_to 'Destroy', exporter, method: :delete, data: { confirm: 'Are you sure?' } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'Új email exporter felvétele', new_treasury_exporter_mailer_path(@treasury) %><br/>

@@ -1,0 +1,45 @@
+<%= form_for(@business) do |f| %>
+  <% if @business.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@business.errors.count, "error") %> prohibited this business from being saved:</h2>
+
+      <ul>
+      <% @business.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.hidden_field :treasury_id if f.object.new_record? %>
+  <div class="field">
+    <%= f.label :name, "Neve" %>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+		<%= f.label :comment, "Megjegyzés" -%>
+		<%= f.text_field :comment -%>
+	</div>
+  <div class="field shares">
+    <%= f.fields_for(:shares) do |sharesf| %>
+      <div class="field">
+        <%= sharesf.label :person_id, "Személy" %>
+        <%= sharesf.select(:person_id,
+          prepend_options_wzero(@business.treasury.people.map{|person| [person.name, person.id] })) %>
+      </div>
+      <% unless @business.new_record? %>
+        <%= sharesf.label :_destroy, "Törlés" %>
+        <%= sharesf.check_box :_destroy %>
+      <% end %>
+      <div class="field">
+        <%= sharesf.label :share, "Részesedés" %>
+        <%= sharesf.text_field :share, :size => 4 %>
+        <span class="help">Arányszámmal, pl. ":1"</span>
+      </div>
+      <br/>
+    <% end %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

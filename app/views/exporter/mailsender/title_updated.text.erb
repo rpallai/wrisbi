@@ -1,0 +1,12 @@
+Row# <%= @title.transaction.id %>
+updated
+
+Account: <%= print_account(@title.party.account) -%>
+<% if @title.party.account_id_changed? %> || was: <%= print_account(Account.find(@title.party.account_id_was)) %><% end %>
+Amount: <%= @title.amount -%>
+<% if @title.amount_changed? %> || was: <%= @title.amount_was %><% end %>
+Comment: <%= @title.comment -%>
+<% if @title.comment_changed? %> || was: <%= @title.comment_was %><% end %>
+
+--
+ Wrisbi
