@@ -32,9 +32,6 @@ gem 'bcrypt-ruby', '~> 3.1.0'
 # For the importers
 gem 'mail'
 
-# Az ExchageRateLog importnek
-gem 'nokogiri'
-
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'
 
