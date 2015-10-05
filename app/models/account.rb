@@ -9,7 +9,7 @@ class Account < ActiveRecord::Base
 
   belongs_to :person
   belongs_to :exporter
-  has_many :transactions, :dependent => :destroy
+  has_many :parties, :dependent => :destroy
   has_many :operations, :dependent => :destroy do
     def scope_date
       if date_scope = proxy_association.owner.treasury.date_scope
