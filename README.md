@@ -2,6 +2,7 @@
 Simple and expandable multi-user accounting software for the web backed by SQL.
 
 Features:
+
 - Ruby on Rails
 - Multi-treasury
 - Multi-user with permissions
@@ -75,6 +76,7 @@ Be tud lépni a rendszerbe. Ha root, treasury supervisor vagy össze van kapcsol
 
 ## Tranzakció
 Egy tranzakció némileg leegyszerűsítve így néz ki logikailag:
+
 * idő
 * megjegyzés
   * fél (1..*)
@@ -96,6 +98,7 @@ A fél egy kincstári személy valamelyk számlája. A számla egyenlegét nem b
 
 ### Tétel
 Legfontosabb feladatai:
+
 * Műveletek létrehozása, amivel a számlák egyenlege változtatható
 * Kapcsolódó kategóriák tárolása, az azokon szereplő egyezségek és exporterek alkalmazása
 
@@ -110,3 +113,6 @@ A kincstárban történt könyvelési eseményeket lehet vele exportálni. Ez p�
 Az email exporter nem tartja meg a tranzakció-tétel eredeti strukturáját: sort képez belőle, ami egyszerűbb, az ember hamarabb megérti, a belátható igényeknek így is bőven megfelel.
 
 Egyelőre csak kategóriához kapcsolható.
+
+# Kincstárak, gyakorlati példák
+* [Family plugin](plugins/family/README.md)
