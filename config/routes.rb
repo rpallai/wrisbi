@@ -6,9 +6,9 @@ Wrisbi::Application.routes.draw do
   resources :payees, :except => [:index, :new]
   resources :businesses, :except => [:index, :new]
   resources :transactions, :only => :destroy do
-		member do
-			post 'do_ack'
-		end
+    member do
+      post 'do_ack'
+    end
   end
 
   resources :treasuries, :only => [], :requirements => { :class_name => "Treasury" } do
@@ -27,11 +27,11 @@ Wrisbi::Application.routes.draw do
 
   namespace :admin do
     resources :users, :except => [:show]
-		resources :exchange_rate_logs, :except => [:show] do
-			collection do
-				get 'pull'
-			end
-		end
+    resources :exchange_rate_logs, :except => [:show] do
+      collection do
+        get 'pull'
+      end
+    end
   end
 
   # just remember to delete public/index.html.

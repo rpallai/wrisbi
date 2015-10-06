@@ -32,8 +32,8 @@ class Account < ActiveRecord::Base
   scope :opened, where(:closed => false)
   scope :none, where('0 = 1')
   scope :foreign_id, proc{|id|
-		where("accounts.foreign_ids LIKE '%%-%s-%%'" % ActiveRecord::Base.connection.quote_string(id))
-	}
+    where("accounts.foreign_ids LIKE '%%-%s-%%'" % ActiveRecord::Base.connection.quote_string(id))
+  }
 
   delegate :treasury, :to => :person
 
@@ -45,7 +45,7 @@ class Account < ActiveRecord::Base
   end
 
   def full_name
-		person.name + '-' + name
+    person.name + '-' + name
   end
 
   def asset?

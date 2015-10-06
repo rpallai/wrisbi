@@ -11,16 +11,16 @@
 #  end
 #
 class Serializer::List
-	def initialize(opts = {})
-		@separator = opts.delete(:separator) || ' '
-		raise "Unknown options: " << opts.inspect unless opts.empty?
-	end
+  def initialize(opts = {})
+    @separator = opts.delete(:separator) || ' '
+    raise "Unknown options: " << opts.inspect unless opts.empty?
+  end
 
-	def load(text)
-		text.split('-').map{|v| v.blank? ? nil : v }.compact.join(@separator) rescue ''
-	end
+  def load(text)
+    text.split('-').map{|v| v.blank? ? nil : v }.compact.join(@separator) rescue ''
+  end
 
-	def dump(text)
-		text.split(@separator).map{|id| "-#{id}-" }.join rescue ''
-	end
+  def dump(text)
+    text.split(@separator).map{|id| "-#{id}-" }.join rescue ''
+  end
 end

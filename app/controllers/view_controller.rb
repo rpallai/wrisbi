@@ -56,7 +56,7 @@ class ViewController < ApplicationController
     end
     @operations = operations.includes([:transaction, {:title => [{:operations => :person}, :categories]}]).
       # tobb szamla eseten a szumma az osszeg
-      select("*,SUM(operations.amount) AS amount")
+    select("*,SUM(operations.amount) AS amount")
     # filters
     @page_title << '/operations'
 
@@ -75,7 +75,7 @@ class ViewController < ApplicationController
             JOIN    (SELECT @rn := 0, @balance := 0) i
             ) counted
           WHERE (rn - 1) MOD #{page_limit} IN (0,#{page_limit - 1})
-        ").rows
+          ").rows
         if rows.length.odd?
           r = operations.select("#{@date_field} AS date, 0 AS balance").last
           rows << [r[:date], r[:balance]]
@@ -85,32 +85,32 @@ class ViewController < ApplicationController
         @this_interval = @intervals.to_a[params[:page].to_i || 0] || ['']
       end
       format.csv {
-				require 'csv'
-				csv = CSV.generate do |l|
-					l << ['date', 'category/peer', 'amount', 'balance', 'comment']
-					balance = 0
-					@operations.each{|operation|
+        require 'csv'
+        csv = CSV.generate do |l|
+          l << ['date', 'category/peer', 'amount', 'balance', 'comment']
+          balance = 0
+          @operations.each{|operation|
             # XXX
-						if operation.title.is_a? Title::Deal and operation.title.category
-							cat = operation.title.category.ancestors.push(operation.title.category).map(&:name).join('/')
-						elsif operation.title.is_a? Title::Transfer
-							other_operation = operation.type_code == Title::Transfer::Left ? operation.title.right : operation.title.left
-							cat = other_operation.person.name
-						else
-							cat = nil
-						end
-						l << [
-							operation.transaction.date.strftime("%Y-%m-%d, %a"),
-							cat,
-							operation.amount,
-							balance += operation.amount,
-							operation.title.comment
-						]
-					}
-				end
-				send_data csv,
-					:type => 'text/csv; charset=utf-8; header=present',
-					:disposition => "attachment; filename=#{@account.person.name}_#{@account.name}-#{Date.today.to_s(:db)}.csv"
+            if operation.title.is_a? Title::Deal and operation.title.category
+              cat = operation.title.category.ancestors.push(operation.title.category).map(&:name).join('/')
+            elsif operation.title.is_a? Title::Transfer
+              other_operation = operation.type_code == Title::Transfer::Left ? operation.title.right : operation.title.left
+              cat = other_operation.person.name
+            else
+              cat = nil
+            end
+            l << [
+              operation.transaction.date.strftime("%Y-%m-%d, %a"),
+              cat,
+              operation.amount,
+              balance += operation.amount,
+              operation.title.comment
+            ]
+          }
+        end
+        send_data csv,
+        :type => 'text/csv; charset=utf-8; header=present',
+        :disposition => "attachment; filename=#{@account.person.name}_#{@account.name}-#{Date.today.to_s(:db)}.csv"
       }
       format.json { render json: @account }
     end
@@ -136,9 +136,9 @@ class ViewController < ApplicationController
       if params[:filter] == "no_category"
         titles = @treasury.titles.where("titles.type != 'Title::TransferHead'").
           joins(
-            "LEFT OUTER JOIN `categories_titles` ON `categories_titles`.`title_id` = `titles`.`id` "+
+          "LEFT OUTER JOIN `categories_titles` ON `categories_titles`.`title_id` = `titles`.`id` "+
             "LEFT OUTER JOIN `categories` ON `categories`.`id` = `categories_titles`.`category_id`"
-          ).where(categories: { id: nil })
+        ).where(categories: { id: nil })
         @page_title << '/' << "no_category"
       else
         titles = @treasury.titles
@@ -146,10 +146,10 @@ class ViewController < ApplicationController
     end
 
     @titles = titles.includes(
-			:categories, :transaction,
+      :categories, :transaction,
       :operations => { :account => :person },
       :party => { :account => :person }
-		)
+    )
 
     case params[:sort]
     when 'title'
@@ -183,7 +183,7 @@ class ViewController < ApplicationController
         JOIN    (SELECT @rn := 0, @balance := 0) i
         ) counted
       WHERE (rn - 1) MOD #{page_limit} IN (0,#{page_limit - 1})
-    ").rows
+      ").rows
     if rows.length.odd?
       r = titles.joins(:transaction).order(@order).select("#{@date_field} AS date, 0 AS balance").last
       rows << [r[:date], r[:balance]]
@@ -195,19 +195,19 @@ class ViewController < ApplicationController
     @page_title << '/titles'
     #XXX titles_by_month: .order('applied_business_id')
     # filters
-#    if params[:filter_year]
-#      start_date = Date.parse("%d-01-01" % params[:filter_year])
-#      end_date = Date.parse("%d-12-31" % params[:filter_year])
-#      @titles = @titles.where("date BETWEEN ? AND ?", start_date, end_date)
-#    else
-#      d = @treasury.transactions.order('date').last.date - 60
-#      f = "%d-%d-01" % [d.year, d.month]
-#      @titles = @titles #.where("date >= ?", f)
-#    end
+    #    if params[:filter_year]
+    #      start_date = Date.parse("%d-01-01" % params[:filter_year])
+    #      end_date = Date.parse("%d-12-31" % params[:filter_year])
+    #      @titles = @titles.where("date BETWEEN ? AND ?", start_date, end_date)
+    #    else
+    #      d = @treasury.transactions.order('date').last.date - 60
+    #      f = "%d-%d-01" % [d.year, d.month]
+    #      @titles = @titles #.where("date >= ?", f)
+    #    end
     # XXX ez head-re szur; mikor hasznaljuk?
-#    if params[:account_id] and (params[:category_id] or  params[:treasury_id])
-#      @titles = @titles.where('transactions.account_id' => params[:account_id])
-#    end
+    #    if params[:account_id] and (params[:category_id] or  params[:treasury_id])
+    #      @titles = @titles.where('transactions.account_id' => params[:account_id])
+    #    end
     #@titles = @titles.limit(20)
     respond_to do |format|
       format.html
@@ -219,7 +219,7 @@ class ViewController < ApplicationController
     level1 = @titles.group_by{|m| m.transaction.date.strftime("%Y-%m") }
     @level2 = Hash[level1.map{|key,titles|
         [key, titles.group_by{|m| {label: m.class.display_name, html_class: m.class.name.demodulize }} ]
-    }]
+      }]
     #logger.debug "view_paths: #{view_paths.inspect}"
     prepend_view_path Rails.root.to_s+'/app/views/view/titles_by_month'
   end
@@ -257,7 +257,7 @@ class ViewController < ApplicationController
     end
     @transactions = transactions.includes(
       :titles,
-			:parties => {
+      :parties => {
         :account => :person,
         :titles => [:categories, :operations => { :account => :person }]
       },
@@ -283,7 +283,7 @@ class ViewController < ApplicationController
           JOIN    (SELECT @rn := 0) i
           ) counted
         WHERE (rn - 1) MOD #{page_limit} IN (0,#{page_limit - 1})
-      ").rows
+        ").rows
     else
       rows = Transaction.connection.exec_query("
         SELECT date, balance
@@ -295,7 +295,7 @@ class ViewController < ApplicationController
           JOIN    (SELECT @rn := 0, @balance := 0) i
           ) counted
         WHERE (rn - 1) MOD #{page_limit} IN (0,#{page_limit - 1})
-      ").rows
+        ").rows
     end
     if rows.length.odd?
       r = transactions.order(@order).select("#{@date_field} AS date, 0 AS balance").last

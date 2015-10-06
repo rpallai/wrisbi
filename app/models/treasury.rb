@@ -49,7 +49,7 @@ class Treasury < ActiveRecord::Base
     end
   end
 
-	has_many :transactions, :dependent => :destroy
+  has_many :transactions, :dependent => :destroy
   has_many :titles, :through => :transactions
 
   has_many :exporters, :dependent => :destroy
@@ -57,7 +57,7 @@ class Treasury < ActiveRecord::Base
   validates_presence_of :name
 
   def person_of_user(current_user)
-		people.find_by_user_id(current_user)
+    people.find_by_user_id(current_user)
   end
 
   def equity_balance(currency)

@@ -107,6 +107,6 @@ class TreasuriesController < ApplicationController
 
   private
   def treasury_params
-		params.require(@model.model_name.singular.to_sym).permit(:name, supervisor_ids: [])
+    params.require(@model.model_name.singular.to_sym).permit(:name, supervisor_ids: [])
   end
 end

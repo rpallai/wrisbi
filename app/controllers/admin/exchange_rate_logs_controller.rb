@@ -1,6 +1,6 @@
 class Admin::ExchangeRateLogsController < ApplicationController
-	skip_before_filter :authenticate, only: :pull
-	before_filter :needs_root, except: :pull
+  skip_before_filter :authenticate, only: :pull
+  before_filter :needs_root, except: :pull
   before_action :set_exchange_rate_log, only: [:edit, :update, :destroy]
 
   # GET /exchange_rate_logs
@@ -43,19 +43,19 @@ class Admin::ExchangeRateLogsController < ApplicationController
     redirect_to exchange_rate_logs_url, notice: 'Exchange rate log was successfully destroyed.'
   end
 
-	def pull
-		imported = ExchangeRateLog.pull_all
-		render(:text => "Imported %s rate(s)\n" % imported)
-	end
+  def pull
+    imported = ExchangeRateLog.pull_all
+    render(:text => "Imported %s rate(s)\n" % imported)
+  end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_exchange_rate_log
-      @exchange_rate_log = ExchangeRateLog.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_exchange_rate_log
+    @exchange_rate_log = ExchangeRateLog.find(params[:id])
+  end
 
-    # Only allow a trusted parameter "white list" through.
-    def exchange_rate_log_params
-      params[:exchange_rate_log].permit(:date, :currency, :rate)
-    end
+  # Only allow a trusted parameter "white list" through.
+  def exchange_rate_log_params
+    params[:exchange_rate_log].permit(:date, :currency, :rate)
+  end
 end

@@ -10,10 +10,10 @@ class TransactionsController < ApplicationController
     @treasury = Treasury.find(params[:treasury_id])
   end
   #~ def set_model
-    #~ @model = params[:requirements][:class_name].constantize
+  #~ @model = params[:requirements][:class_name].constantize
   #~ end
   #~ def alias_params
-    #~ params[:title] = params[@model.model_name.singular.to_sym]
+  #~ params[:title] = params[@model.model_name.singular.to_sym]
   #~ end
 
   public
@@ -85,12 +85,12 @@ class TransactionsController < ApplicationController
   end
   def edit_build_new_party
     @transaction = Transaction.find(params[:id])
-		@transaction.assign_attributes(transaction_params)
+    @transaction.assign_attributes(transaction_params)
     build_new_party
   end
   def edit_build_new_title
     @transaction = Transaction.find(params[:id])
-		@transaction.assign_attributes(transaction_params)
+    @transaction.assign_attributes(transaction_params)
     build_new_title
     respond_to do |format|
       format.html { render action: "edit" }
@@ -98,7 +98,7 @@ class TransactionsController < ApplicationController
   end
   def edit_copy_title
     @transaction = Transaction.find(params[:id])
-		@transaction.assign_attributes(transaction_params)
+    @transaction.assign_attributes(transaction_params)
     copy_title
     respond_to do |format|
       format.html { render action: "edit" }
@@ -106,7 +106,7 @@ class TransactionsController < ApplicationController
   end
   def edit_refresh
     @transaction = Transaction.find(params[:id])
-		@transaction.assign_attributes(transaction_params)
+    @transaction.assign_attributes(transaction_params)
     @treasury = @transaction.treasury
     respond_to do |format|
       format.html { render action: @transaction.new_record?? "new" : "edit" }
@@ -141,12 +141,12 @@ class TransactionsController < ApplicationController
   # PUT /transactions/1.json
   def update
     @transaction = Transaction.find(params[:id])
-		@transaction.assign_attributes(transaction_params)
+    @transaction.assign_attributes(transaction_params)
     @treasury = @transaction.treasury
     return if needs_deeply_concerned(@treasury)
     if @transaction.supervised? or @transaction.user != @current_user
-			return if needs_treasury_supervisor(@treasury)
-		end
+      return if needs_treasury_supervisor(@treasury)
+    end
     @transaction.supervised = @treasury.supervisors.include?(@current_user) ? true : false
     @transaction.user = @current_user
 
@@ -171,8 +171,8 @@ class TransactionsController < ApplicationController
     @transaction = Transaction.find(params[:id])
     @treasury = @transaction.treasury
     if @transaction.supervised? or @transaction.user != @current_user
-			return if needs_treasury_supervisor(@treasury)
-		end
+      return if needs_treasury_supervisor(@treasury)
+    end
     @transaction.destroy
 
     respond_to do |format|
@@ -188,7 +188,7 @@ class TransactionsController < ApplicationController
   def do_ack
     @transaction = Transaction.find(params[:id])
     @treasury = @transaction.treasury
-		return if needs_treasury_supervisor(@treasury)
+    return if needs_treasury_supervisor(@treasury)
     @transaction.update_column(:supervised, true)
     respond_to do |format|
       format.html { redirect_to :back }
@@ -197,9 +197,9 @@ class TransactionsController < ApplicationController
   end
 
   private
-	def transaction_params
-		params.require(:transaction).permit(
-			:treasury_id, :date, :comment, :invert,
+  def transaction_params
+    params.require(:transaction).permit(
+      :treasury_id, :date, :comment, :invert,
       parties_attributes: [
         :id, :_destroy, :account_id, :amount,
         titles_attributes: [
@@ -209,7 +209,7 @@ class TransactionsController < ApplicationController
           :new_category_ids => [],
         ],
       ],
-		)
+    )
   end
 
   def build_new_party

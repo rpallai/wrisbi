@@ -113,7 +113,7 @@ class BusinessesController < ApplicationController
   end
 
   def business_params
-		params.require(:business).permit(:treasury_id, :name, :comment,
-			shares_attributes: [ :id, :_destroy, :person_id, :share ])
+    params.require(:business).permit(:treasury_id, :name, :comment,
+      shares_attributes: [ :id, :_destroy, :person_id, :share ])
   end
 end

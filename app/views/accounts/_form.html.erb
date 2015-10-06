@@ -35,17 +35,17 @@
     </div>
   <% end %>
   <div class="field">
-		<%= f.label :hidden, "Rejtett" -%>
-		<%= f.check_box :hidden -%>
+    <%= f.label :hidden, "Rejtett" -%>
+    <%= f.check_box :hidden -%>
     <span class="help">Csak a supervisor láthatja.</span>
-	</div>
-	<div class="field">
-		<%= f.label :foreign_ids, "Távoli azonosítók" -%>
-		<%= f.text_field :foreign_ids -%>
-		<span class="description">
-			Az importer használhatja, opcionális. Space-szel elválasztott lista.
-		</span>
-	</div>
+  </div>
+  <div class="field">
+    <%= f.label :foreign_ids, "Távoli azonosítók" -%>
+    <%= f.text_field :foreign_ids -%>
+    <span class="description">
+      Az importer használhatja, opcionális. Space-szel elválasztott lista.
+    </span>
+  </div>
   <div class="actions">
     <%= f.submit %>
   </div>

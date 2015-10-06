@@ -1,5 +1,5 @@
 class Admin::UsersController < ApplicationController
-	before_filter :needs_root
+  before_filter :needs_root
 
   def index
     @users = User.all
@@ -38,6 +38,6 @@ class Admin::UsersController < ApplicationController
   end
   
   def user_params
-		params.require(:user).permit(:email, :password, :password_confirmation, :root)
+    params.require(:user).permit(:email, :password, :password_confirmation, :root)
   end
 end

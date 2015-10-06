@@ -1,7 +1,7 @@
 # encoding: utf-8
 class Transaction < ActiveRecord::Base
-	belongs_to :treasury
-	belongs_to :user
+  belongs_to :treasury
+  belongs_to :user
   has_many :parties, :dependent => :destroy, :autosave => true, :inverse_of => :transaction do
     def left
       order(:amount).first
@@ -14,7 +14,7 @@ class Transaction < ActiveRecord::Base
   has_many :titles, :through => :parties
   has_many :operations, :through => :titles
 
-	attr_accessor :invert
+  attr_accessor :invert
 
   before_validation :do_invert, :if => :invert?
   before_validation :fill_party_amount_if_missing
@@ -30,21 +30,21 @@ class Transaction < ActiveRecord::Base
     # ez nem azt jelenti hogy modositva is lett, csak azt, hogy valaki submit-olt egy edit formot
     t.updated_at = Time.now
   }
-	after_update {|t|
-		if t.comment_changed? or t.date_changed?
-			titles.each do |m|
+  after_update {|t|
+    if t.comment_changed? or t.date_changed?
+      titles.each do |m|
         m.categories.each{|category| category.exporter.after_transaction_update(t) if category.exporter }
-			end
-		end
-	}
+      end
+    end
+  }
 
   def initialize(opts = {})
-		# vigyazz, a true -t a formbuilder nem checked-nek erzekeli
-		@invert = 0 unless opts['invert']
+    # vigyazz, a true -t a formbuilder nem checked-nek erzekeli
+    @invert = 0 unless opts['invert']
     super
-	end
+  end
 
-	private
+  private
   def invert?
     # a html megjelenites es a model csak igy mukodik konzisztensen
     #logger.debug "invert? #{@invert.inspect}"
@@ -92,28 +92,28 @@ class Transaction < ActiveRecord::Base
       end
       transfers_by_currency = transfers.group_by{|m| m.party.account.currency }
       transfers_by_currency.each do |currency,transfers|
-          amount_sum = transfers.sum(&:amount)
-          unless amount_sum.zero?
-            errors.add(:parties, "az összeg nem nulla (#{amount_sum} #{currency})")
-          end
+        amount_sum = transfers.sum(&:amount)
+        unless amount_sum.zero?
+          errors.add(:parties, "az összeg nem nulla (#{amount_sum} #{currency})")
+        end
       end
       #XXXerrors.add(:parties, "egyező összeg különböző pénznemű számák között")
     end
-	end
+  end
 
-#  def right_amount
-#    logger.debug ">>> Zedding: calculating right_amount, transfer_ratio: '#{transfer_ratio}'"
-#    base = amount_netto
-#    if not transfer_ratio or transfer_ratio.blank?
-#      -base
-#    else
-#      if transfer_ratio.is_a? Numeric
-#        transfer_ratio
-#      elsif transfer_ratio.ends_with? '%'
-#        return if base.nil?
-#        Rails.logger.debug(">>> Zedding: turning percentage (#{transfer_ratio}) based on #{base}")
-#        -(base * transfer_ratio.to_i / 100)
-#      end
-#    end
-#  end
+  #  def right_amount
+  #    logger.debug ">>> Zedding: calculating right_amount, transfer_ratio: '#{transfer_ratio}'"
+  #    base = amount_netto
+  #    if not transfer_ratio or transfer_ratio.blank?
+  #      -base
+  #    else
+  #      if transfer_ratio.is_a? Numeric
+  #        transfer_ratio
+  #      elsif transfer_ratio.ends_with? '%'
+  #        return if base.nil?
+  #        Rails.logger.debug(">>> Zedding: turning percentage (#{transfer_ratio}) based on #{base}")
+  #        -(base * transfer_ratio.to_i / 100)
+  #      end
+  #    end
+  #  end
 end

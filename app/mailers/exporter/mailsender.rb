@@ -34,8 +34,8 @@ class Exporter::Mailsender < ActionMailer::Base
   end
 
   #~ def export_account(from, to, operation)
-    #~ @operation = operation
-    #~ @title = operation.title
-    #~ mail(to: to, from: from)
+  #~ @operation = operation
+  #~ @title = operation.title
+  #~ mail(to: to, from: from)
   #~ end
 end

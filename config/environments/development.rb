@@ -25,10 +25,10 @@ Wrisbi::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
 
-	# = from production =
+  # = from production =
 
-	# Generate digests for assets URLs
-	config.assets.digest = true
+  # Generate digests for assets URLs
+  config.assets.digest = true
 
   config.eager_load = false
 end

@@ -105,7 +105,7 @@ class PayeesController < ApplicationController
   end
 
   private
-	def payee_params
-		params.require(:payee).permit(:treasury_id, :name, :aliases)
-	end
+  def payee_params
+    params.require(:payee).permit(:treasury_id, :name, :aliases)
+  end
 end

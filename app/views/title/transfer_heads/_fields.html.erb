@@ -3,11 +3,11 @@
 </div>
 <% if f.object.party.titles.find_all{|m| not m.marked_for_destruction? }.length > 1 -%>
 <div class="field">
-	<%= f.label :amount, 'Összeg' %>
-	<%= f.text_field :amount, {:size => 6, step: 0}.update(title_input_attributes(f.object)) %>
+  <%= f.label :amount, 'Összeg' %>
+  <%= f.text_field :amount, {:size => 6, step: 0}.update(title_input_attributes(f.object)) %>
 </div>
 <% end -%>
 <div class="field">
   <%= f.label :comment, 'Leírás', class: 'title comment' %>
-	<%= f.text_field :comment, title_input_attributes(f.object).update(class: 'title comment') -%>
+  <%= f.text_field :comment, title_input_attributes(f.object).update(class: 'title comment') -%>
 </div>

@@ -20,7 +20,7 @@ class PeopleController < ApplicationController
   def new
     @person = @model.new
     @person.treasury = @treasury
-		return if needs_treasury_supervisor(@person.treasury)
+    return if needs_treasury_supervisor(@person.treasury)
 
     respond_to do |format|
       format.html # new.html.erb
@@ -32,7 +32,7 @@ class PeopleController < ApplicationController
   def edit
     @person = Person.find(params[:id])
     @treasury = @person.treasury
-		return if needs_treasury_supervisor(@treasury)
+    return if needs_treasury_supervisor(@treasury)
   end
 
   # POST /people
@@ -40,7 +40,7 @@ class PeopleController < ApplicationController
   def create
     @person = @model.new(person_params)
     @treasury = @person.treasury
-		return if needs_treasury_supervisor(@treasury)
+    return if needs_treasury_supervisor(@treasury)
 
     respond_to do |format|
       if @person.save
@@ -58,7 +58,7 @@ class PeopleController < ApplicationController
   def update
     @person = Person.find(params[:id])
     @treasury = @person.treasury
-		return if needs_treasury_supervisor(@treasury)
+    return if needs_treasury_supervisor(@treasury)
 
     respond_to do |format|
       if @person.update_attributes(person_params)
@@ -76,7 +76,7 @@ class PeopleController < ApplicationController
   def destroy
     @person = Person.find(params[:id])
     @treasury = @person.treasury
-		return if needs_treasury_supervisor(@treasury)
+    return if needs_treasury_supervisor(@treasury)
     @person.destroy
 
     respond_to do |format|
@@ -87,8 +87,8 @@ class PeopleController < ApplicationController
 
   private
   def person_params
-		params.require(@model.model_name.singular.to_sym).permit(
-			:treasury_id, :name, :user_id, :type_code, :restricted
-		)
-	end
+    params.require(@model.model_name.singular.to_sym).permit(
+      :treasury_id, :name, :user_id, :type_code, :restricted
+    )
+  end
 end

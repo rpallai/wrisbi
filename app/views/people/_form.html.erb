@@ -16,23 +16,23 @@
     <%= f.label :name, "Neve" %>
     <%= f.text_field :name %>
   </div>
-	<div class="field">
-		<%= f.label :user_id, "Kapcsolódó felhasználó" -%>
-		<%= f.select :user_id, prepend_options_wzero(users) -%>
+  <div class="field">
+    <%= f.label :user_id, "Kapcsolódó felhasználó" -%>
+    <%= f.select :user_id, prepend_options_wzero(users) -%>
     <span class="help">A felhasználó látni fogja a kincstárat.</span>
-	</div>
+  </div>
   <% if f.object.new_record? -%>
-		<div class="fields">
-			<%= f.label :type_code, "Típusa" %>
-			<%= f.select :type_code, @model.possible_type_codes %>
-		</div>
-	<% end -%>
-	<div class="field">
-		<%= f.label :restricted, "Korlátozott" -%>
-		<%= f.check_box :restricted -%>
+    <div class="fields">
+      <%= f.label :type_code, "Típusa" %>
+      <%= f.select :type_code, @model.possible_type_codes %>
+    </div>
+  <% end -%>
+  <div class="field">
+    <%= f.label :restricted, "Korlátozott" -%>
+    <%= f.check_box :restricted -%>
     <span class="help">A felhasználó csak saját egyenlegének alakulását látja, a kincstár más pénzügyi
       információját nem.</span>
-	</div>
+  </div>
   <div class="actions">
     <%= f.submit %>
   </div>

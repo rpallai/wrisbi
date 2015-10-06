@@ -67,7 +67,7 @@
 </div>
 
 <% if @treasury.supervisors.include? @current_user -%>
-	<p><%= link_to('Új személy hozzáadása', [:new, @treasury, :person], target: "_parent") -%></p>
+  <p><%= link_to('Új személy hozzáadása', [:new, @treasury, :person], target: "_parent") -%></p>
 <% end -%>
 <% end -%>
 <% end -%>

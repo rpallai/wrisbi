@@ -52,11 +52,11 @@ $( ->
   $('.transaction.comment').click ()->
     $(@).next().toggle()
 
-#	$('select.payee_id').change ()->
-#		if $('select.payee_id option:selected').val() == "-1"
-#			$('input.payee_name').show()
-#		else
-#			$('input.payee_name').hide()
+#  $('select.payee_id').change ()->
+#    if $('select.payee_id option:selected').val() == "-1"
+#      $('input.payee_name').show()
+#    else
+#      $('input.payee_name').hide()
 
   # felo hogy tobb bajt okoz mint hasznot
 #  $('#transaction_date_1i').change (e)->

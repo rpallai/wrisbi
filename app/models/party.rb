@@ -41,18 +41,18 @@ class Party < ActiveRecord::Base
 
   private
   def titles_amount_sum
-		total_sum = 0
-		titles.each{|m| total_sum += m.amount if m.amount and not m.marked_for_destruction? }
-		total_sum
+    total_sum = 0
+    titles.each{|m| total_sum += m.amount if m.amount and not m.marked_for_destruction? }
+    total_sum
   end
 
-	def validate_total_amount_of_titles_equal_to_amount
-		titles_without_amount = titles.find_all{|m| not m.amount }
-		if titles_without_amount.length > 1
-			titles_without_amount.each{|m|
-				m.errors.add(:amount, "Maximum 1-nél hagyhatod üresen")
-			}
-		end
+  def validate_total_amount_of_titles_equal_to_amount
+    titles_without_amount = titles.find_all{|m| not m.amount }
+    if titles_without_amount.length > 1
+      titles_without_amount.each{|m|
+        m.errors.add(:amount, "Maximum 1-nél hagyhatod üresen")
+      }
+    end
     if titles.length.zero?
       errors.add(:base, "Nincs megadva tétel")
     else
@@ -60,7 +60,7 @@ class Party < ActiveRecord::Base
         errors.add(:amount, "A manőverek nem fedik le az összeget (%d vs %d)" % [titles_amount_sum, amount])
       end
     end
-	end
+  end
 
   def fill_title_amount_if_missing
     logger.debug "fill_title_amount_if_missing; titles.length: #{titles.length}"

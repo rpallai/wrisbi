@@ -13,25 +13,25 @@
   <% end %>
 
   <%= hidden_field_tag :iframe, 1 if params[:iframe] %>
-	<%= f.hidden_field :treasury_id if f.object.new_record? %>
-	<div class="field">
-		<%= f.label :date, "Dátum" %>
-		<%= f.date_select(:date, start_year: 2005, end_year: Date.today.year) %>
-	</div>
+  <%= f.hidden_field :treasury_id if f.object.new_record? %>
+  <div class="field">
+    <%= f.label :date, "Dátum" %>
+    <%= f.date_select(:date, start_year: 2005, end_year: Date.today.year) %>
+  </div>
 <%# unless params[:hide_invert] -%>
-	<div class="field">
-		<%= f.label :invert, "Előjelfordítás" -%>
-		<%= f.check_box :invert -%>
-	</div>
+  <div class="field">
+    <%= f.label :invert, "Előjelfordítás" -%>
+    <%= f.check_box :invert -%>
+  </div>
 <%# else -%>
-	<%#= f.hidden_field :invert -%>
+  <%#= f.hidden_field :invert -%>
 <%# end -%>
 
 <% if @transaction.parties.length > 1 %>
-	<div class="field">
+  <div class="field">
     <%= f.label :comment, 'Esemény leírása', class: 'transaction comment' %>
-		<%= f.text_field :comment, class:'transaction comment' -%>
-	</div>
+    <%= f.text_field :comment, class:'transaction comment' -%>
+  </div>
 <% end %>
 
   <div class="field parties<%-%>
@@ -111,11 +111,11 @@
   <%= link_to('Refresh', [:refresh, current_namespace, @transaction], method: 'post', class: 'refresh') %>
 
 <% if @transaction.parties.length < 2 %>
-	<div class="field">
+  <div class="field">
     <%= f.label :comment, 'Esemény leírása', class: 'transaction comment' %>
-		<%= f.text_field :comment, style:"display: " + ((not f.object.comment or f.object.comment.empty?)? 'none' : 'initial'),
+    <%= f.text_field :comment, style:"display: " + ((not f.object.comment or f.object.comment.empty?)? 'none' : 'initial'),
       class:'transaction comment' -%>
-	</div>
+  </div>
 <% end %>
 
   <div class="actions">

@@ -24,12 +24,12 @@ class BasicShare < ActiveRecord::Base
 
   private
   def validate_share
-		#
-		# Q: miert tamogatunk kizarolag aranyszamot?
-		# A1: %-nal, tortnel kezelni kene, ha az osszeg nem adja ki az 1-et, aranyszamnal pedig ilyen gond nincs.
-		# A2: %-nak esetleg annyi haszna lenne, hogy a hibas inputot ki lehet szurni vele, de a kezi share bevitel
+    #
+    # Q: miert tamogatunk kizarolag aranyszamot?
+    # A1: %-nal, tortnel kezelni kene, ha az osszeg nem adja ki az 1-et, aranyszamnal pedig ilyen gond nincs.
+    # A2: %-nak esetleg annyi haszna lenne, hogy a hibas inputot ki lehet szurni vele, de a kezi share bevitel
     #     amugy sem nem jellemzo.
-		#
+    #
     if not is_ratio?
       errors.add(:share, "Csak arányszám lehet")
     elsif ratio <= 0

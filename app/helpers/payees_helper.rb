@@ -4,11 +4,11 @@ module PayeesHelper
   end
   
   def print_payee(payee)
-		return unless payee
-		payee.name
+    return unless payee
+    payee.name
   end
   
   def payees(treasury)
-		Payee.where(:treasury_id => treasury).map{|payee| [ payee.name, payee.id ] }
+    Payee.where(:treasury_id => treasury).map{|payee| [ payee.name, payee.id ] }
   end
 end

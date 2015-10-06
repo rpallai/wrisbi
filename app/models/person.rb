@@ -14,7 +14,7 @@ class Person < ActiveRecord::Base
   validates_presence_of :name, :type_code
 
   scope :foreign_id, proc{|id|
-		where("people.foreign_ids LIKE '%%-%s-%%'" % ActiveRecord::Base.connection.quote_string(id))
+    where("people.foreign_ids LIKE '%%-%s-%%'" % ActiveRecord::Base.connection.quote_string(id))
   }
 
   def account_of(type_code)
@@ -32,10 +32,10 @@ class Person < ActiveRecord::Base
     accounts_of(Account::T_cash)
   end
   def first_cash_account_in(currency)
-		liability_accounts.find{|a| a.currency == currency }
+    liability_accounts.find{|a| a.currency == currency }
   end
 
   def bookkeeper?
-		! restricted?
+    ! restricted?
   end
 end

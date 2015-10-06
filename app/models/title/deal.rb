@@ -27,7 +27,7 @@ class Title::Deal < Title
   end
 
   def find_head_account
-		account
+    account
   end
 
   def get_amount_for_share
@@ -40,11 +40,11 @@ class Title::Deal < Title
   end
 
   def build_operations
-		shares.each_amount(get_amount_for_share) {|share, share_amount|
-			if account_for_share = find_account_for_share(share)
-				operations.update_or_build(account_for_share, OpShare, -share_amount)
-			end
-		}
+    shares.each_amount(get_amount_for_share) {|share, share_amount|
+      if account_for_share = find_account_for_share(share)
+        operations.update_or_build(account_for_share, OpShare, -share_amount)
+      end
+    }
     if multihead
       shares.each_amount(amount) {|share, share_amount|
         if account_for_share = find_head_account_for_share(share)
@@ -63,7 +63,7 @@ class Title::Deal < Title
 
     # az adoalap a ceg beltagjai kozott kerul leosztasra
     Share.each_amount(shares.find_all{|s| s.person.member? }, base) {|share, share_amount|
-			operations.update_or_build(share.person.send(account_get_method), OpShare, share_amount)
+      operations.update_or_build(share.person.send(account_get_method), OpShare, share_amount)
     }
   end
 end

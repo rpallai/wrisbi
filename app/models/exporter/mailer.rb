@@ -8,20 +8,20 @@
 # - account (un)bound (XXX)
 #
 class Exporter::Mailer < Exporter
-	def to
-		self.cfg[:to] if cfg
-	end
-	def to=(value)
-		self.cfg ||= {}
-		self.cfg[:to] = value
-	end
-	def from
-		self.cfg[:from] if cfg
-	end
-	def from=(value)
-		self.cfg ||= {}
-		self.cfg[:from] = value
-	end
+  def to
+    self.cfg[:to] if cfg
+  end
+  def to=(value)
+    self.cfg ||= {}
+    self.cfg[:to] = value
+  end
+  def from
+    self.cfg[:from] if cfg
+  end
+  def from=(value)
+    self.cfg ||= {}
+    self.cfg[:from] = value
+  end
 
   def name
     to
@@ -35,7 +35,7 @@ class Exporter::Mailer < Exporter
   end
 
   #~ elsif record.is_a? Operation
-    #~ Exporter::Mailsender.export_account(from, to, record).deliver
+  #~ Exporter::Mailsender.export_account(from, to, record).deliver
 
   def after_title_update(title)
     Exporter::Mailsender.title_updated(from, to, title).deliver

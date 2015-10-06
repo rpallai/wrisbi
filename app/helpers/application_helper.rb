@@ -38,8 +38,8 @@ module ApplicationHelper
   end
 
   def print_amount(amount)
-		number_to_currency(amount, :precision => 0, :unit => '', :delimiter => '.')
-	end
+    number_to_currency(amount, :precision => 0, :unit => '', :delimiter => '.')
+  end
 
   def current_namespace
     params[:controller].split("/").first

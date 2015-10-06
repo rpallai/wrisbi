@@ -10,10 +10,10 @@
       <% if category.business %>[<%= category.business.name %>]<% end -%>
       <!-- <% if category.applied_business %>{<%= category.applied_business.name %>}<% end -%> -->
       <span class="operations">
-				<%= link_to "új alkategória",
-					url_for([:new, @treasury.becomes(Treasury), @model.name.parameterize.underscore])<<"?parent_id=#{category.id}" %> |
-				<%= link_to "módosít", [:edit, category] %> |
-				<%= link_to("töröl", category, data: { confirm: 'Are you sure?' }, method: :delete) %>
+        <%= link_to "új alkategória",
+          url_for([:new, @treasury.becomes(Treasury), @model.name.parameterize.underscore])<<"?parent_id=#{category.id}" %> |
+        <%= link_to "módosít", [:edit, category] %> |
+        <%= link_to("töröl", category, data: { confirm: 'Are you sure?' }, method: :delete) %>
       </span>
     <% end) %>
   <% end %>

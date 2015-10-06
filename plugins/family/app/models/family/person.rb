@@ -16,7 +16,7 @@ class Family::Person < Person
     asset_accounts.find_all{|a| a.subtype_code == Family::Account::St_cash }
   end
   def koltopenz_account_in(currency)
-		koltopenz_accounts.find{|a| a.currency == currency }
+    koltopenz_accounts.find{|a| a.currency == currency }
   end
 
   # folosleges, konnyen attekintheto
@@ -25,13 +25,13 @@ class Family::Person < Person
   end
 
   def member?
-		asset_accounts.account > 0
+    asset_accounts.account > 0
   end
 
   private
   def create_liability_account
-		unless type_code == Owner
-			accounts.create!(:name => "Készpénz (HUF)", :currency => "HUF", :type_code => Account::T_cash)
-		end
+    unless type_code == Owner
+      accounts.create!(:name => "Készpénz (HUF)", :currency => "HUF", :type_code => Account::T_cash)
+    end
   end
 end

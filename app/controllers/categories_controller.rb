@@ -103,13 +103,13 @@ class CategoriesController < ApplicationController
   end
 
   private
-	def category_params
-		params.require(:category).permit(
+  def category_params
+    params.require(:category).permit(
       :treasury_id, :business_id, :name, :parent_id, :exporter_id
     )
-	end
+  end
 
-	def index_path
-		[@treasury.becomes(Treasury), @model.name.parameterize.underscore.pluralize]
-	end
+  def index_path
+    [@treasury.becomes(Treasury), @model.name.parameterize.underscore.pluralize]
+  end
 end

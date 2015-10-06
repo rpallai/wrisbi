@@ -15,11 +15,11 @@
 <% benchmark 'table.transactions', level: :debug do -%>
 <% Rails.logger.silence(Rails.env.development?? Logger::DEBUG : Logger::INFO) do -%>
 <table class="<%=current_namespace%> transactions">
-	<tr>
+  <tr>
     <th class="<%= (params[:sort]=='last_touch') ? 'sort_column' : '' %>">
       <%= link_to('Utolsó érintés', get_permalink(sort: 'last_touch')) %>
     </th>
-		<th>Számla</th>
+    <th>Számla</th>
 <% if inline_date %>
     <th class="<%= (not params[:sort] or params[:sort]=='transaction') ? 'sort_column' : '' %>">
       <%= link_to('Fizetés dátuma', get_permalink(sort: 'transaction')) %>
@@ -28,11 +28,11 @@
     <% if @show_balance %><th>Egyenleg</th><% end %>
     <th></th>
     <th>Összeg</th>
-		<th>Tétel</th>
-		<th>Kategóriák</th>
+    <th>Tétel</th>
+    <th>Kategóriák</th>
     <th class="title_date">Kelt</th>
-		<th>Megjegyzés</th>
-	</tr>
+    <th>Megjegyzés</th>
+  </tr>
 
 <% balance = @this_interval[0][1] -%>
 <% transaction_prev = nil -%>
@@ -45,12 +45,12 @@
   <% end -%>
 
   <%# Rails.logger.debug "<< 0" -%>
-	<tr class="transaction multiline<%-%>
+  <tr class="transaction multiline<%-%>
     <%#= transaction.accounts.map(&:type_name).uniq.join(" ") -%>
     <%= ' unacked' unless transaction.supervised? -%>
     <%= ' latest_updated' if @latest_updated_transaction == transaction -%>
     "
-	data-id="<%= transaction.id -%>" data-parties="<%=parties_of(transaction).length%>">
+  data-id="<%= transaction.id -%>" data-parties="<%=parties_of(transaction).length%>">
     <td class="day last_touch" rowspan="<%=transaction_rowspan(transaction)%>">
       <% if current_user_is_supervisor or not transaction.supervised? -%>
         <%= link_to(transaction.updated_at.localtime.strftime("%Y-%m-%d %Hh"), [:edit, current_namespace, transaction], class: 'edit') %>
@@ -95,15 +95,15 @@
     <td class="blank title_date"></td>
     <% if transaction_comment_rowspan(transaction) == 1 %><td class="blank comment"></td><% end %>
   </tr>
-	<%# Rails.logger.debug "<< b2" -%>
+  <%# Rails.logger.debug "<< b2" -%>
   <% party.titles.each do |m| -%>
-		<%# Rails.logger.debug "<<< 0" -%>
-		<tr class="title<%-%>
+    <%# Rails.logger.debug "<<< 0" -%>
+    <tr class="title<%-%>
       <%= m.class.model_name.param_key -%>
     ">
-			<%# Rails.logger.debug "<< 1" -%>
-			<td class="amount <%= print_sign(m.amount) %>"><%= print_amount m.amount -%></td>
-			<td class="title"><%= render partial: m, locals: { view: @account ? 'transactions_of_account' : 'transactions' } -%></td>
+      <%# Rails.logger.debug "<< 1" -%>
+      <td class="amount <%= print_sign(m.amount) %>"><%= print_amount m.amount -%></td>
+      <td class="title"><%= render partial: m, locals: { view: @account ? 'transactions_of_account' : 'transactions' } -%></td>
       <td class="categories">
 <% m.categories.each do |category| -%>
         <span class="category">
@@ -113,15 +113,15 @@
       </td>
       <td class="day title_date"><%= m.date.strftime("%Y-%m-%d") if m.date %></td>
 <% if transaction_comment_rowspan(transaction) == 1 %><td class="comment"><%= m.comment -%></td><% end %>
-			<td class="touched_accounts">
-				<%= m.operations.sort{|a,b| b.amount.abs <=> a.amount.abs}.map{|o| print_account(o.account)+': '+o.amount.to_s}.join('; ') -%>
-			</td>
-		</tr>
-	<% end -%>
+      <td class="touched_accounts">
+        <%= m.operations.sort{|a,b| b.amount.abs <=> a.amount.abs}.map{|o| print_account(o.account)+': '+o.amount.to_s}.join('; ') -%>
+      </td>
+    </tr>
+  <% end -%>
 
 <% end -%>
 
-	<% transaction_prev = transaction -%>
+  <% transaction_prev = transaction -%>
 <% end -%>
 </table>
 <% end -%>

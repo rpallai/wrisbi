@@ -5,20 +5,20 @@
 
 <table>
 <% @businesses.each do |business| %>
-	<tr class="business">
-		<td rowspan="<%= business.shares.count -%>"><%= business.name %></td>
-		<td class="share_person"><%= business.shares.first.person.name %></td>
-		<td class="share_share"><%= business.shares.first.share -%></td>
-		<td rowspan="<%= business.shares.count -%>"><%= business.comment -%></td>
-		<td rowspan="<%= business.shares.count -%>"><%= link_to 'Módosít', edit_business_path(business) %></td>
-		<td rowspan="<%= business.shares.count -%>"><%= link_to 'Töröl', business, method: :delete, data: { confirm: 'Biztos?' } %></td>
-	</tr>
-	<% business.shares[1..-1].each do |share| %>
-		<tr>
-			<td class="share_person"><%= share.person.name %></td>
-			<td class="share_share"><%= share.share %></td>
-		</tr>
-	<% end %>
-	<tr><td colspan="6"><hr/></td></tr>
+  <tr class="business">
+    <td rowspan="<%= business.shares.count -%>"><%= business.name %></td>
+    <td class="share_person"><%= business.shares.first.person.name %></td>
+    <td class="share_share"><%= business.shares.first.share -%></td>
+    <td rowspan="<%= business.shares.count -%>"><%= business.comment -%></td>
+    <td rowspan="<%= business.shares.count -%>"><%= link_to 'Módosít', edit_business_path(business) %></td>
+    <td rowspan="<%= business.shares.count -%>"><%= link_to 'Töröl', business, method: :delete, data: { confirm: 'Biztos?' } %></td>
+  </tr>
+  <% business.shares[1..-1].each do |share| %>
+    <tr>
+      <td class="share_person"><%= share.person.name %></td>
+      <td class="share_share"><%= share.share %></td>
+    </tr>
+  <% end %>
+  <tr><td colspan="6"><hr/></td></tr>
 <% end %>
 </table>

@@ -5,23 +5,23 @@ class Title < ActiveRecord::Base
   has_many :category_links
   has_many :categories, :through => :category_links, :dependent => :destroy
   has_many :operations, :dependent => :destroy, :autosave => true, :inverse_of => :title do
-		def update_or_build(account, type_code, amount)
+    def update_or_build(account, type_code, amount)
       if account.is_a? ActiveRecord::AssociationRelation
         account = account.first
       end
-			if operation = find{|o| o.account == account and o.type_code == type_code }
+      if operation = find{|o| o.account == account and o.type_code == type_code }
         if operation.changed?
           # mar egyszer modositottuk ebben a korben;
           # lehetseges, hogy egy szemely adott szamlajara tobb OpShare-t is fel akarunk irni a
           # kategoriak vegett, de ez nem tunik eletszerunek, egyelore nem tamogatjuk, csak elszallunk
           raise "operation is dirty"
         end
-				operation.update_attributes(:amount => amount)
-				proxy_association.owner.send(:operation_touched, operation.id)
-			else
-				build(:type_code => type_code, :account => account, :amount => amount)
-			end
-		end
+        operation.update_attributes(:amount => amount)
+        proxy_association.owner.send(:operation_touched, operation.id)
+      else
+        build(:type_code => type_code, :account => account, :amount => amount)
+      end
+    end
   end
   has_many :accounts, :through => :operations
   has_many :people, :through => :accounts
@@ -55,12 +55,12 @@ class Title < ActiveRecord::Base
 
   delegate :treasury, :account, :to => :party
 
-	def changed_for_autosave?
+  def changed_for_autosave?
     return true if @rebuild
-		return true if party.account_id_changed?
+    return true if party.account_id_changed?
     return true if @new_category_ids
-		super
-	end
+    super
+  end
 
   def rebuild!
     @rebuild = true
@@ -81,28 +81,28 @@ class Title < ActiveRecord::Base
   # pl. /family/titles/_classname
   #
   def to_partial_path
-		::File.basename(super)
+    ::File.basename(super)
   end
 
-	#
-	# a Rails alapbol nem tamogatja hogy a modell hozza magaval a form-jat, ez ennek a megoldasa
-	#
+  #
+  # a Rails alapbol nem tamogatja hogy a modell hozza magaval a form-jat, ez ennek a megoldasa
+  #
   def to_partial_form_path
-		p = []
-		klass = self.class
-		loop do
-			path = File.dirname(klass._to_partial_path)
-			paths = [path, ::File.dirname(path.reverse).reverse]
-			paths.each do |path|
-				if ::File.exists?(Rails.root.to_s+'/app/views/'+path+'/_fields.html.erb')
-					return path+'/fields'
-				end
-			end
-			p += paths
-			break if not klass.respond_to?(:parent_class)
-			klass = klass.parent_class
-		end
-		raise "Partial template '_fields' not found for %s in: %s" % [self.class.name, p.join(', ')]
+    p = []
+    klass = self.class
+    loop do
+      path = File.dirname(klass._to_partial_path)
+      paths = [path, ::File.dirname(path.reverse).reverse]
+      paths.each do |path|
+        if ::File.exists?(Rails.root.to_s+'/app/views/'+path+'/_fields.html.erb')
+          return path+'/fields'
+        end
+      end
+      p += paths
+      break if not klass.respond_to?(:parent_class)
+      klass = klass.parent_class
+    end
+    raise "Partial template '_fields' not found for %s in: %s" % [self.class.name, p.join(', ')]
   end
 
   def new_category_ids
@@ -114,13 +114,13 @@ class Title < ActiveRecord::Base
   end
 
   private
-	def _build_shares_and_operations
-		build_shares if respond_to?(:build_shares, true)
+  def _build_shares_and_operations
+    build_shares if respond_to?(:build_shares, true)
     @operation_ids_untouched = operation_ids
     build_operations if amount
     #Rails.logger.debug "@operation_ids_untouched: " + @operation_ids_untouched.inspect
-		operations.delete(operations.find @operation_ids_untouched) unless @operation_ids_untouched.empty?
-	end
+    operations.delete(operations.find @operation_ids_untouched) unless @operation_ids_untouched.empty?
+  end
 
   def _set_new_category_ids
     # szerkesztesnel ez azonnal sql muveletet triggerel (tranzakcion kivul), ezert igy csinaljuk
@@ -129,14 +129,14 @@ class Title < ActiveRecord::Base
   end
 
   def operation_touched(obj_id)
-		@operation_ids_untouched.delete(obj_id)
+    @operation_ids_untouched.delete(obj_id)
   end
 
   def amount_could_be_zero?
     false
   end
 
-	def self.parent_class
-		ancestors[1..-1].find{|klass| klass.is_a? Class }
-	end
+  def self.parent_class
+    ancestors[1..-1].find{|klass| klass.is_a? Class }
+  end
 end
