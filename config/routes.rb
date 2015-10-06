@@ -27,11 +27,6 @@ Wrisbi::Application.routes.draw do
 
   namespace :admin do
     resources :users, :except => [:show]
-    resources :exchange_rate_logs, :except => [:show] do
-      collection do
-        get 'pull'
-      end
-    end
   end
 
   # just remember to delete public/index.html.
