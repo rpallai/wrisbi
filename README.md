@@ -5,7 +5,7 @@ Features:
 
 - Ruby on Rails
 - Multi-treasury
-- Multi-user with permissions
+- Multi-user with access control
 - Plugin support to map your own complex business
 - Accounts are grouped by people
 - Categories with shares (eg to handle cash payments in a common business)
