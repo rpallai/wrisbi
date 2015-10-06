@@ -23,7 +23,7 @@ Basic requirements:
 
 1. `$ git clone https://github.com/rpallai/wrisbi.git`
 2. `$ cd ./wrisbi`
-3. Create config/database.yml config file based on config/database.yml.example
+3. Create `config/database.yml` config file based on `config/database.yml.example`
 4. Create the database, grant access
 5. Set your RAILS_ENV environment variable to development or production. Choose the first if you want to develop.<br/>
 `$ export RAILS_ENV={development|production}`
