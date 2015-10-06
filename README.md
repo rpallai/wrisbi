@@ -2,9 +2,10 @@
 Simple and expandable multi-user accounting software for the web backed by SQL.
 
 Features:
+
 - Ruby on Rails
 - Multi-treasury
-- Multi-user with permissions
+- Multi-user with access control
 - Plugin support to map your own complex business
 - Accounts are grouped by people
 - Categories with shares (eg to handle cash payments in a common business)
@@ -22,7 +23,7 @@ Basic requirements:
 
 1. `$ git clone https://github.com/rpallai/wrisbi.git`
 2. `$ cd ./wrisbi`
-3. Create config/database.yml config file based on config/database.yml.example
+3. Create `config/database.yml` config file based on `config/database.yml.example`
 4. Create the database, grant access
 5. Set your RAILS_ENV environment variable to development or production. Choose the first if you want to develop.<br/>
 `$ export RAILS_ENV={development|production}`
@@ -75,6 +76,7 @@ Be tud lépni a rendszerbe. Ha root, treasury supervisor vagy össze van kapcsol
 
 ## Tranzakció
 Egy tranzakció némileg leegyszerűsítve így néz ki logikailag:
+
 * idő
 * megjegyzés
   * fél (1..*)
@@ -96,13 +98,14 @@ A fél egy kincstári személy valamelyk számlája. A számla egyenlegét nem b
 
 ### Tétel
 Legfontosabb feladatai:
+
 * Műveletek létrehozása, amivel a számlák egyenlege változtatható
 * Kapcsolódó kategóriák tárolása, az azokon szereplő egyezségek és exporterek alkalmazása
 
-Egy tétel az egyszerű átvezetéstől több személy több számláját érintő műveletig terjedhet. Ez utóbbira egy családban nemigen van példa, de ha mondjuk egy vállakozásban akarod monitorozni az egyes osztályok pénzügyi teljesítményét/állapotát, akkor hamar szembesülsz olyan műveletekkel amik olyan számlákat érintenek mint pl: adóalapok, részesedés, házipénztár. Egy plugin által felbővített tétellel ezek a bonyolult számítások egyszerű bemenetből elvégezhetőek.
+Egy tétel az egyszerű átvezetéstől több személy több számláját érintő műveletig terjedhet. Ez utóbbira egy családban nemigen van példa, de ha mondjuk egy vállakozásban akarod monitorozni az egyes osztályok pénzügyi teljesítményét/állapotát, akkor hamar szembesülsz olyan tétellel ami olyan számlákat érint egyszerre mint: adóalapok, részesedés, házipénztár. Egy plugin által felbővített tétellel ezek a bonyolult számítások elvégezhetőek minimális user input-ból.
 
 ### Művelet
-Ez változatja a számla egyenlegét. Ezzel a cégfelhasználó nem találkozik, a tétel használja őket.
+Ez változatja a számla egyenlegét. Ezzel a végfelhasználó nem találkozik, a tétel használja őket.
 
 # Exporter
 A kincstárban történt könyvelési eseményeket lehet vele exportálni. Ez például használható arra, hogy azonnal értesüljön az ismerősöd ha felírtál hozzá egy tartozást, de arra is, hogy egy másik Wrisbi automatikusan importálja.
@@ -110,3 +113,6 @@ A kincstárban történt könyvelési eseményeket lehet vele exportálni. Ez p�
 Az email exporter nem tartja meg a tranzakció-tétel eredeti strukturáját: sort képez belőle, ami egyszerűbb, az ember hamarabb megérti, a belátható igényeknek így is bőven megfelel.
 
 Egyelőre csak kategóriához kapcsolható.
+
+# Kincstárak, gyakorlati példák
+* [Family plugin](plugins/family/README.md)
