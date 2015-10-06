@@ -105,7 +105,7 @@ Legfontosabb feladatai:
 Egy tétel az egyszerű átvezetéstől több személy több számláját érintő műveletig terjedhet. Ez utóbbira egy családban nemigen van példa, de ha mondjuk egy vállakozásban akarod monitorozni az egyes osztályok pénzügyi teljesítményét/állapotát, akkor hamar szembesülsz olyan tételekkel amik olyan számlákat érintenek mint: adóalapok, részesedés, házipénztár. Egy plugin által felbővített tétellel ezek a bonyolult számítások elvégezhetőek minimális user input-ból.
 
 ### Művelet
-Ez változatja a számla egyenlegét. Ezzel a cégfelhasználó nem találkozik, a tétel használja őket.
+Ez változatja a számla egyenlegét. Ezzel a végfelhasználó nem találkozik, a tétel használja őket.
 
 # Exporter
 A kincstárban történt könyvelési eseményeket lehet vele exportálni. Ez például használható arra, hogy azonnal értesüljön az ismerősöd ha felírtál hozzá egy tartozást, de arra is, hogy egy másik Wrisbi automatikusan importálja.
