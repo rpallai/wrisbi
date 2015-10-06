@@ -198,18 +198,21 @@ class TransactionsController < ApplicationController
 
   private
   def transaction_params
-    params.require(:transaction).permit(
+    params.require(:transaction).permit(transaction_params_permitted)
+  end
+
+  def transaction_params_permitted
+    [
       :treasury_id, :date, :comment, :invert,
       parties_attributes: [
         :id, :_destroy, :account_id, :amount,
         titles_attributes: [
           :id, :_destroy,
           :type, :date, :comment, :amount,
-          :amount_vat,
           :new_category_ids => [],
         ],
-      ],
-    )
+      ]
+    ]
   end
 
   def build_new_party
