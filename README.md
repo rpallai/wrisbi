@@ -102,7 +102,7 @@ Legfontosabb feladatai:
 * Műveletek létrehozása, amivel a számlák egyenlege változtatható
 * Kapcsolódó kategóriák tárolása, az azokon szereplő egyezségek és exporterek alkalmazása
 
-Egy tétel az egyszerű átvezetéstől több személy több számláját érintő műveletig terjedhet. Ez utóbbira egy családban nemigen van példa, de ha mondjuk egy vállakozásban akarod monitorozni az egyes osztályok pénzügyi teljesítményét/állapotát, akkor hamar szembesülsz olyan műveletekkel amik olyan számlákat érintenek mint pl: adóalapok, részesedés, házipénztár. Egy plugin által felbővített tétellel ezek a bonyolult számítások egyszerű bemenetből elvégezhetőek.
+Egy tétel az egyszerű átvezetéstől több személy több számláját érintő műveletig terjedhet. Ez utóbbira egy családban nemigen van példa, de ha mondjuk egy vállakozásban akarod monitorozni az egyes osztályok pénzügyi teljesítményét/állapotát, akkor hamar szembesülsz olyan tételekkel amik olyan számlákat érintenek mint: adóalapok, részesedés, házipénztár. Egy plugin által felbővített tétellel ezek a bonyolult számítások elvégezhetőek minimális user input-ból.
 
 ### Művelet
 Ez változatja a számla egyenlegét. Ezzel a cégfelhasználó nem találkozik, a tétel használja őket.
