@@ -54,9 +54,9 @@ class ViewController < ApplicationController
     if params[:category_id]
       operations = operations.joins(:title => :categories).where('categories.id = ?', params[:category_id])
     end
+    # tobb szamla eseten a szumma az osszeg
     @operations = operations.includes([:transaction, {:title => [{:operations => :person}, :categories]}]).
-      # tobb szamla eseten a szumma az osszeg
-    select("*,SUM(operations.amount) AS amount")
+      select("*,SUM(operations.amount) AS amount")
     # filters
     @page_title << '/operations'
 
@@ -90,7 +90,7 @@ class ViewController < ApplicationController
           l << ['date', 'category/peer', 'amount', 'balance', 'comment']
           balance = 0
           @operations.each{|operation|
-            # XXX
+            # XXX ronda hack
             if operation.title.is_a? Title::Deal and operation.title.category
               cat = operation.title.category.ancestors.push(operation.title.category).map(&:name).join('/')
             elsif operation.title.is_a? Title::Transfer
@@ -134,6 +134,7 @@ class ViewController < ApplicationController
       @treasury = Treasury.find(params[:treasury_id])
       return if needs_deeply_concerned(@treasury)
       if params[:filter] == "no_category"
+        # XXX bena hack
         titles = @treasury.titles.where("titles.type != 'Title::TransferHead'").
           joins(
           "LEFT OUTER JOIN `categories_titles` ON `categories_titles`.`title_id` = `titles`.`id` "+
@@ -159,7 +160,6 @@ class ViewController < ApplicationController
       @date_field = 'transactions.date'
       @order = @date_field+' DESC'
     else
-      # XXX ez a cegnel lehet nem jo
       if params[:category_id]
         @date_field = 'transactions.date'
         @order = @date_field+' DESC'

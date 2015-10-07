@@ -1,7 +1,7 @@
 #
 # Serializer, ami space-szel elvalasztott ertekeket kereshetove tesz SQL-ben.
 #
-# Hasznalat:
+# Hasznald:
 #
 #  class Some < ActiveRecord::Base
 #    serialize :foreign_ids, ::Serializer::List.new

@@ -40,7 +40,7 @@ class Category < ActiveRecord::Base
   def set_applied_business_r
     if business_id_changed?
       #logger.debug "subtree1: #{subtree.map(&:id).inspect}"
-      # a subtree valamiert a regi ancestry-t hasznalja, hiaba valtozott meg; ez teszi helyre
+      # a subtree valamiert a regi ancestry-t hasznalja, hiaba valtozott meg - ez a workaround
       reload
       #logger.debug "subtree2: #{subtree.map(&:id).inspect}"
       subtree.each do |category|

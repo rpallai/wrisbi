@@ -1,6 +1,4 @@
 class TreasuriesController < ApplicationController
-  private
-
   before_filter :needs_root, :except => [:index, :show]
 
   before_filter :set_model, :except => :index
@@ -11,8 +9,6 @@ class TreasuriesController < ApplicationController
   def alias_params
     params[:treasury] = params[@model.model_name.singular.to_sym]
   end
-
-  public
 
   # GET /treasuries
   # GET /treasuries.json

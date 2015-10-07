@@ -17,7 +17,7 @@ class Transaction < ActiveRecord::Base
   attr_accessor :invert
 
   before_validation :do_invert, :if => :invert?
-  before_validation :fill_party_amount_if_missing
+  before_validation :fill_missing_party_amount
 
   validates :treasury, :presence => true
   validates :date, :presence => true
@@ -39,15 +39,13 @@ class Transaction < ActiveRecord::Base
   }
 
   def initialize(opts = {})
-    # vigyazz, a true -t a formbuilder nem checked-nek erzekeli
+    # ehh, a true -t a formbuilder nem checked-nek erzekeli
     @invert = 0 unless opts['invert']
     super
   end
 
   private
   def invert?
-    # a html megjelenites es a model csak igy mukodik konzisztensen
-    #logger.debug "invert? #{@invert.inspect}"
     @invert.to_i == 1
   end
 
@@ -68,8 +66,8 @@ class Transaction < ActiveRecord::Base
   end
 
   private
-  def fill_party_amount_if_missing
-    logger.debug "fill_party_amount_if_missing; parties.length: #{parties.length}"
+  def fill_missing_party_amount
+    logger.debug "fill_missing_party_amount; parties.length: #{parties.length}"
     if parties.length == 2 and not parties.all?(&:amount) and parties.any?(&:amount)
       party = parties.find{|p| ! p.amount }
       other_party = parties.find{|p| p != party  }

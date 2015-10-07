@@ -1,16 +1,4 @@
 # encoding: utf-8
-#
-# Az egy peldanyon belul kezelt kulonbozo kincstarak kozt semmi atjaras nincs, epp olyanok, mintha
-# kulonbozo peldanyokban lennenek vezetve.
-#
-# Minden kincstarhoz tartozik egy vagy tobb fokonyvelo, akik teljes bizalommal vannak egymas irant.
-# Tartozhatnak a kincstarhoz konyvelok is, akiknek a muveleteit egy fokonyvelonek jova kell hagynia.
-# A konyvelok teljes read joggal rendelkeznek a kincstar folott, kiveve az account#hidden?=>true
-# szamlakat. A hidden szamlat erinto manovereket latjak, csak az adott szamlan levo muveletet nem.
-# A kulsosok nem rendelkeznek read/write joggal, kiveve sajat szamlajuk muveleteit (account/show/n),
-# emiatt nem is kepesek erdemben konyvelest vezetni itt, nem is varhato el toluk; helyette kezi vagy
-# automatizalt ertesiteseket kuldhetnek amiket egy leprogramozott importer modul beemel.
-#
 class Treasury < ActiveRecord::Base
   has_many :supervisings, :dependent => :destroy
   has_many :supervisors, :through => :supervisings, :source => :user
@@ -68,7 +56,8 @@ class Treasury < ActiveRecord::Base
     accounts.select(:currency).distinct.map(&:currency)
   end
 
-  # minden balance muvelet csak az adott idointervallumon dolgozik
+  # ezt beallitva minden balance muvelet csak az adott idointervallumon dolgozik
+  # elesben nem hasznalt
   def self.set_date_scope(start_date, end_date)
     @@date_scope = [start_date, end_date]
   end

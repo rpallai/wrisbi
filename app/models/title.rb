@@ -76,20 +76,23 @@ class Title < ActiveRecord::Base
   end
 
   #
-  # Kontextus fuggoen akarjuk megjeleniteni;
-  # maskepp ha egy adott accountot listazunk es maskepp ha minden manovert
-  # pl. /family/titles/_classname
+  # Nem biztos, hogy a plugin sajat nezetet hoz az orokoltetett tetelhez, ezert nem hasznalhatjuk a model
+  # namespace-t. A controller namespace elkeruli az utkozest a pluginok kozott.
   #
   def to_partial_path
     ::File.basename(super)
   end
 
   #
-  # a Rails alapbol nem tamogatja hogy a modell hozza magaval a form-jat, ez ennek a megoldasa
+  # A tetelhez tartozo input form elokeritese.
   #
   def to_partial_form_path
     p = []
     klass = self.class
+    #
+    # Elkezdunk menni az osok fele, az elso input form template-et fogjuk hasznalni.
+    # A model namespace-t figyelembe vesszuk a keresesnel.
+    #
     loop do
       path = File.dirname(klass._to_partial_path)
       paths = [path, ::File.dirname(path.reverse).reverse]

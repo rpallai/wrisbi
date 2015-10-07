@@ -1,3 +1,4 @@
+# encoding: utf-8
 Rails.logger.info 'Family plugin inditasa'
 
 Plugin.register :family do

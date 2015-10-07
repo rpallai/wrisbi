@@ -1,3 +1,6 @@
+#
+# jelenleg nem hasznalt, de meg lehet ra szukseg
+#
 class Payee < ActiveRecord::Base
   belongs_to :treasury
   has_many :transactions, :dependent => :nullify
@@ -10,10 +13,4 @@ class Payee < ActiveRecord::Base
   }
 
   validates :name, :uniqueness => { :scope => :treasury_id, :case_sensitive => false }
-
-  #  def destroy
-  #    raise ActiveRecord::ActiveRecordError, "assert operations.empty? failed" unless operations.empty?
-  #    raise ActiveRecord::ActiveRecordError, "assert avatar.nil? failed" unless avatar.nil?
-  #    super
-  #  end
 end

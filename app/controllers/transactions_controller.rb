@@ -2,21 +2,10 @@
 class TransactionsController < ApplicationController
   helper_method :accounts_for_transaction
 
-  private
   before_filter :set_treasury, :only => [:index, :index_unacked, :new]
-  #~ before_filter :set_model, :except => [:index, :do_ack]
-  #~ before_filter :alias_params, :only => [:create, :update]
   def set_treasury
     @treasury = Treasury.find(params[:treasury_id])
   end
-  #~ def set_model
-  #~ @model = params[:requirements][:class_name].constantize
-  #~ end
-  #~ def alias_params
-  #~ params[:title] = params[@model.model_name.singular.to_sym]
-  #~ end
-
-  public
 
   # GET /transactions/new
   # GET /transactions/new.json
