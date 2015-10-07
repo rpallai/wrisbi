@@ -1,8 +1,8 @@
 # encoding: utf-8
 class Account < ActiveRecord::Base
-  # Valódi pénz. Lehet bankszámla, hitelkártya, készpénztartalék.
+  # Valós pénz. Pl bankszámla, hitelkártya, készpénztartalék. Megszámolható.
   T_wallet = 0
-  # Koveteles keszpenzben, atruhazhato. Az egyenleget nekunk kell szamitani.
+  # Elszámolási számla, készpénzben. Átruházható, likvid.
   T_cash = 1
   # Kincstáron kívül keletkezett követelések nyilvántartása, pl leosztas vegett.
   T_auxiliary = 2

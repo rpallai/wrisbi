@@ -4,7 +4,7 @@ class Family::Account < Account
   Ut_megtak_kp = 1
   Ut_koltopenz = 2
   Ut_hitelkartya = 4
-  Ut_keszpenz = 5
+  Ut_elsz_keszpenz = 5
   Ut_segedszamla = 6
 
   # T_wallet
@@ -20,7 +20,7 @@ class Family::Account < Account
       "Megtakarítás készpénzben" => Ut_megtak_kp,
       "Költőpénz" => Ut_koltopenz,
       "Hitelkártya" => Ut_hitelkartya,
-      "Készpénz követelés" => Ut_keszpenz,
+      "Elszámolás készpénzben" => Ut_elsz_keszpenz,
       "Segédszámla" => Ut_segedszamla,
     }
   end
@@ -40,7 +40,7 @@ class Family::Account < Account
       when Ut_hitelkartya
         self.type_code = T_wallet
         self.subtype_code = St_bank_creditable
-      when Ut_keszpenz
+      when Ut_elsz_keszpenz
         self.type_code = T_cash
         self.subtype_code = 0
       when Ut_segedszamla
@@ -57,7 +57,7 @@ class Family::Account < Account
       return Ut_hitelkartya if subtype_code == St_bank_creditable
     end
     if liability?
-      return Ut_keszpenz
+      return Ut_elsz_keszpenz
     end
     if auxiliary?
       return Ut_segedszamla
