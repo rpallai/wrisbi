@@ -63,7 +63,7 @@ A következő sablon egy +- tételt csatol a tranzakció űrlaphoz `Vendéglát�
 - Kincstár: teszt
 - Felhasználó: teszt@nincsilyen.hu
 
-A felső csíkon állandóan látható lesz a "Tárca" nevű számla egyenlege és mellette lesz két nyíl tranzakció sablonra: egyik a kiadáshoz, másik az átvezetéshez. A `family_new_deal()` és `family_new_transfer()` helperek [itt vannak](../plugins/family/app/helpers/family/template_helper.rb).
+A felső csíkon állandóan látható lesz a "Tárca" nevű számla egyenlege és mellette lesz két tranzakció sablon link: egyik a kiadáshoz, másik az átvezetéshez. A `family_new_deal()` és `family_new_transfer()` helperek [itt vannak](../plugins/family/app/helpers/family/template_helper.rb).
 
 `customizations/teszt/templates/_teszt@nincsilyen.hu_headline.html.erb`
 > ```
