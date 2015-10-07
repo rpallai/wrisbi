@@ -69,29 +69,28 @@ A kategóriához kapcsolható (email) exporter, ami minden a kategória alatt t�
 ### Személy/számla
 Egy természetes, jogi vagy egyéb szereplő, akihez legalább egy számla kapcsolódik.
 
-A számlák típusát és szerepét a kincstár határozza meg, lásd a plugin dokumentációját.
+A számlák típusát és szerepét a kincstár határozza meg, lásd a vonatkozó plugin dokumentációját.
 
 ### Felhasználó
 Be tud lépni a rendszerbe. Ha root, treasury supervisor vagy össze van kapcsolva egy személlyel, akkor az érdekeltségébe tartozó kincstárba is beléphet. Ha korlátozott, akkor ott csak a saját egyenlegét követheti.
 
 ## Tranzakció
-Egy tranzakció némileg leegyszerűsítve így néz ki logikailag:
+Egy tranzakció némileg leegyszerűsítve így néz ki:
 
 * idő
 * megjegyzés
-  * fél (1..*)
-    * számla
+* fél (1..*)
+  * összeg
+  * számla
+  * tétel (1..*)
     * összeg
-    * exporter (TODO)
-    * tétel (1..*)
+    * megjegyzés
+    * kategória (0..*)
+      * egyezség
+      * exporter
+    * művelet (1..*)
       * összeg
-      * megjegyzés
-      * kategória (0..*)
-        * egyezség
-        * exporter
-      * művelet (1..*)
-        * számla
-        * összeg
+      * számla
 
 ### Fél
 A fél egy kincstári személy valamelyk számlája. A számla egyenlegét nem befolyásolja, arra csak a tétel képes, lásd lentebb.
