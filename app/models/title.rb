@@ -94,8 +94,10 @@ class Title < ActiveRecord::Base
       path = File.dirname(klass._to_partial_path)
       paths = [path, ::File.dirname(path.reverse).reverse]
       paths.each do |path|
-        if ::File.exists?(Rails.root.to_s+'/app/views/'+path+'/_fields.html.erb')
-          return path+'/fields'
+        ActionController::Base.view_paths.each do |view_path|
+          if File.exists?(File.join(view_path, path, '_fields.html.erb'))
+            return File.join(path, '/fields')
+          end
         end
       end
       p += paths
