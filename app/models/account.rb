@@ -2,9 +2,9 @@
 class Account < ActiveRecord::Base
   # Valós pénz. Pl bankszámla, hitelkártya, készpénztartalék. Megszámolható.
   T_wallet = 0
-  # Elszámolási számla, készpénzben. Átruházható, likvid.
+  # Elszámolási számla, készpénzben. Átruházható.
   T_cash = 1
-  # Kincstáron kívül keletkezett követelések nyilvántartása, pl leosztas vegett.
+  # Segédszámla, ide írható fel az, ami máshova nem. Az egyenlege nem befolyásolja a vagyont.
   T_auxiliary = 2
 
   belongs_to :person
