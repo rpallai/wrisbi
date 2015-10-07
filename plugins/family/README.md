@@ -9,10 +9,17 @@ párnaciha, tárca) és könyveled a bevételeid, kiadásaid. A kategóriák
 használatával vissza tudod nézni, hogy mikor mire költöttél. Meglepő,
 hogy ez mennyire hasznos tud lenni hosszútávon.
 
-A kincstárban létrehozott személyekhez automatikusan létrejön egy
-elszámolási számla *Készpénz (HUF)* néven. Ezen lesz felírva a
-tartozás, követelés. Más pénznemekhez hozhatsz létre új elszámolási
-számlát, pl *Készpénz (EUR)* néven.
+Ki a személy és mikor kell felvenni? Mindenki, akivel elszámolási számlát
+akarsz fenntartani. Pl ha te abszolút közös kasszán vagy a pároddal, akkor
+őt nem muszáj külön személyként felvenni, a számlái tartozhatnak a
+kincstár személye alá is. Azt viszont, akinek adsz kölcsön, már érdemes
+felvenni, hiszen van vele szemben egy követelésed, ami az elszámolási
+számlára tartozik.
+
+A létrehozott személyekhez automatikusan létrejön egy elszámolási számla
+*Készpénz (HUF)* néven. Ezen lesz felírva a tartozás, követelés. Más
+pénznemekhez hozhatsz létre új elszámolási számlát kézzel, pl
+*Készpénz (EUR)* néven.
 
 Választható tételek:
 
