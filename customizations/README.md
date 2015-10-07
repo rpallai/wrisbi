@@ -1,5 +1,53 @@
 # Testreszabás kincstáranként
 
+A kincstárak HTML sablon és CSS stílus fájljai tartoznak ide.
+
+# HTML sablonok
+
+A sablonok tetszőleges HTML kódot tartalmazhatnak, különbség abban van, hogy hol jelennek meg:
+
+- Headline: A felső csíkon állandóan látható tartalom. Praktikus a fontosabb egyenlegek megjelenítésére, de 1-2 tranzakció sablon is kerülhet ide.
+- Transactions: A "Templates" gomb klikkelésére bukkan fel. Ide jó sok tranzakció sablon elfér.
+
+A tranzakció űrlapon belül is jelenik meg HTML sablon, amivel a tételek felvitelét könnyítheted meg:
+
+- Titles: az "új tétel hozzádása" alatt jelenik meg. A gyakran hozzáadandó tételek sablonja.
+
+# Tranzakció sablon
+
+A tranzakció sablon nagyon fontos elem a használhatóság és a beviteli hibaarány csökkentése érdekében. A tranzakció sablonban rögzítve van a új tranzakció szerkezete és a mezők értéke. Természetesen bármi átállítható, hiszen ez csak a kezdeti állapotot adja. Minden tranzakció szerkezetet és értéket le tud írni.
+
+A következő sablon a "Tárca" nevű számlához csatol egy +- tételt. Az `invert: 1` hatására az űrlap az összeg mezőbe írt számot fordított előjellel rögzíti (kényelmi extra, hogy a kiadásoknál ne kelljen állandóan minuszt gépelni).
+
+> ```
+link_to("Eltapsolás tárcából", new_family_treasury_transaction_path(@treasury, :p => {
+  invert: 1,
+ :parties_attributes => { '0' => {
+   :account_id => @treasury.person_of_user(@current_user).accounts.find_by_name('Tárca'),
+   :titles_attributes => { '0' => {
+     type: Family::Title::Deal
+   }}
+ }}
+}), class: 'new_transaction')
+```
+
+# Tétel sablon
+
+A következő sablon egy +- tételt csatol a tranzakció űrlaphoz `Vendéglátás/Szalmonella büfé` kategóriával. A `new_title_attributes` az a rész ahol szabadon lehet játszani, a többi kötött.
+
+> ```
+<%= link_to("Szalmonellázás",
+  polymorphic_url([:build_new_title, current_namespace, @transaction],
+     party_idx: party_idx
+     new_title_attributes: {
+       :type => 'Family::Title::Deal',
+       category_ids: [@treasury.categories.find_by_name('Vendéglátás').children.find_by_name('Szalmonella büfé')]
+     },
+   ), class: 'build_new_title') %>
+```
+
+# Mappaszerkezet
+
 * customizations/
   * {*kincstar_neve*}/
     * stylesheets/
@@ -10,13 +58,23 @@
       * _{*current_user*}_titles.html.erb
       * _everybody_transactions.html.erb
 
-**_{current_user}_headline.html.erb**<br/>
-A felső csíkon megjelenő tartalom. Praktikus lehet a legfontosabb egyenlegek megjelenítésére.
+# Éles példa: Headline
 
-**_{current_user}_transactions.html.erb, _everybody_transactions.html.erb**<br/>
-A doboz tartalma ami a "Templates" gombra bukkan fel. Tipikusan a tranzakció template-ek kerülnek ide. Az utóbbi template minden felhasznalónal látható.
+- Kincstár: teszt
+- Felhasználó: teszt@nincsilyen.hu
 
-**_{current_user}_titles.html.erb**<br/>
-Linkek, amik az "új tétel hozzádása" alatt jelennek meg.
+A felső csíkon állandóan látható lesz a "Tárca" nevű számla egyenlege és mellette lesz két nyíl tranzakció sablonra: egyik a kiadáshoz, másik az átvezetéshez. A `family_new_deal()` és `family_new_transfer()` helperek [itt vannak](../plugins/family/app/helpers/family/template_helper.rb).
 
-A `stylesheets/.(s)css` fajlban testreszabhatod a teljes lap megjelenését, beleértve a fenti template-eket.
+`customizations/teszt/templates/_teszt@nincsilyen.hu_headline.html.erb`
+> ```
+<span class="account">
+  <% account = @treasury.person_of_user(@current_user).accounts.find_by_name('Tárca') -%>
+  Tárca <span class="balance">/<%= print_amount account.balance -%>/</span>
+  <% if controller_name == "view" %>
+    <%= family_new_deal account %>
+    <%= family_new_transfer account %>
+  <% end %>
+</span>
+```
+
+Az `if controller_name == "view"` hatására a sablon linkek csak akkor jelennek meg, ha a könyvelési adatok láthatóak a képernyőn. Felvinni ugyanis olyan nézetben érdemes, ahol a tranzakció azonnal látszani is fog: így az esetleges hiba kiszúrható még melegében.

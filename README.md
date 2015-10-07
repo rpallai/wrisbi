@@ -113,5 +113,8 @@ Az email exporter nem tartja meg a tranzakció-tétel eredeti strukturáját: so
 
 Egyelőre csak kategóriához kapcsolható.
 
+# Sablonok
+Egyszer mindenképp ki kell találni, hogy egy bizonyos eseményt hogy kell felírni a kincstárba. Ez általában triviális, de nem mindig. Ha ritkán fordul elő az esemény vagy többen is könyveltek, akkor megvan az esélye annak, hogy újra és újra ezen gondolkoztok. Nos, a sablonokkal ezt a problémát könnyen el lehet kerülni: tetszőlegesen bonyolult tranzakciót lehet vele rákötni egy linkre, ami előre kitölti az űrlapot, így az egeret is kíméli. [Itt olvashatsz róla bővebben](customizations/README.md).
+
 # Kincstárak, gyakorlati példák
 * [Family plugin](plugins/family/README.md)
