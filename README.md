@@ -107,7 +107,7 @@ Egy tétel az egyszerű átvezetéstől több személy több számláját érint
 Ez változatja a számla egyenlegét. Ezzel a végfelhasználó nem találkozik, a tétel használja őket.
 
 # Exporter
-A kincstárban történt könyvelési eseményeket lehet vele exportálni. Ez például használható arra, hogy azonnal értesüljön az ismerősöd ha felírtál hozzá egy tartozást, de arra is, hogy egy másik Wrisbi automatikusan importálja.
+A kincstárban történt könyvelési eseményeket lehet vele exportálni. Ez például használható arra, hogy azonnal értesüljön az ismerősöd ha felírtál hozzá egy tartozást vagy hogy egy másik Wrisbi automatikusan importálja.
 
 Az email exporter nem tartja meg a tranzakció-tétel eredeti strukturáját: sort képez belőle, ami egyszerűbb, az ember hamarabb megérti, a belátható igényeknek így is bőven megfelel.
 
