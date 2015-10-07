@@ -1,6 +1,6 @@
 # encoding: utf-8
 class Family::Person < Person
-  Natural = 0
+  General = 0
   Owner = 1
 
   # :class_name override
@@ -9,7 +9,7 @@ class Family::Person < Person
   after_create :create_liability_account
 
   def self.possible_type_codes
-    { 'Természetes' => Natural }
+    { 'Általános' => General }
   end
 
   def koltopenz_accounts
