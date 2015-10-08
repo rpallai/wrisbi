@@ -1,24 +1,28 @@
 # encoding: utf-8
 class Family::Account < Account
   Ut_bankszamla = 0
-  Ut_megtak_kp = 1
+  Ut_keszpenztartalek = 1
   Ut_koltopenz = 2
+  Ut_befektetes = 3
   Ut_hitelkartya = 4
   Ut_elsz_keszpenz = 5
   Ut_segedszamla = 6
 
   # T_wallet
-  St_bank = 0
-  St_bank_creditable = 1
-  St_cash = 2
+  St_bankszamla = 0
+  St_hitelkartya = 1
+  St_keszpenztartalek = 2
+  St_befektetes = 3
+  St_koltopenz = 4
 
   before_validation :xlate_type_user
 
   def self.possible_type_user
     {
       "Bankszámla" => Ut_bankszamla,
-      "Megtakarítás készpénzben" => Ut_megtak_kp,
+      "Készpénztartalék" => Ut_keszpenztartalek,
       "Költőpénz" => Ut_koltopenz,
+      "Befektetés" => Ut_befektetes,
       "Hitelkártya" => Ut_hitelkartya,
       "Elszámolás készpénzben" => Ut_elsz_keszpenz,
       "Segédszámla" => Ut_segedszamla,
@@ -33,13 +37,19 @@ class Family::Account < Account
       case @type_user.to_i
       when Ut_bankszamla
         self.type_code = T_wallet
-        self.subtype_code = St_bank
-      when Ut_megtak_kp, Ut_koltopenz
+        self.subtype_code = St_bankszamla
+      when Ut_keszpenztartalek
         self.type_code = T_wallet
-        self.subtype_code = St_cash
+        self.subtype_code = St_keszpenztartalek
+      when Ut_koltopenz
+        self.type_code = T_wallet
+        self.subtype_code = St_koltopenz
+      when Ut_befektetes
+        self.type_code = T_wallet
+        self.subtype_code = St_befektetes
       when Ut_hitelkartya
         self.type_code = T_wallet
-        self.subtype_code = St_bank_creditable
+        self.subtype_code = St_hitelkartya
       when Ut_elsz_keszpenz
         self.type_code = T_cash
         self.subtype_code = 0
@@ -52,9 +62,11 @@ class Family::Account < Account
 
   def type_user
     if asset?
-      return Ut_bankszamla if subtype_code == St_bank
-      return Ut_megtak_kp if subtype_code == St_cash
-      return Ut_hitelkartya if subtype_code == St_bank_creditable
+      return Ut_bankszamla if subtype_code == St_bankszamla
+      return Ut_hitelkartya if subtype_code == St_hitelkartya
+      return Ut_keszpenztartalek if subtype_code == St_keszpenztartalek
+      return Ut_befektetes if subtype_code == St_befektetes
+      return Ut_koltopenz if subtype_code == St_koltopenz
     end
     if liability?
       return Ut_elsz_keszpenz
@@ -67,7 +79,7 @@ class Family::Account < Account
 
 
   def min_zero?
-    asset? and not subtype_code == St_bank_creditable
+    asset? and not subtype_code == St_hitelkartya
   end
 
   def order_column

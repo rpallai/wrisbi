@@ -13,7 +13,7 @@ class Family::Person < Person
   end
 
   def koltopenz_accounts
-    asset_accounts.find_all{|a| a.subtype_code == Family::Account::St_cash }
+    asset_accounts.find_all{|a| a.subtype_code == Family::Account::St_koltopenz }
   end
   def koltopenz_account_in(currency)
     koltopenz_accounts.find{|a| a.currency == currency }
