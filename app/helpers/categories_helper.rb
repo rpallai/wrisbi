@@ -14,4 +14,16 @@ module CategoriesHelper
     Category.where(treasury: treasury).joins(:titles).group(:id).
       map{|p| [ p.ancestors.push(p).map(&:name)*'/', p.id ]}.sort
   end
+
+  def find_category(treasury, path)
+    category = nil
+    categories = treasury.categories.roots
+    path.split('/').each do |name|
+      unless name.blank?
+        category = categories.find_by_name(name)
+        categories = category.children
+      end
+    end
+    return category
+  end
 end
