@@ -116,7 +116,7 @@ tegnapi költés: <%= tegnapi_koltes %> <%= penznem %>.
 <% end %>
 ```
 
-A fentivel a napi költésbe az is beleszámít ha kölcsönadsz (már ha követed a [family plugin](../plugins/family/README.md) ajánlását az esetre). A bevétel nem tompítja a napi költést, csak a költőpénz mennyiségét növeli, ezáltal a napi keretet növeli.
+A fentivel a napi költésbe az is beleszámít ha kölcsönadsz (már ha követed a [family plugin](../plugins/family/README.md) ajánlását az esetre). A bevétel nem tompítja a napi költést, csak a költőpénzhez csapja, ezáltal a napi keretet növeli.
 
 Bizonyos kategóriákat ki tudsz venni a napi költésből. A következő kód beszúrása pl a `/Hitel/*` kategóriás tételeket kihagyja a napi költés számításából:
 >```
