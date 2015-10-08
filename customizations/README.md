@@ -81,7 +81,7 @@ Az `if controller_name == "view"` hatására a sablon linkek csak akkor jelennek
 
 ## Napi büdzsé
 
-Ha hónapról hónapra élsz, akkor hasznos lehet egy olyan fejléc, ahol mindig látható, hogy:
+Ha hónapról hónapra élsz, akkor hasznos lehet egy olyan sor a fejlécen, ahol mindig látható, hogy:
 - mennyi a napi költségkeretem
 - ebből mennyit költöttem el
 - mennyi pénzem van még a hónapra
