@@ -68,6 +68,8 @@ $( ->
 
   $(".leftValues").chosen(search_contains: true)
 
+  focus_element = $("h1").attr('data-focus')
+  $(focus_element).focus()
   #$("#transaction_date_3i").focus()
 #  $('form:not(.from_template) .parties.account_id_changed input.amount').focus()
 #  $(".party.empty_account .account").focus()
