@@ -49,7 +49,7 @@
                   <%= select_tag('template_by_category_id',
                     options_for_select(prepend_options_wzero(treasury_categories_with_title(@treasury))),
                     class: 'leftValues', 'data-placeholder' => "Tranzakció klónozás...",
-                      href: eval("as_template_#{current_namespace}_transaction_path(-1)")) %>
+                      href: eval("last_transaction_as_template_#{current_namespace}_category_path(-1)")) %>
                 </span>
                 <%#= button_tag('float', class: 'float_switch') %>
                 <%#= button_tag('top', class: 'float_top_switch') %>

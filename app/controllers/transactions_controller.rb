@@ -22,14 +22,19 @@ class TransactionsController < ApplicationController
     end
   end
   # ez olyan mint a new, csak egy meglevo tranzakciot klonoz
-  def as_template
-    transaction = Transaction.joins(:parties => {:titles => :categories}).
+  def template_by_category
+    @transaction = Transaction.joins(:parties => {:titles => :categories}).
       where("categories.id = ?", params[:id]).order(:updated_at).last
-    @treasury = transaction.treasury
+    as_template
+  end
+  def as_template
+    @transaction ||= Transaction.find(params[:id])
+    @treasury = @transaction.treasury
     return if needs_deeply_concerned(@treasury)
-    @transaction = transaction.dup
+    orig_transaction = @transaction
+    @transaction = @transaction.dup
     @transaction.comment = nil
-    transaction.parties.each do |party|
+    orig_transaction.parties.each do |party|
       @transaction.parties << party.dup
       party.titles.each do |title|
         @transaction.parties.last.titles << title.dup

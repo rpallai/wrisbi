@@ -1,6 +1,9 @@
 <h1>
-  Módosítás vagy
-  <%= link_to('törlés', polymorphic_url(@transaction, iframe: 1), method: :delete, data: { confirm: 'Biztos?' }) %><br/>
+  Módosítás,
+  <%= link_to('törlés', polymorphic_url(@transaction, iframe: 1), method: :delete, data: { confirm: 'Biztos?' }) %>
+  vagy
+  <%= link_to('klónozás', polymorphic_url([:as_template, current_namespace, @transaction], iframe: 1)) %>
+  <br/>
 </h1>
 
 <%= render 'form' %>

@@ -1,6 +1,9 @@
 namespace :family do
   resources :categories, :only => [], :requirements => { :class_name => "Category" } do
     resources :titles, :only => :index, controller: 'view', action: 'titles'
+    member do
+      get :last_transaction_as_template, controller: 'transactions', action: 'template_by_category'
+    end
   end
   resources :people, :except => [:show, :index, :new], :requirements => { :class_name => "Family::Person" } do
     resources :operations, :only => :index, controller: 'view', action: 'operations'
