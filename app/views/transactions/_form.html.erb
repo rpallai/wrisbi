@@ -18,14 +18,10 @@
     <%= f.label :date, "Dátum" %>
     <%= f.date_select(:date, start_year: 2005, end_year: Date.today.year) %>
   </div>
-<%# unless params[:hide_invert] -%>
   <div class="field">
     <%= f.label :invert, "Előjelfordítás" -%>
     <%= f.check_box :invert -%>
   </div>
-<%# else -%>
-  <%#= f.hidden_field :invert -%>
-<%# end -%>
 
 <% if @transaction.parties.length > 1 %>
   <div class="field">
@@ -62,7 +58,6 @@
             <%= title.object.marked_for_destruction?? 'marked_for_destruction' : '' -%>
             <%= "new_title" if @new_title == title.object -%>
             ">
-          <!--<div class="title_name"><%= title.object.class.display_name %></div>-->
           <div class="field" id="title_type">
             <%=
               title.select(:type, options_for_select(
