@@ -58,6 +58,7 @@
 <%= party.fields_for(:titles) do |title| %>
         <div class="<%-%>
             title<%-%>
+            <%= ActiveModel::Naming.param_key(title.object.class) -%>
             <%= title.object.marked_for_destruction?? 'marked_for_destruction' : '' -%>
             <%= "new_title" if @new_title == title.object -%>
             ">
