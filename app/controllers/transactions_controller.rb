@@ -11,7 +11,7 @@ class TransactionsController < ApplicationController
   # GET /transactions/new.json
   def new
     params.permit!
-    @focus = params[:p].delete(:focus)
+    @focus = params[:p].delete(:focus) rescue nil
     @transaction = @treasury.transactions.build(params[:p] || {})
     @transaction.parties.build unless params[:p]
     return if needs_deeply_concerned(@treasury)
