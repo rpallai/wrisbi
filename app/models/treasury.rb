@@ -3,7 +3,7 @@ class Treasury < ActiveRecord::Base
   has_many :supervisings, :dependent => :destroy
   has_many :supervisors, :through => :supervisings, :source => :user
 
-  has_many :payees, :dependent => :destroy
+  #has_many :payees, :dependent => :destroy
   has_many :categories, :dependent => :destroy
   has_many :businesses, :dependent => :destroy
   has_many :people, :dependent => :destroy
