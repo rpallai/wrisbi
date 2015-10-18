@@ -48,6 +48,7 @@ module Wrisbi
     config.assets.enabled = true
 
     config.assets.paths << Rails.root.join('customizations')
+    config.assets.paths << Rails.root.join('plugins')
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
