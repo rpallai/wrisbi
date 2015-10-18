@@ -68,7 +68,7 @@ class TreasuriesController < ApplicationController
         format.json { render json: @treasury, status: :created, location: @treasury }
       else
         format.html { render action: "new" }
-        format.json { render json: @treasury.errors, status: :unprocessable_entity }
+        format.json { render json: { errors: @treasury.errors }, status: :unprocessable_entity }
       end
     end
   end
@@ -84,7 +84,7 @@ class TreasuriesController < ApplicationController
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
-        format.json { render json: @treasury.errors, status: :unprocessable_entity }
+        format.json { render json: { errors: @treasury.errors }, status: :unprocessable_entity }
       end
     end
   end

@@ -48,7 +48,7 @@ class PeopleController < ApplicationController
         format.json { render json: @person, status: :created, location: @person }
       else
         format.html { render action: "new" }
-        format.json { render json: @person.errors, status: :unprocessable_entity }
+        format.json { render json: { errors: @person.errors }, status: :unprocessable_entity }
       end
     end
   end
@@ -66,7 +66,7 @@ class PeopleController < ApplicationController
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
-        format.json { render json: @person.errors, status: :unprocessable_entity }
+        format.json { render json: { errors: @person.errors }, status: :unprocessable_entity }
       end
     end
   end

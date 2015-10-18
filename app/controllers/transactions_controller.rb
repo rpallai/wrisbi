@@ -127,7 +127,7 @@ class TransactionsController < ApplicationController
         format.json { render json: @transaction, status: :created, location: @transaction }
       else
         format.html { render action: "new" }
-        format.json { render json: @transaction.errors, status: :unprocessable_entity }
+        format.json { render json: { errors: @transaction.errors }, status: :unprocessable_entity }
       end
     end
   end
@@ -155,7 +155,7 @@ class TransactionsController < ApplicationController
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
-        format.json { render json: @transaction.errors, status: :unprocessable_entity }
+        format.json { render json: { errors: @transaction.errors }, status: :unprocessable_entity }
       end
     end
   end

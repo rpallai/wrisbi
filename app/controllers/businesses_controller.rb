@@ -68,7 +68,7 @@ class BusinessesController < ApplicationController
       else
         build_some_empty_shares
         format.html { render action: "new" }
-        format.json { render json: @business.errors, status: :unprocessable_entity }
+        format.json { render json: { errors: @business.errors }, status: :unprocessable_entity }
       end
     end
   end
@@ -86,7 +86,7 @@ class BusinessesController < ApplicationController
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
-        format.json { render json: @business.errors, status: :unprocessable_entity }
+        format.json { render json: { errors: @business.errors }, status: :unprocessable_entity }
       end
     end
   end

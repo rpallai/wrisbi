@@ -65,7 +65,7 @@ class PayeesController < ApplicationController
         format.json { render json: @payee, status: :created, location: @payee }
       else
         format.html { render action: "new" }
-        format.json { render json: @payee.errors, status: :unprocessable_entity }
+        format.json { render json: { errors: @payee.errors }, status: :unprocessable_entity }
       end
     end
   end
@@ -84,7 +84,7 @@ class PayeesController < ApplicationController
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
-        format.json { render json: @payee.errors, status: :unprocessable_entity }
+        format.json { render json: { errors: @payee.errors }, status: :unprocessable_entity }
       end
     end
   end
