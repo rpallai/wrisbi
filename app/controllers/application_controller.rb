@@ -7,10 +7,10 @@ class ApplicationController < ActionController::Base
   def authenticate
     if session[:user_id]
       @current_user = @user = User.find(session[:user_id])
-      #    elsif via_api?
-      #      authenticate_or_request_with_http_basic do |user_name, password|
-      #        session[:user_id] = @user = User.authenticate(user_name, password)
-      #      end
+    elsif via_api?
+      authenticate_or_request_with_http_basic do |email, password|
+        @current_user = @user = session[:user_id] = User.find_by_email(email).try(:authenticate, password)
+      end
     else
       session[:authenticate_redirected_from] = url_for(:only_path => true)
       redirect_to(new_session_url)
@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   end
 
   def via_api?
-    request.format == Mime::XML
+    request.format == Mime::XML or request.format == Mime::JSON
   end
   helper_method :via_api?
 
