@@ -118,3 +118,6 @@ Egyszer mindenképp ki kell találni, hogy egy bizonyos eseményt hogy kell fel�
 
 # Kincstárak, gyakorlati példák
 * [Family plugin](plugins/family/README.md)
+
+# Ismétlődő tranzakciók
+* [YAML importer](vendor/yaml_importer/README.md)
