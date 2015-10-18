@@ -114,7 +114,7 @@ class TransactionsController < ApplicationController
     @transaction = Transaction.new(transaction_params)
     @treasury = @transaction.treasury
     return if needs_deeply_concerned(@treasury)
-    @transaction.supervised = @treasury.supervisors.include?(@current_user) ? true : false
+    @transaction.supervised = (@treasury.supervisors.include?(@current_user) and not via_api?) ? true : false
     @transaction.user = @current_user
 
     respond_to do |format|
