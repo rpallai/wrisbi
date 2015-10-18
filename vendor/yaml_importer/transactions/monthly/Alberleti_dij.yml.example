@@ -1,0 +1,11 @@
+#
+# Azért nem nevek vannak, mert azok változhatnak, az id pedig örök.
+# Az _id számokat kinézheted a web url-ekből.
+#
+treasury_id: 4
+parties_attributes:
+  - account_id: 26
+    amount: 60000
+    titles_attributes:
+      - type: Family::Title::Deal
+        new_category_ids: [631]

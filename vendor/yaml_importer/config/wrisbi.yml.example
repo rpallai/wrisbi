@@ -1,0 +1,6 @@
+# XXX
+# elvileg minden pluginhoz kulon yaml_importer peldany kene, de egyelore egyik plugin controllere
+# sem biralja felul az os-create metodust, teljesen jo igy is
+site: http://localhost:3003/family
+login: joe+api@gmail.com
+password: randomgenerated
