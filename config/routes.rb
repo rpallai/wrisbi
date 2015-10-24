@@ -10,6 +10,7 @@ Wrisbi::Application.routes.draw do
       post 'do_ack'
     end
   end
+  resources :accounts, only: [:show]
 
   resources :treasuries, :only => [], :requirements => { :class_name => "Treasury" } do
     resources :categories, :only => [:index, :new], :requirements => { :class_name => "Category" }

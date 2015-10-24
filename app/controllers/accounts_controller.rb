@@ -1,7 +1,7 @@
 class AccountsController < ApplicationController
   private
   before_filter :set_person, :only => [:new]
-  before_filter :set_model
+  before_filter :set_model, :except => [:show]
   before_filter :alias_params, :only => [:create, :update]
   def set_person
     @person = Person.find(params[:person_id])
@@ -26,6 +26,19 @@ class AccountsController < ApplicationController
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @account }
+    end
+  end
+
+  def show
+    @account = Account.find(params[:id])
+    @treasury = @account.treasury
+    unless @account.person.user == @current_user
+      return if needs_deeply_concerned(@treasury)
+      return if needs_treasury_supervisor(@treasury) if @account.hidden?
+    end
+
+    respond_to do |format|
+      format.json { render json: @account.attributes.update(balance: @account.balance) }
     end
   end
 
