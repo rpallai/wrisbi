@@ -65,7 +65,7 @@ class ViewController < ApplicationController
     respond_to do |format|
       format.html {
         @show_balance = true
-        paginate(operations, Operation.scoped)
+        paginate(operations)
         @operations = scoping_current_page(@operations)
       }
       format.csv {
@@ -167,7 +167,7 @@ class ViewController < ApplicationController
     respond_to do |format|
       format.html {
         titles = titles.select('titles.amount') if @show_balance
-        paginate(titles, Title.scoped)
+        paginate(titles)
         @titles = scoping_current_page(@titles)
       }
     end
@@ -235,7 +235,7 @@ class ViewController < ApplicationController
     respond_to do |format|
       format.html {
         transactions = transactions.select('parties.amount') if @show_balance
-        paginate(transactions, Transaction.scoped)
+        paginate(transactions)
         @transactions = scoping_current_page(@transactions)
 
         unless mobile_device?
@@ -297,7 +297,9 @@ class ViewController < ApplicationController
     params[:per_page].nil? or params[:per_page].to_i.nonzero?
   end
 
-  def paginate(original_scope, pages_scope)
+  def paginate(original_scope)
+    pages_scope = Transaction.all
+
     case params[:per_page]
     when "week"
       pages_scope = pages_scope.group("YEARWEEK(date, 1)").select("YEARWEEK(date, 1) AS page_key")
@@ -329,7 +331,7 @@ class ViewController < ApplicationController
     end
     pages_scope = pages_scope.from("(#{original_scope.to_sql}) AS original_scope")
     if @show_balance
-      with_balance_query = Transaction.scoped.
+      with_balance_query = Transaction.all.
         joins('JOIN (SELECT @balance := 0) i').
         select("page_key, date_start, date_end, (@balance := @balance + sum_amount) - sum_amount AS balance, c").
         from("(#{pages_scope.to_sql}) AS pages")
