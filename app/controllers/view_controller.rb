@@ -1,6 +1,6 @@
 class ViewController < ApplicationController
   helper_method :get_permalink
-  helper_method :url_with_time_dimension
+  helper_method :url_with_time_window
   helper_method :page_limit
 
   #
@@ -259,8 +259,16 @@ class ViewController < ApplicationController
     }.update(opts)
   end
 
-  def url_with_time_dimension(args)
-    polymorphic_url(args, {year: params[:year]})
+  def url_with_time_window(args)
+    if discrete_paging?
+      polymorphic_url(args,
+        sort: params[:sort],
+        page: params[:page],
+        per_page: params[:per_page],
+      )
+    else
+      polymorphic_url(args)
+    end
   end
 
   def calc_offset_by_param_page

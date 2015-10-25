@@ -58,11 +58,11 @@
           <span class="category"><%= print_category(category) %></span>
         <% else %>
           <% if @person %>
-            <% u = url_with_time_dimension([current_namespace, @person.becomes(Person), category, :operations]) %>
+            <% u = url_with_time_window([current_namespace, @person.becomes(Person), category, :operations]) %>
           <% elsif @account %>
-            <% u = url_with_time_dimension([current_namespace, @account.becomes(Account), category, :operations]) %>
+            <% u = url_with_time_window([current_namespace, @account.becomes(Account), category, :operations]) %>
           <% else %>
-            <% u = url_with_time_dimension([current_namespace, category, :titles]) %>
+            <% u = url_with_time_window([current_namespace, category, :titles]) %>
           <% end %>
           <span class="category"><%= link_to(print_category(category), u, class: 'category') -%></span>
         <% end %>

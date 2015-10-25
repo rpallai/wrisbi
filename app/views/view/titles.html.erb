@@ -48,9 +48,9 @@
       <td class="categories">
 <% title.categories.each do |category| -%>
         <% if @person %>
-          <% u = url_with_time_dimension([current_namespace, category, @person.becomes(Person)]) %>
+          <% u = url_with_time_window([current_namespace, category, @person.becomes(Person)]) %>
         <% else %>
-          <% u = url_with_time_dimension([current_namespace, category, :titles]) %>
+          <% u = url_with_time_window([current_namespace, category, :titles]) %>
         <% end %>
         <span class="category">
           <%= link_to(print_category(category), u, class: 'category') %>

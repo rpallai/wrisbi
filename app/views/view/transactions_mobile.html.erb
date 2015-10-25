@@ -41,7 +41,7 @@
                 <span class="categories">
                   <% m.categories.each do |category| -%>
                     <span class="category">
-                      <%= link_to(print_category(category), url_with_time_dimension(transactions_category_link(category)), class: 'category') %>
+                      <%= link_to(print_category(category), url_with_time_window(transactions_category_link(category)), class: 'category') %>
                     </span>
                   <% end -%>
                 </span>

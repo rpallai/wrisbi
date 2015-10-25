@@ -25,7 +25,7 @@ module ViewHelper
 
   def link_account(account)
     link_to(account.person.name, [account.person, :operations])+'/'+
-      link_to(account.name, url_with_time_dimension([account, :operations]))
+      link_to(account.name, url_with_time_window([account, :operations]))
   end
 
   def transaction_rowspan(transaction)
