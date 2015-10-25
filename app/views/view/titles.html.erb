@@ -24,7 +24,7 @@
       <th>Megjegyzés</th>
     </tr>
 
-  <% balance = @this_interval[0][1] -%>
+  <% balance = @current_page[:start_balance] -%>
   <% prev_title = nil -%>
   <% @titles.each do |title| %>
   <!--

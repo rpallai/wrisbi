@@ -1,10 +1,8 @@
 <div class="pager">
-  <% i = 1 %>
-  <% @intervals.each do |istart_cols,iend_cols| %>
-    <% istart_date = Date.parse(istart_cols[0].to_s) rescue istart_cols[0] %>
-    <% iend_date = Date.parse(iend_cols[0].to_s) rescue iend_cols[0] %>
-    <%= link_to("#{istart_date} - #{iend_date}", get_permalink(page: i-1, per_page: page_limit),
-      class: (params[:page].to_i == i-1) ? 'active' : 'passive') %>
-    <% i += 1 %>
+  <% @pages.each do |key, prefs| %>
+    <% start_date = Date.parse(prefs[:start_date].to_s) rescue prefs[:start_date] %>
+    <% end_date = Date.parse(prefs[:end_date].to_s) rescue prefs[:end_date] %>
+    <%= link_to("#{start_date} - #{end_date}", get_permalink(page: key, per_page: page_limit),
+      class: (@current_page == prefs) ? 'active' : 'passive') %>
   <% end %>
 </div>

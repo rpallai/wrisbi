@@ -34,7 +34,7 @@
     <th>Megjegyzés</th>
   </tr>
 
-<% balance = @this_interval[0][1] -%>
+<% balance = @current_page[:start_balance] -%>
 <% transaction_prev = nil -%>
 <% current_user_is_supervisor = @treasury.supervisors.include?(@current_user) %>
 <% @transactions.each do |transaction| %>

@@ -63,55 +63,9 @@ class ViewController < ApplicationController
 
     respond_to do |format|
       format.html {
-        operations = operations.select("#{@date_field} AS date")
-        if @backward
-          pages_query = Operation.scoped.
-            select("MAX(date) AS date_start, MIN(date) AS date_end, COUNT(*) AS c").order('date DESC')
-        else
-          pages_query = Operation.scoped.
-            select("MIN(date) AS date_start, MAX(date) AS date_end, COUNT(*) AS c").order('date ASC')
-        end
-
-        case params[:per_page]
-        when "week" then pages_query = pages_query.group("YEARWEEK(date, 1)")
-        when "month" then pages_query = pages_query.group("YEAR(date),MONTH(date)")
-        when "quarter" then pages_query = pages_query.group("YEAR(date),QUARTER(date)")
-        when "year" then pages_query = pages_query.group("YEAR(date)")
-        else pages_query = pages_query.group("FLOOR(@rn := @rn + 1 / #{page_limit + 1})").joins("JOIN (SELECT @rn := 0) i")
-        end
-        # itt pontosan ugyanaz a sorrend kell a lapozoban es a lapon, maskepp az egyenleg elcsuszik
-        if continuous_paging?
-          operations = operations.order(@order).order(:id)
-        end
-
-        pages_query = pages_query.select("SUM(amount) AS sum_amount")
-        pages_query = pages_query.from("(#{operations.to_sql}) AS all_operations")
-
-        with_balance_query = Operation.scoped.
-          joins('JOIN (SELECT @balance := 0) i').
-          select("date_start, date_end, (@balance := @balance + sum_amount) - sum_amount AS balance, c").
-          from("(#{pages_query.to_sql}) AS pages")
-        query = with_balance_query
-
-        rows = Transaction.connection.exec_query(query.to_sql).rows
-
-        @intervals = []
-        rows.each{|row| @intervals << [[row[0], row[2]], [row[1]]] }
-
-        @this_interval = @intervals.to_a[params[:page].to_i || 0] || ['']
-
-        if continuous_paging?
-          offset = calc_offset_by_param_page
-          # XXX lehetne ugy, hogy idoablakot ad meg a hivatkozo es konvertaljuk
-          #offset = calc_offset_by_param_date
-          @operations = @operations.limit(page_limit).offset(offset)
-        else
-          if @backward
-            @operations = @operations.where("#{@date_field} BETWEEN ? AND ?", @this_interval[1][0], @this_interval[0][0])
-          else
-            @operations = @operations.where("#{@date_field} BETWEEN ? AND ?", @this_interval[0][0], @this_interval[1][0])
-          end
-        end
+        @show_balance = true
+        paginate(operations, Operation.scoped)
+        @operations = scoping_current_page(@operations)
       }
       format.csv {
         require 'csv'
@@ -211,55 +165,9 @@ class ViewController < ApplicationController
 
     respond_to do |format|
       format.html {
-        titles = titles.select("#{@date_field} AS date, titles.amount")
-        if @backward
-          pages_query = Title.scoped.
-            select("MAX(date) AS date_start, MIN(date) AS date_end, COUNT(*) AS c").order('date DESC')
-        else
-          pages_query = Title.scoped.
-            select("MIN(date) AS date_start, MAX(date) AS date_end, COUNT(*) AS c").order('date ASC')
-        end
-
-        case params[:per_page]
-        when "week" then pages_query = pages_query.group("YEARWEEK(date, 1)")
-        when "month" then pages_query = pages_query.group("YEAR(date),MONTH(date)")
-        when "quarter" then pages_query = pages_query.group("YEAR(date),QUARTER(date)")
-        when "year" then pages_query = pages_query.group("YEAR(date)")
-        else pages_query = pages_query.group("FLOOR(@rn := @rn + 1 / #{page_limit + 1})").joins("JOIN (SELECT @rn := 0) i")
-        end
-        # itt pontosan ugyanaz a sorrend kell a lapozoban es a lapon, maskepp az egyenleg elcsuszik
-        if continuous_paging?
-          titles = titles.order(@order).order(:id)
-        end
-
-        pages_query = pages_query.select("SUM(amount) AS sum_amount")
-        pages_query = pages_query.from("(#{titles.to_sql}) AS all_titles")
-
-        with_balance_query = Title.scoped.
-          joins('JOIN (SELECT @balance := 0) i').
-          select("date_start, date_end, (@balance := @balance + sum_amount) - sum_amount AS balance, c").
-          from("(#{pages_query.to_sql}) AS pages")
-        query = with_balance_query
-
-        rows = Transaction.connection.exec_query(query.to_sql).rows
-
-        @intervals = []
-        rows.each{|row| @intervals << [[row[0], row[2]], [row[1]]] }
-
-        @this_interval = @intervals.to_a[params[:page].to_i || 0] || ['']
-
-        if continuous_paging?
-          offset = calc_offset_by_param_page
-          # XXX lehetne ugy, hogy idoablakot ad meg a hivatkozo es konvertaljuk
-          #offset = calc_offset_by_param_date
-          @titles = @titles.limit(page_limit).offset(offset)
-        else
-          if @backward
-            @titles = @titles.where("#{@date_field} BETWEEN ? AND ?", @this_interval[1][0], @this_interval[0][0])
-          else
-            @titles = @titles.where("#{@date_field} BETWEEN ? AND ?", @this_interval[0][0], @this_interval[1][0])
-          end
-        end
+        titles = titles.select('titles.amount') if @show_balance
+        paginate(titles, Title.scoped)
+        @titles = scoping_current_page(@titles)
       }
     end
   end
@@ -323,70 +231,18 @@ class ViewController < ApplicationController
       },
     ).order(@order).order(:id)
 
-    transactions = transactions.select("#{@date_field} AS date")
-    if @backward
-      pages_query = Transaction.scoped.
-        select("MAX(date) AS date_start, MIN(date) AS date_end, COUNT(*) AS c").order('date DESC')
-    else
-      pages_query = Transaction.scoped.
-        select("MIN(date) AS date_start, MAX(date) AS date_end, COUNT(*) AS c").order('date ASC')
-    end
-
-    case params[:per_page]
-    when "week" then pages_query = pages_query.group("YEARWEEK(date, 1)")
-    when "month" then pages_query = pages_query.group("YEAR(date),MONTH(date)")
-    when "quarter" then pages_query = pages_query.group("YEAR(date),QUARTER(date)")
-    when "year" then pages_query = pages_query.group("YEAR(date)")
-    else pages_query = pages_query.group("FLOOR(@rn := @rn + 1 / #{page_limit + 1})").joins("JOIN (SELECT @rn := 0) i")
-    end
-    # itt pontosan ugyanaz a sorrend kell a lapozoban es a lapon, maskepp az egyenleg elcsuszik
-    if continuous_paging?
-      transactions = transactions.order(@order).order(:id)
-    end
-
-    if @show_balance
-      transactions = transactions.select('parties.amount')
-      pages_query = pages_query.select("SUM(amount) AS sum_amount")
-    end
-    pages_query = pages_query.from("(#{transactions.to_sql}) AS all_transactions")
-    if @show_balance
-      with_balance_query = Transaction.scoped.
-        joins('JOIN (SELECT @balance := 0) i').
-        select("date_start, date_end, (@balance := @balance + sum_amount) - sum_amount AS balance, c").
-        from("(#{pages_query.to_sql}) AS pages")
-      query = with_balance_query
-    else
-      query = pages_query
-    end
-
-    rows = Transaction.connection.exec_query(query.to_sql).rows
-
-    @intervals = []
-    rows.each{|row| @intervals << [[row[0], row[2]], [row[1]]] }
-
-    @this_interval = @intervals.to_a[params[:page].to_i || 0] || ['']
-
-    if continuous_paging?
-      offset = calc_offset_by_param_page
-      # XXX lehetne ugy, hogy idoablakot ad meg a hivatkozo es konvertaljuk
-      #offset = calc_offset_by_param_date
-      @transactions = @transactions.limit(page_limit).offset(offset)
-    else
-      if @backward
-        @transactions = @transactions.where("#{@date_field} BETWEEN ? AND ?", @this_interval[1][0], @this_interval[0][0])
-      else
-        @transactions = @transactions.where("#{@date_field} BETWEEN ? AND ?", @this_interval[0][0], @this_interval[1][0])
-      end
-    end
-
     respond_to do |format|
-      format.html do
+      format.html {
+        transactions = transactions.select('parties.amount') if @show_balance
+        paginate(transactions, Transaction.scoped)
+        @transactions = scoping_current_page(@transactions)
+
         unless mobile_device?
           render
         else
           render action: 'transactions_mobile'
         end
-      end
+      }
     end
   ensure
     Treasury.reset_data_scope
@@ -430,5 +286,69 @@ class ViewController < ApplicationController
   end
   def continuous_paging?
     params[:per_page].nil? or params[:per_page].to_i.nonzero?
+  end
+
+  def paginate(original_scope, pages_scope)
+    case params[:per_page]
+    when "week"
+      pages_scope = pages_scope.group("YEARWEEK(date, 1)").select("YEARWEEK(date, 1) AS page_key")
+    when "month"
+      pages_scope = pages_scope.group("YEAR(date),MONTH(date)").select("CONCAT_WS('-',YEAR(date),MONTH(date)) AS page_key")
+    when "quarter"
+      pages_scope = pages_scope.group("YEAR(date),QUARTER(date)").select("CONCAT_WS('-',YEAR(date),QUARTER(date)) AS page_key")
+    when "year"
+      pages_scope = pages_scope.group("YEAR(date)").select("YEAR(date) AS page_key")
+    else
+      pages_scope = pages_scope.group("FLOOR(@rn := @rn + 1 / #{page_limit + 1})").joins("JOIN (SELECT @rn := 0) i").
+        select("CAST(CAST(@rn AS DECIMAL) AS CHAR) AS page_key")
+    end
+
+    if @backward
+      pages_scope = pages_scope.select("MAX(date) AS date_start, MIN(date) AS date_end, COUNT(*) AS c").order('date DESC')
+    else
+      pages_scope = pages_scope.select("MIN(date) AS date_start, MAX(date) AS date_end, COUNT(*) AS c").order('date ASC')
+    end
+
+    original_scope = original_scope.select("#{@date_field} AS date")
+    # itt pontosan ugyanaz a sorrend kell a lapozoban es a lapon, maskepp az egyenleg elcsuszik
+    if continuous_paging?
+      original_scope = original_scope.order(@order).order(:id)
+    end
+
+    if @show_balance
+      pages_scope = pages_scope.select("SUM(amount) AS sum_amount")
+    end
+    pages_scope = pages_scope.from("(#{original_scope.to_sql}) AS original_scope")
+    if @show_balance
+      with_balance_query = Transaction.scoped.
+        joins('JOIN (SELECT @balance := 0) i').
+        select("page_key, date_start, date_end, (@balance := @balance + sum_amount) - sum_amount AS balance, c").
+        from("(#{pages_scope.to_sql}) AS pages")
+      query = with_balance_query
+    else
+      query = pages_scope
+    end
+
+    rows = Transaction.connection.exec_query(query.to_sql).rows
+
+    @pages = Hash.new
+    rows.each{|row| @pages[row[0]] = {start_date: row[1], start_balance: row[3], end_date: row[2]} }
+
+    @current_page = @pages[params[:page] || @pages.keys.first]
+  end
+
+  def scoping_current_page(original_scope)
+    if continuous_paging?
+      offset = calc_offset_by_param_page
+      # XXX lehetne ugy, hogy idoablakot ad meg a hivatkozo es konvertaljuk
+      #offset = calc_offset_by_param_date
+      original_scope.limit(page_limit).offset(offset)
+    else
+      if @backward
+        original_scope.where("#{@date_field} BETWEEN ? AND ?", @current_page[:end_date], @current_page[:start_date])
+      else
+        original_scope.where("#{@date_field} BETWEEN ? AND ?", @current_page[:start_date], @current_page[:end_date])
+      end
+    end
   end
 end
