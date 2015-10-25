@@ -2,6 +2,7 @@ class ViewController < ApplicationController
   helper_method :get_permalink
   helper_method :url_with_time_window
   helper_method :page_limit
+  helper_method :discrete_paging?, :continuous_paging?
 
   #
   # ez majdnem ugyanugy nez ki mint a titles,

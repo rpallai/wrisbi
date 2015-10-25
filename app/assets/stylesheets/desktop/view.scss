@@ -264,14 +264,32 @@
    */
   div.pager {
     margin-top: 25px;
-  }
-  div.pager a {
-    white-space: nowrap;
-    line-height: 200%;
-    padding: 4px;
-    background-color: #eee;
-  }
-  div.pager a.active {
-    background-color: #dde;
+    background-color: #ccc;
+
+    a {
+      white-space: nowrap;
+      line-height: 200%;
+      padding: 4px;
+      background-color: #eee;
+      text-decoration: none;
+    }
+    a.active {
+      background-color: #dde;
+    }
+
+    .tabs {
+      background-color: white;
+    }
+    .tabs > a {
+      display: inline-block;
+      width: 80px;
+      text-align: center;
+    }
+    .tabs > a.active {
+      background-color: #ccc;
+    }
+    .pages {
+      padding-top: 6px;
+    }
   }
 }
