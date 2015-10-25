@@ -35,6 +35,12 @@
     </div>
   <% end %>
   <div class="field">
+    <%= f.label :expires_at, "Lejárat" %>
+    <%= f.date_field :expires_at %>
+    <span class="help">Figyelmeztetés ha a dátum lejárt és az egyenleg nem nulla.</span>
+  </div>
+
+  <div class="field">
     <%= f.label :hidden, "Rejtett" -%>
     <%= f.check_box :hidden -%>
     <span class="help">Csak a supervisor láthatja.</span>

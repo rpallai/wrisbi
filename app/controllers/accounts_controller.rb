@@ -102,7 +102,7 @@ class AccountsController < ApplicationController
   private
   def account_params
     params.require(@model.model_name.singular.to_sym).permit(
-      :person_id, :name, :currency, :type_user, :hidden, :foreign_ids, :parent_id, :closed
+      :person_id, :name, :currency, :type_user, :hidden, :foreign_ids, :parent_id, :closed, :expires_at
     )
   end
 end

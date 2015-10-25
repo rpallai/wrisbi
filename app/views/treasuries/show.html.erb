@@ -16,6 +16,7 @@
       <td colspan="1"><%= link_to(person.name, [person, :operations], target: "_parent") -%></td>
       <%# mennyi zseje van a betyarnal %>
       <td><%= person.equity unless person.equity.zero? %></td>
+      <td></td>
       <td>
         <%= link_to("Módosít", [:edit, person], target: "_parent") -%>
         <%= link_to('Új számla', [:new, person, :account], target: "_parent") %>
@@ -35,6 +36,7 @@
           <%= print_amount balances[account.id] || 0 -%>
           <%= "(#{print_amount account.foreign_balance})" if account.foreign_balance -%>
         </td>
+        <td><%= account.expires_at %></td>
         <td>
           <%= link_to("Tételek", [account, :operations], target: "_parent") %>
           <%= link_to("Tranzakciók", [account, :transactions], target: "_parent") %>
