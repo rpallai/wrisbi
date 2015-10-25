@@ -50,7 +50,7 @@ class ViewController < ApplicationController
     operations = Operation.where(account_id: account_ids).
       joins(:title => :transaction).
       group('titles.id').
-      order(@order, 'transactions.id').
+      order(@order, 'titles.id').
       select("SUM(operations.amount) AS amount")
     if params[:category_id]
       operations = operations.joins(:title => :categories).where('categories.id = ?', params[:category_id])
@@ -198,7 +198,7 @@ class ViewController < ApplicationController
       :categories, :transaction,
       :operations => { :account => :person },
       :party => { :account => :person }
-    ).order(@order)
+    ).order(@order).order(:id)
 
     titles = titles.joins(:transaction)
 
