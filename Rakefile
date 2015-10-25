@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Hc::Application.load_tasks
+Wrisbi::Application.load_tasks
