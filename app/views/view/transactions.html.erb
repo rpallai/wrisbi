@@ -1,5 +1,7 @@
 <% inline_date = true -%>
 
+<%= render partial: 'search' %>
+
 <h2>Tranzakciók
   <%= time_dimension_as_text %>
   <% if @account %>
@@ -34,7 +36,7 @@
     <th>Megjegyzés</th>
   </tr>
 
-<% balance = @current_page[:start_balance] -%>
+<% balance = @current_page[:start_balance] rescue 0 -%>
 <% transaction_prev = nil -%>
 <% current_user_is_supervisor = @treasury.supervisors.include?(@current_user) %>
 <% @transactions.each do |transaction| %>

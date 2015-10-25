@@ -1,3 +1,5 @@
+<%= render partial: 'search' %>
+
 <h1>
   <% if @account %>
     <%= print_account @account -%> számla egyenlegének alakulása
@@ -27,7 +29,7 @@
       <th>Megjegyzés</th>
     </tr>
 
-  <% balance = @current_page[:start_balance] -%>
+  <% balance = @current_page[:start_balance] rescue 0 -%>
   <% prev_operation = nil -%>
   <% @operations.each do |operation| %>
   <!--

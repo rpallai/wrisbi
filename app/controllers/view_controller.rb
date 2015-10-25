@@ -56,6 +56,7 @@ class ViewController < ApplicationController
     if params[:category_id]
       operations = operations.joins(:title => :categories).where('categories.id = ?', params[:category_id])
     end
+    operations = apply_comment_search(operations)
     # tobb szamla eseten a szumma az osszeg
     @operations = operations.includes([:transaction, {:title => [{:operations => :person}, :categories]}]).
       select('operations.title_id', 'operations.account_id')
@@ -129,6 +130,7 @@ class ViewController < ApplicationController
         titles = @treasury.titles
       end
     end
+    titles = apply_comment_search(titles)
     case params[:sort]
     when 'title'
       @date_field = 'titles.date'
@@ -198,13 +200,19 @@ class ViewController < ApplicationController
           where('categories.id = ?', @category)
         @page_title << "/" << view_context.print_category(@category, false)
       else
-        transactions = Transaction.joins(:parties).where('parties.account_id = ?', @account)
+        if params[:s] and not params[:s].empty?
+          transactions = Transaction.joins(:parties => :titles)
+        else
+          transactions = Transaction.joins(:parties)
+        end
+        transactions = transactions.where('parties.account_id = ?', @account)
         @show_balance = true
       end
     elsif params[:treasury_id]
       @treasury = Treasury.find(params[:treasury_id])
       return if needs_deeply_concerned(@treasury)
       transactions = @treasury.transactions
+      transactions = transactions.joins(:titles) if params[:s] and not params[:s].empty?
       @date_field = "transactions.date"
       @backward = true
     end
@@ -213,6 +221,7 @@ class ViewController < ApplicationController
       transactions = transactions.where(supervised: false)
       @page_title << '/unacked'
     end
+    transactions = apply_comment_search(transactions)
     if params[:sort] == 'last_touch'
       @date_field = "transactions.updated_at"
       @backward = true
@@ -345,7 +354,7 @@ class ViewController < ApplicationController
     @pages = Hash.new
     rows.each{|row| @pages[row[0]] = {start_date: row[1], start_balance: row[3], end_date: row[2]} }
 
-    @current_page = @pages[params[:page] || @pages.keys.first]
+    @current_page = @pages[params[:page]] || @pages[@pages.keys.first]
   end
 
   def scoping_current_page(original_scope)
@@ -361,5 +370,14 @@ class ViewController < ApplicationController
         original_scope.where("#{@date_field} BETWEEN ? AND ?", @current_page[:start_date], @current_page[:end_date])
       end
     end
+  end
+
+  def apply_comment_search(original_scope)
+    if params[:s] and not params[:s].empty?
+      original_scope = original_scope.where("CONCAT(transactions.comment, titles.comment) LIKE ?",
+        "%" << params[:s] << "%")
+      @page_title << '/search'
+    end
+    return original_scope
   end
 end

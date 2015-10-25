@@ -1,0 +1,7 @@
+<div class="search">
+  <%= form_tag('', :method => :get) do -%>
+    <%= label_tag(:s, "Megjegyzésben kajtató:") %>
+    <%= text_field_tag(:s, params[:s]) %>
+    <%= submit_tag("OK") %>
+  <% end -%>
+</div>

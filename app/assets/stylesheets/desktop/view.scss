@@ -234,29 +234,8 @@
     color: green;
   }
 
-  /*
-   * .op_popup
-   */
-  .op_popup {
-    position: absolute;
-    background: white;
-    border: 2px solid black;
-    padding: 10px;
-    left: 25%;
-    font-size: 2em;
-    display: none;
-  }
-  .op_popup a {
-    border-right: 1px solid;
-    padding-right: 10px;
-  }
-  .op_popup:not(.unacked) .ack {
-    display: none;
-  }
-
-  div.operations_popup.person, div.operations_popup.account {
-    left: auto;
-    margin-left: 30px;
+  .search {
+    float: right;
   }
 
   /*
