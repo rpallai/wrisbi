@@ -352,7 +352,7 @@ class ViewController < ApplicationController
     rows = Transaction.connection.exec_query(query.to_sql).rows
 
     @pages = Hash.new
-    rows.each{|row| @pages[row[0]] = {start_date: row[1], start_balance: row[3], end_date: row[2]} }
+    rows.each{|row| @pages[row[0].to_s] = {start_date: row[1], start_balance: row[3], end_date: row[2]} }
 
     @current_page = @pages[params[:page]] || @pages[@pages.keys.first]
   end
