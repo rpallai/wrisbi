@@ -1,10 +1,11 @@
 # encoding: utf-8
 class Family::Account < Account
-  Ut_bankszamla = 0
-  Ut_keszpenztartalek = 1
-  Ut_koltopenz = 2
-  Ut_befektetes = 3
-  Ut_hitelkartya = 4
+  # Ez egyben a sorrendet is meghatarozza a treasury#show -nal
+  Ut_koltopenz = 0
+  Ut_bankszamla = 1
+  Ut_hitelkartya = 2
+  Ut_keszpenztartalek = 3
+  Ut_befektetes = 4
   Ut_elsz_keszpenz = 5
   Ut_segedszamla = 6
 
@@ -75,6 +76,18 @@ class Family::Account < Account
       return Ut_segedszamla
     end
     nil
+  end
+
+  def type_user_s
+    case type_user
+    when Ut_bankszamla then "Bankszámla"
+    when Ut_hitelkartya then "Hitelkártya"
+    when Ut_keszpenztartalek then "Készpénztartalék"
+    when Ut_befektetes then "Befektetés"
+    when Ut_koltopenz then "Költőpénz"
+    when Ut_elsz_keszpenz then "Elszámolás készpénzben"
+    when Ut_segedszamla then "Segédszámla"
+    end
   end
 
 

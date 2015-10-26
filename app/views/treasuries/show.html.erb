@@ -1,6 +1,6 @@
 <% Rails.logger.debug ">>> div.balances" -%>
 <% benchmark 'div.balances', level: :debug do -%>
-<% Rails.logger.silence() do -%>  <%# Logger::DEBUG  %>
+<% Rails.logger.silence(Logger::DEBUG) do -%>
 <h2>
   <% if @treasury.date_scope %>
     Változások (<%= @treasury.date_scope.first %> - <%= @treasury.date_scope.last %>)
@@ -14,8 +14,8 @@
   <% @treasury.people.includes(:accounts).each do |person| -%>
     <tr class="person" data-id="<%= person.id -%>">
       <td colspan="1"><%= link_to(person.name, [person, :operations], target: "_parent") -%></td>
-      <%# mennyi zseje van a betyarnal %>
       <td><%= person.equity unless person.equity.zero? %></td>
+      <td></td>
       <td></td>
       <td>
         <%= link_to("Módosít", [:edit, person], target: "_parent") -%>
@@ -23,7 +23,7 @@
       </td>
     </tr>
 
-    <% person.accounts.each do |account| -%>
+    <% person.accounts.sort{|a,b| [a.type_user,b.balance] <=> [b.type_user,a.balance] }.each do |account| -%>
       <% next if account.hidden? and not @treasury.supervisors.include? @current_user -%>
       <tr class="account
           <%= account.type_name %>
@@ -33,10 +33,13 @@
       >
         <td><%= account.name -%><%#= " ("+account.type_code.to_s+"/"+account.subtype_code.to_s+")" -%></td>
         <td>
-          <%= print_amount balances[account.id] || 0 -%>
-          <%= "(#{print_amount account.foreign_balance})" if account.foreign_balance -%>
+          <%= print_amount balances[account.id] || 0 -%> <span class="currency"><%= account.currency %></span>
+          <% if account.foreign_balance -%>
+            (<%= print_amount account.foreign_balance %> <span class="currency"><%= account.currency %></span>)
+          <% end -%>
         </td>
         <td><%= account.expires_at %></td>
+        <td><%= account.type_user_s %></td>
         <td>
           <%= link_to("Tételek", [account, :operations], target: "_parent") %>
           <%= link_to("Tranzakciók", [account, :transactions], target: "_parent") %>
