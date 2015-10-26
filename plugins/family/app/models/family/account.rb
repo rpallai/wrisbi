@@ -101,9 +101,12 @@ class Family::Account < Account
       @warnings << "Pozitív egyenleg " if balance > 0
     when Ut_keszpenztartalek then "Készpénztartalék"
       @warnings << "Túl sok készpénz, megeszi az infláció" if balance > 1000000
+      @warnings << "Negatív egyenleg" if balance < 0
     when Ut_befektetes then "Befektetés"
+      @warnings << "Negatív egyenleg" if balance < 0
     when Ut_koltopenz then "Költőpénz"
       @warnings << "Túl sok készpénz, megeszi az infláció" if balance > 1000000
+      @warnings << "Negatív egyenleg" if balance < 0
     when Ut_elsz_keszpenz then "Elszámolás készpénzben"
       @warnings << "Ideje elszámolni" if balance > 1000000
     when Ut_segedszamla then "Segédszámla"
