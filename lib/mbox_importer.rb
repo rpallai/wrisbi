@@ -150,6 +150,10 @@ def save_transfer(account_from, account_to, date, amount, comment)
   end
 end
 
+def update_foreign_balance(account, balance)
+  account.update(:foreign_balance => balance.delete('.').to_i)
+end
+
 def find_category(path)
   category = nil
   categories = $treasury.categories.roots
