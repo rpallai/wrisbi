@@ -44,4 +44,11 @@ module ApplicationHelper
   def current_namespace
     params[:controller].split("/").first
   end
+
+  def date_for_sort(date)
+    date or Date.parse("1980-01-01")
+  end
+  def balance_for_sort(balance)
+    balance or 0
+  end
 end

@@ -23,7 +23,10 @@
       </td>
     </tr>
 
-    <% person.accounts.sort{|a,b| [a.type_user,b.balance] <=> [b.type_user,a.balance] }.each do |account| -%>
+    <% person.accounts.sort{|a,b|
+        [a.type_user,date_for_sort(a.expires_at),balance_for_sort(balances[b.id])] <=>
+          [b.type_user,date_for_sort(b.expires_at),balance_for_sort(balances[a.id])]
+      }.each do |account| -%>
       <% next if account.hidden? and not @treasury.supervisors.include? @current_user -%>
       <% account.check! %>
       <tr class="account
