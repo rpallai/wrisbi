@@ -262,7 +262,7 @@ class TransactionsController < ApplicationController
 
   def accounts_for_transaction
     balances = @treasury.operations.group(:account_id).sum(:amount)
-    view_context.prepend_options_wzero(view_context.collect_name_and_id(@treasury.accounts.includes(:person).
+    view_context.prepend_options_wzero(view_context.collect_name_and_id(@treasury.accounts_for_transaction.includes(:person).
       sort{|a,b|
         [a.person_id,a.type_user,view_context.date_for_sort(a.expires_at),view_context.balance_for_sort(balances[b.id])] <=>
           [b.person_id,b.type_user,view_context.date_for_sort(b.expires_at),view_context.balance_for_sort(balances[a.id])]

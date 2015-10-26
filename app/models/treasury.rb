@@ -56,6 +56,10 @@ class Treasury < ActiveRecord::Base
     accounts.select(:currency).distinct.map(&:currency)
   end
 
+  def accounts_for_transaction
+    accounts
+  end
+
   # ezt beallitva minden balance muvelet csak az adott idointervallumon dolgozik
   # elesben nem hasznalt
   def self.set_date_scope(start_date, end_date)
