@@ -139,9 +139,6 @@ class TransactionsController < ApplicationController
     @transaction.assign_attributes(transaction_params)
     @treasury = @transaction.treasury
     return if needs_deeply_concerned(@treasury)
-    if @transaction.supervised? or @transaction.user != @current_user
-      return if needs_treasury_supervisor(@treasury)
-    end
     @transaction.supervised = @treasury.supervisors.include?(@current_user) ? true : false
     @transaction.user = @current_user
 
