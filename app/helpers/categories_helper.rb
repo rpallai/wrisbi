@@ -1,13 +1,22 @@
 module CategoriesHelper
-  def treasury_categories(treasury, klass)
-    Rails.logger.silence do
-      # Cseri kerese, hogy legyen mellette az egyezseg is
-      klass.where(treasury: treasury).map{|p|
-        name = p.ancestors.push(p).map(&:name)*'/'
-        name += " [#{p.applied_business.name}]" if p.applied_business
-        [ name, p.id ]
-      }.sort
+  # returns level 1 nested array
+  def rearrange(tree, prefix = nil)
+    prefix = prefix ? prefix+"/" : ""
+    ret = []
+    tree.each do |p,c|
+      name = p.name
+      # Cseri kérése, hogy legyen mellette az egyezség is
+      name += " [#{p.applied_business.name}]" if p.applied_business
+      ret << [prefix+name, p.id]
+      ret += rearrange(c, prefix+p.name)
     end
+    ret
+  end
+
+  def treasury_categories(treasury)
+    rearrange(
+      Category.where(treasury: treasury).includes(:applied_business).arrange
+    ).sort
   end
 
   def treasury_categories_with_title(treasury)

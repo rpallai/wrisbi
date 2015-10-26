@@ -35,7 +35,7 @@
     ">
 <% i = 0 %>
 <%= f.fields_for(:parties) do |party| %>
-    <% Rails.logger.debug "party.object.account: #{party.object.account.inspect}" %>
+    <%# Rails.logger.debug "party.object.account: #{party.object.account.inspect}" %>
     <div class="party <%= 'empty_account' if party.object.account.nil? %>">
       <div class="field" id="_destroy">
         <%= party.label :_destroy, "Töröl" -%>

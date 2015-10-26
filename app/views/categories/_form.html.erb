@@ -16,7 +16,7 @@
     <%= f.hidden_field :parent_id, :value => @category.parent_id %>
   <% else %>
     <%= f.label :parent_id, "Szülő" %>
-    <%= f.select :parent_id, prepend_options_wzero(treasury_categories(@category.treasury, @category.class)) %>
+    <%= f.select :parent_id, prepend_options_wzero(treasury_categories(@category.treasury)) %>
     <span class="help">Opcionális.</span>
   <% end %>
   <%= f.hidden_field :treasury_id if f.object.new_record? %>
