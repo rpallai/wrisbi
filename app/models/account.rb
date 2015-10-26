@@ -22,6 +22,7 @@ class Account < ActiveRecord::Base
   has_many :titles, :through => :operations
 
   attr_writer :type_user
+  attr_reader :warnings
 
   serialize :foreign_ids, ::Serializer::List.new
 

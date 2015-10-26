@@ -91,8 +91,24 @@ class Family::Account < Account
   end
 
 
-  def min_zero?
-    asset? and not subtype_code == St_hitelkartya
+  def check!
+    @warnings = []
+    case type_user
+    when Ut_bankszamla
+      @warnings << "Negatív egyenleg" if balance < 0
+      @warnings << "Túl sok pénz folyószámlán, megeszi az infláció" if balance > 1000000
+    when Ut_hitelkartya then "Hitelkártya"
+      @warnings << "Pozitív egyenleg " if balance > 0
+    when Ut_keszpenztartalek then "Készpénztartalék"
+      @warnings << "Túl sok készpénz, megeszi az infláció" if balance > 1000000
+    when Ut_befektetes then "Befektetés"
+    when Ut_koltopenz then "Költőpénz"
+      @warnings << "Túl sok készpénz, megeszi az infláció" if balance > 1000000
+    when Ut_elsz_keszpenz then "Elszámolás készpénzben"
+      @warnings << "Ideje elszámolni" if balance > 1000000
+    when Ut_segedszamla then "Segédszámla"
+    end
+    @warnings << "Lejárt" if expires_at and expires_at < Date.today
   end
 
   def order_column

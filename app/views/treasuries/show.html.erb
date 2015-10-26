@@ -25,11 +25,13 @@
 
     <% person.accounts.sort{|a,b| [a.type_user,b.balance] <=> [b.type_user,a.balance] }.each do |account| -%>
       <% next if account.hidden? and not @treasury.supervisors.include? @current_user -%>
+      <% account.check! %>
       <tr class="account
           <%= account.type_name %>
-          <%= "alert" if account.min_zero? and balances[account.id] and balances[account.id] < 0 %>
+          <%= "alert" unless account.warnings.empty? %>
           "
           data-id="<%= account.id -%>"
+          title="<%= account.warnings.join(" / ") %>"
       >
         <td><%= account.name -%><%#= " ("+account.type_code.to_s+"/"+account.subtype_code.to_s+")" -%></td>
         <td>
