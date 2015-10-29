@@ -5,6 +5,6 @@ class CategoryLink < ActiveRecord::Base
   belongs_to :category
   belongs_to :title
 
-  after_create  {|l| l.category.exporter.after_create_category_link(self) if l.category.exporter }
-  after_destroy {|l| l.category.exporter.after_destroy_category_link(self) if l.category.exporter }
+  after_commit ({:on => :create})  {|l| l.category.exporter.after_create_category_link(self) if l.category.exporter }
+  after_commit ({:on => :destroy}) {|l| l.category.exporter.after_destroy_category_link(self) if l.category.exporter }
 end
