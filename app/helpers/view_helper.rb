@@ -33,14 +33,6 @@ module ViewHelper
     #1 + transaction.titles.length + transaction.parties.length
   end
 
-  def transaction_comment_rowspan(transaction)
-    unless parties_of(transaction).any?{|p| p.titles.any?{|m| not m.comment.blank?} }
-      transaction_rowspan(transaction)
-    else
-      1
-    end
-  end
-
   def parties_of(transaction)
     # ha accounts/:id/transactions nezetben vagyunk, akkor csak az adott party erdekes,
     # maskepp a balance nem lesz franko
