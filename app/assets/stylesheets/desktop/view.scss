@@ -101,6 +101,10 @@
   }
 
   tr.party[data-titles="1"] .amount {
+    // visibility:collapse;
+    //  Chrome bug miatt nem hasznaljuk;
+    //   https://code.google.com/p/chromium/issues/detail?id=174167
+    //  e nelkul sajnos a tetel folott latszik egy kis kamu cell
     display: none;
   }
 
