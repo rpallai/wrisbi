@@ -52,6 +52,9 @@ class Title < ActiveRecord::Base
       m.categories.each{|category| category.exporter.after_title_update(m) if category.exporter }
     end
   end
+  before_save{|t|
+    t.comment = '' if t.comment.nil?
+  }
 
   delegate :treasury, :account, :to => :party
 

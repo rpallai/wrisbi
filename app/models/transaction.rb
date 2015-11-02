@@ -37,6 +37,9 @@ class Transaction < ActiveRecord::Base
       end
     end
   }
+  before_save{|t|
+    t.comment = '' if t.comment.nil?
+  }
 
   def initialize(opts = {})
     # ehh, a true -t a formbuilder nem checked-nek erzekeli
