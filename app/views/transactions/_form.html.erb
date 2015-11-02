@@ -25,7 +25,7 @@
 
 <% if @transaction.parties.length > 1 %>
   <div class="field">
-    <%= f.label :comment, 'Esemény leírása', class: 'transaction comment' %>
+    <%= f.label :comment, 'Tranzakció megjegyzés', class: 'transaction comment' %>
     <%= f.text_field :comment, class:'transaction comment' -%>
   </div>
 <% end %>
@@ -108,7 +108,7 @@
 
 <% if @transaction.parties.length < 2 %>
   <div class="field">
-    <%= f.label :comment, 'Esemény leírása', class: 'transaction comment' %>
+    <%= f.label :comment, 'Tranzakció megjegyzés', class: 'transaction comment' %>
     <%= f.text_field :comment, style:"display: " + ((not f.object.comment or f.object.comment.empty?)? 'none' : 'initial'),
       class:'transaction comment' -%>
   </div>
