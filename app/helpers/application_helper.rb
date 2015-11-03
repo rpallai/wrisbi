@@ -1,34 +1,4 @@
 module ApplicationHelper
-  #
-  # Egy <ol> tag-ben kirajzolja a fat
-  #
-  def traverse(node, stack = "", &block)
-    node.each {|k, v|
-      stack << "<li>"
-      stack << capture do
-        yield(k)
-      end
-      unless v.empty?
-        stack << "<ol>"
-        traverse(v, stack, &block)
-        stack << "</ol>"
-      end
-      stack << "</li>"
-    }
-    stack
-  end
-
-  def traverse2(node, stack = "", depth = 0, &block)
-    depth += 1
-    node.each {|k, v|
-      stack << capture do
-        yield(k, depth) || ''
-      end
-      traverse2(v, stack, depth, &block) unless v.empty?
-    }
-    stack
-  end
-
   def prepend_options_wzero(options)
     options.unshift(['', nil])
   end

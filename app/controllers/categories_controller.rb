@@ -19,7 +19,6 @@ class CategoriesController < ApplicationController
   # GET /categories
   # GET /categories.json
   def index
-    @root_categories = @model.where(treasury: @treasury).roots.map{|node| node.subtree.arrange }
     return if needs_deeply_concerned(@treasury)
 
     @page_title = '/categories'

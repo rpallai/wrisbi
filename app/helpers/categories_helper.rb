@@ -19,6 +19,42 @@ module CategoriesHelper
     ).sort
   end
 
+#  def rearrange_list(node, stack = "", depth = 0, &block)
+#    depth += 1
+#    node.each {|k, v|
+#      stack << capture do
+#        yield(k, depth) || ''
+#      end
+#      unless v.empty?
+#        rearrange_list(v, stack, depth, &block)
+#      end
+#    }
+#    stack
+#  end
+
+  def each_treasury_categories_tree2(node, stack = "", &block)
+    node.each {|k, v|
+      stack << "<li>"
+      stack << capture do
+        yield(k)
+      end
+      unless v.empty?
+        stack << "<ol>"
+        each_treasury_categories_tree2(v, stack, &block)
+        stack << "</ol>"
+      end
+      stack << "</li>"
+    }
+    stack
+  end
+
+  # fa-strukturaba (ol element) rendezi a kimenetet, az egyes sorok tartalmat a &block szolgaltatja
+  def each_treasury_categories_tree(treasury, &block)
+    each_treasury_categories_tree2(
+      Category.where(treasury: treasury).includes(:business, :applied_business).arrange, "", &block
+    )
+  end
+
   def treasury_categories_with_title(treasury)
     Category.where(treasury: treasury).joins(:titles).group(:id).
       map{|p| [ p.ancestors.push(p).map(&:name)*'/', p.id ]}.sort
