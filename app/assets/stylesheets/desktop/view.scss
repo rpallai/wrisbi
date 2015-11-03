@@ -63,96 +63,61 @@
     padding-right: 0px;
   }
 
-  th.sort_column,
-  th.sort_column > * {
-    color: red;
-  }
-  td a {
-    text-decoration: none;
-  }
-  td.day,
-  td.title,
-  td.account
-  {
-    white-space: nowrap;
-  }
-  td.amount.positive {
-    color: green;
-  }
-  td.amount.negative {
-    color: brown;
-  }
-  span.balance {
-    font-weight: bold;
-  }
-  span.category {
-    background-color: #eee;
-    margin-right: 5px;
-  }
-  table.family .title_date {
-    display: none;
-  }
-  .treasury_totals.currency {
-    font-weight: bold;
-  }
+  div.view {
+    th.sort_column,
+    th.sort_column > * {
+      color: red;
+    }
+    td a {
+      text-decoration: none;
+    }
+    td.day,
+    td.title,
+    td.account
+    {
+      white-space: nowrap;
+    }
+    span.balance {
+      font-weight: bold;
+    }
+    span.category {
+      background-color: #eee;
+      margin-right: 5px;
+    }
+    table.family .title_date {
+      display: none;
+    }
 
-  tr.selected {
-    background-color: yellow;
-  }
+    tr.selected {
+      background-color: yellow;
+    }
 
-  tr.party[data-titles="1"] .amount {
-    // visibility:collapse;
-    //  Chrome bug miatt nem hasznaljuk;
-    //   https://code.google.com/p/chromium/issues/detail?id=174167
-    //  e nelkul sajnos a tetel folott latszik egy kis kamu cell
-    display: none;
-  }
+    td.last_touch,
+    td.last_touch > *,
+    td.touched_accounts
+    { /* debug */
+      font-size: 8pt;
+      color: gray;
+    }
+    table:not(.debug) td.touched_accounts {
+      display: none;
+    }
+    tr.latest_updated {
+      background-color: #F5FF82;
+    }
 
-  iframe#balances {
-    position: fixed;
-    right: 0px;
-    /*top: 30px;*/
-    height: 95%;
-    background: white;
-    display: none;
-  }
-
-  td.last_touch,
-  td.last_touch > *,
-  td.touched_accounts
-  { /* debug */
-    font-size: 8pt;
-    color: gray;
-  }
-  table:not(.debug) td.touched_accounts {
-    display: none;
-  }
-  tr.latest_updated {
-    background-color: #F5FF82;
-  }
-
-  /*
-   * titles
-   */
-  /*tr.transaction_title.liability {
-    display: table-row;
-  }*/
-  td.title{
-    background-color: gold;
-  }
-  .kft_title_salary td.title {
-    background-color: pink;
-  }
-  .kft_title_apport td.title,
-  .kft_title_zedding2 td.title
-  {
-    background-color: #ccc;
-  }
-  .kft_title_tax_pay td.title{
-    background-color: #fee;
-  }
-  .title_transfer_head td.title{
-    background-color: lightgreen;
+    /*
+     * titles
+     */
+    /*tr.transaction_title.liability {
+      display: table-row;
+    }*/
+    td.title{
+      background-color: gold;
+    }
+    .title_transfer_head td.title{
+      background-color: lightgreen;
+    }
   }
 
   /*
@@ -160,12 +125,12 @@
    */
   table.titles {
     border-collapse: collapse;
-  }
-  table.titles td {
-    border: 1px solid #ddd;
-  }
-  table.titles .transaction_comment {
-    color: blue;
+    td {
+      border: 1px solid #ddd;
+    }
+    .transaction_comment {
+      color: blue;
+    }
   }
 
   /*
@@ -173,25 +138,25 @@
    */
   table.titles_by_month {
     border-collapse: collapse;
-  }
-  table.titles_by_month td {
-    border: 1px solid #ddd;
-  }
-  table.titles_by_month tr.group1 td {
-    background-color: yellow;
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
-  table.titles_by_month tr.group2 td {
-    background-color: cyan;
-    padding-left: 10px;
-  }
-  table.titles_by_month tr.title td:first-child {
-    padding-left: 20px;
-  }
+    table td {
+      border: 1px solid #ddd;
+    }
+    table tr.group1 td {
+      background-color: yellow;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+    table tr.group2 td {
+      background-color: cyan;
+      padding-left: 10px;
+    }
+    table tr.title td:first-child {
+      padding-left: 20px;
+    }
 
-  table.titles_by_month tr.group2.MoneyTransfer td {
-    background-color: pink;
+    table tr.group2.MoneyTransfer td {
+      background-color: pink;
+    }
   }
 
   /*
@@ -199,43 +164,50 @@
    */
   table.transactions {
     border-collapse: collapse;
-  }
-  table.transactions td {
-    border: 1px solid #ddd;
-  }
-  table.transactions td.date {
-    font-weight: bold;
-  }
-  table.transactions td.balance {
-    vertical-align: bottom;
-  }
-  table.transactions td.blank {
-    border: none;
-    background-color: #eee;
-  }
-  table.transactions tr.multiline.transaction td.amount {
-    font-style: italic;
-  }
-  table.transactions th.person, table.transactions tr.second th, table.account.transactions th {
-    border: 1px solid #aaa;
-  }
-  table.transactions tr.day td {
-    font-weight: bold;
-    border: none;
-  }
-  table.transactions button.ack {
-    border: none;
-    background: transparent;
-    padding: 0px;
-    margin: 0px;
-    color: green;
-    font-size: 16pt;
-  }
-  table.transactions tr:not(.unacked) button.ack {
-    display: none;
-  }
-  table.transactions tr.unacked td.date a {
-    color: green;
+    td {
+      border: 1px solid #ddd;
+    }
+    td.date {
+      font-weight: bold;
+    }
+    td.balance {
+      vertical-align: bottom;
+    }
+    td.blank {
+      border: none;
+      background-color: #eee;
+    }
+    tr.party[data-titles="1"] td.amount {
+      // visibility:collapse;
+      //  Chrome bug miatt nem hasznaljuk;
+      //   https://code.google.com/p/chromium/issues/detail?id=174167
+      //  e nelkul sajnos a tetel folott latszik egy kis kamu cell
+      display: none;
+    }
+    tr.multiline.transaction td.amount {
+      font-style: italic;
+    }
+    th.person, table.transactions tr.second th, table.account.transactions th {
+      border: 1px solid #aaa;
+    }
+    tr.day td {
+      font-weight: bold;
+      border: none;
+    }
+    button.ack {
+      border: none;
+      background: transparent;
+      padding: 0px;
+      margin: 0px;
+      color: green;
+      font-size: 16pt;
+    }
+    tr:not(.unacked) button.ack {
+      display: none;
+    }
+    tr.unacked td.date a {
+      color: green;
+    }
   }
 
   .search {
