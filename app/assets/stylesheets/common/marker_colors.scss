@@ -8,9 +8,13 @@
   color: #aaa;
 }
 
-.amount.positive {
+.amount.positive,
+.profit.positive
+{
   color: green;
 }
-.amount.negative {
+.amount.negative,
+.profit.negative
+{
   color: brown;
 }

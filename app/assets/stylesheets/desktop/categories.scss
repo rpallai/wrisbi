@@ -1,5 +1,41 @@
 .no-touchevents {
-  ol.categories .operations {
-    margin-left: 20px;
+  table.categories {
+    border-collapse: collapse;
+    margin-top: 20px;
+
+    td {
+      border-bottom: 1px dashed #ccc;
+    }
+    // :first-child
+    tr.level2 td {
+      padding-left: 20px;
+      background-color: #F7F7F7;
+    }
+    tr.level3 td {
+      padding-left: 40px;
+      background-color: #EEEEEE;
+    }
+    tr.level4 td {
+      padding-left: 60px;
+      background-color: #E7E7E7;
+    }
+    tr.level5 td {
+      padding-left: 80px;
+      background-color: #E0E0E0;
+    }
+    tr.level6 td {
+      padding-left: 100px;
+      background-color: #D7D7D7;
+    }
+
+    td.operations a {
+      color: gray;
+      font-size: 0.8em;
+      text-transform: capitalize;
+    }
+
+    .profit {
+      font-size: 0.8em;
+    }
   }
 }

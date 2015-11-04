@@ -3,16 +3,72 @@
 <%= link_to 'Új gyökér-kategória', [:new, @treasury.becomes(Treasury), @model.name.parameterize.underscore] %><br/>
 <%= link_to("Kategória nélküli tételek", [:no_category, @treasury.namespace, @treasury.becomes(Treasury), :titles]) %><br/>
 
-<ol class="categories">
-  <%= raw(each_treasury_categories_tree(@treasury) do |category| %>
-    <%= link_to(category.name, [@treasury.namespace, category, :titles]) %>
-    <% if category.business %>[<%= category.business.name %>]<% end -%>
-    <!-- <% if category.applied_business %>{<%= category.applied_business.name %>}<% end -%> -->
-    <span class="operations">
-      <%= link_to "új alkategória",
-        url_for([:new, @treasury.becomes(Treasury), @model.name.parameterize.underscore])<<"?parent_id=#{category.id}" %> |
-      <%= link_to "módosít", [:edit, category] %> |
-      <%= link_to("töröl", category, data: { confirm: 'Are you sure?' }, method: :delete) %>
-    </span>
-  <% end) %>
-</ol>
+<table class="categories">
+  <% row = proc do |category, depth| %>
+    <tr class="category
+      level<%=depth-%>
+      <%= category.titles_count.zero?? 'no_titles' : 'has_titles' -%>
+    ">
+      <td>
+        <%= link_to(category.name, [@treasury.namespace, category, :titles]) %>
+        <% if category.business %>[<%= category.business.name %>]<% end -%>
+        <!-- <% if category.applied_business %>{<%= category.applied_business.name %>}<% end -%> -->
+      </td>
+      <td class="title_count"><%= category.titles_count %></td>
+      <td class="amount positive"><%= print_amount category.bevetel %></td>
+      <td class="amount negative"><%= print_amount category.kiadas %></td>
+      <td class="profit amount
+        <%= 'positive' if category.bevetel > category.kiadas.abs %>
+        <%= 'negative' if category.bevetel < category.kiadas.abs %>
+      ">
+        <% unless category.bevetel.zero? or category.kiadas.zero? %>
+          <%= print_amount(category.bevetel + category.kiadas) %>
+        <% end %>
+      </td>
+      <td class="profit percentage
+        <%= 'positive' if category.bevetel > category.kiadas.abs %>
+        <%= 'negative' if category.bevetel < category.kiadas.abs %>
+      ">
+        <% unless category.bevetel.zero? or category.kiadas.zero? %>
+          <%= category.bevetel * 100 / category.kiadas.abs - 100 %>%
+        <% end %>
+      </td>
+      <td class="operations">
+        <%= link_to "új alkategória",
+          url_for([:new, @treasury.becomes(Treasury), @model.name.parameterize.underscore])<<"?parent_id=#{category.id}" %>
+        <%= link_to "módosít", [:edit, category] %>
+        <%= link_to("töröl", category, data: { confirm: 'Are you sure?' }, method: :delete) %>
+      </td>
+    </tr>
+  <% end %>
+
+  <% row_subtotal = proc do |category, depth, subtotal| %>
+    <tr class="subtotal
+      level<%=depth-%>
+      <%= (subtotal[:subtree_elements] <= 1 or subtotal[:titles_count].zero?)? 'no_subtitles' : 'has_subtitles' -%>
+    ">
+      <td class="total_label">⇒</td>
+      <td class="title_count"><%= subtotal[:titles_count] %></td>
+      <td class="amount positive"><%= print_amount subtotal[:bevetel] %></td>
+      <td class="amount negative"><%= print_amount subtotal[:kiadas] %></td>
+      <td class="profit amount
+        <%= 'positive' if subtotal[:bevetel] > subtotal[:kiadas].abs %>
+        <%= 'negative' if subtotal[:bevetel] < subtotal[:kiadas].abs %>
+      ">
+        <% unless subtotal[:bevetel].zero? or subtotal[:kiadas].zero? %>
+          <%= print_amount(subtotal[:bevetel] + subtotal[:kiadas]) %>
+        <% end %>
+      </td>
+      <td class="profit percentage
+        <%= 'positive' if subtotal[:bevetel] > subtotal[:kiadas].abs %>
+        <%= 'negative' if subtotal[:bevetel] < subtotal[:kiadas].abs %>
+      ">
+        <% unless subtotal[:bevetel].zero? or subtotal[:kiadas].zero? %>
+          <%= subtotal[:bevetel].abs * 100 / subtotal[:kiadas].abs - 100 %>%
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+
+  <%= raw(each_treasury_categories_list(@treasury, row, row_subtotal)) %>
+</table>
