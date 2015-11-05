@@ -14,7 +14,18 @@
         <% if category.business %>[<%= category.business.name %>]<% end -%>
         <!-- <% if category.applied_business %>{<%= category.applied_business.name %>}<% end -%> -->
       </td>
-      <td class="title_count"><%= category.titles_count %></td>
+      <td class="title_count">
+        <%= link_to("#{category.titles_count} db",
+          polymorphic_path([@treasury.namespace, category, :titles], nonrecursive: true)) %>
+        <% unless category.min_date.nil? %>
+          <a title="<%= category.min_date %> - <%= category.max_date %>">
+            <%= (category.max_date.year * 12 + category.max_date.month) - (category.min_date.year * 12 + category.min_date.month) %>
+            hó
+          </a>
+        <% end %>
+      </td>
+      <td class="min_date"><%= category.min_date %></td>
+      <td class="max_date"><%= category.max_date %></td>
       <td class="amount positive"><%= print_amount category.bevetel %></td>
       <td class="amount negative"><%= print_amount category.kiadas %></td>
       <td class="profit amount
@@ -48,7 +59,9 @@
       <%= (subtotal[:subtree_elements] <= 1 or subtotal[:titles_count].zero?)? 'no_subtitles' : 'has_subtitles' -%>
     ">
       <td class="total_label">⇒</td>
-      <td class="title_count"><%= subtotal[:titles_count] %></td>
+      <td class="title_count"><%= subtotal[:titles_count] %> db</td>
+      <td class="min_date"/>
+      <td class="max_date"/>
       <td class="amount positive"><%= print_amount subtotal[:bevetel] %></td>
       <td class="amount negative"><%= print_amount subtotal[:kiadas] %></td>
       <td class="profit amount

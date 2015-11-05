@@ -107,7 +107,11 @@ class ViewController < ApplicationController
       @category = Category.find(params[:category_id])
       @treasury = @category.treasury
       return if needs_deeply_concerned(@treasury)
-      titles = @category.titles_r
+      if params[:nonrecursive]
+        titles = @category.titles
+      else
+        titles = @category.titles_r
+      end
       @show_balance = true
       @page_title << '/' << view_context.print_category(@category, false)
     elsif params[:account_id]

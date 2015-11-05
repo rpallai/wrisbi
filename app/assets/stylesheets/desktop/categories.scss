@@ -28,6 +28,12 @@
       background-color: #D7D7D7;
     }
 
+    td.min_date,
+    td.max_date
+    {
+      display: none;
+    }
+
     td.operations a {
       color: gray;
       font-size: 0.8em;

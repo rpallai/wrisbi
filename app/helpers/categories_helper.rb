@@ -53,6 +53,7 @@ module CategoriesHelper
           "LEFT JOIN `titles` ON `titles`.`id` = `categories_titles`.`title_id`").
         group('categories.id').
         select("`categories`.*, COUNT(`titles`.`id`) AS titles_count, "<<
+          "MIN(`titles`.`date`) AS min_date, MAX(`titles`.`date`) AS max_date, "<<
           "SUM(CASE WHEN amount<0 THEN amount ELSE 0 END) AS kiadas, "<<
           "SUM(CASE WHEN amount>0 THEN amount ELSE 0 END) AS bevetel").
         includes(:business, :applied_business).
