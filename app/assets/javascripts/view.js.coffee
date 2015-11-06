@@ -1,5 +1,3 @@
-#= require op_popup
-
 window.transaction_link_click = (obj,href=null)->
   href ||= obj.attr('href')
   if href.indexOf("?") == -1
@@ -36,7 +34,6 @@ $( ->
         $(@).find("option:selected").attr('selected', false)
         $(@).trigger('chosen:updated')
 
-  #new OpPopup("tr", $(".op_popup"))
   $("a.edit").click (e)->
     transaction_link_click($(@))
     return false
