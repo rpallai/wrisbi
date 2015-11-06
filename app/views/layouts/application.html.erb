@@ -9,7 +9,8 @@
     <%= stylesheet_link_tag("plugins") %>
     <%= stylesheet_link_tag("customizations") %>
 
-    <%= javascript_include_tag "application" %>
+    <%= javascript_include_tag("application") %>
+    <%= javascript_include_tag("customizations") %>
 
     <%= javascript_include_tag controller_name \
       if File.exist?(Rails.root.to_s+"/app/assets/javascripts/#{controller_name}.js.coffee") %>
