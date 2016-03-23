@@ -22,11 +22,15 @@
       <th>Osztály</th>
       <th>Kategóriák</th>
       <th>Összeg</th>
-<% if @show_balance %><th>Egyenleg</th><% end %>
+<% balance = @current_page[:start_balance] rescue 0 -%>
+<% if @show_balance %>
+      <th>
+        Egyenleg <span style="white-space: nowrap;">(nyitó: <%= print_amount(balance) %>)</span>
+      </th>
+<% end %>
       <th>Megjegyzés</th>
     </tr>
 
-  <% balance = @current_page[:start_balance] rescue 0 -%>
   <% prev_title = nil -%>
   <% @titles.each do |title| %>
   <!--

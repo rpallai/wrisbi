@@ -27,7 +27,12 @@
       <%= link_to('Fizetés dátuma', get_permalink(sort: 'transaction')) %>
     </th>
 <% end %>
-    <% if @show_balance %><th>Egyenleg</th><% end %>
+<% balance = @current_page[:start_balance] rescue 0 -%>
+<% if @show_balance -%>
+    <th>
+      Egyenleg <span style="white-space: nowrap;">(nyitó: <%= print_amount(balance) %>)</span>
+    </th>
+<% end -%>
     <th></th>
     <th>Összeg</th>
     <th>Tétel</th>
@@ -37,7 +42,6 @@
     <th>Tranzakció megjegyzés</th>
   </tr>
 
-<% balance = @current_page[:start_balance] rescue 0 -%>
 <% transaction_prev = nil -%>
 <% current_user_is_supervisor = @treasury.supervisors.include?(@current_user) %>
 <% @transactions.each do |transaction| %>

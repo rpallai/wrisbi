@@ -21,7 +21,10 @@
       <% if @order=='titles.date' -%>
         <th class="title_date <%= 'sort_column' if @order=='titles.date' %>">Kelt</th>
       <% end -%>
-      <th>Egyenleg</th>
+<% balance = @current_page[:start_balance] rescue 0 -%>
+      <th>
+        Egyenleg <span style="white-space: nowrap;">(nyitó: <%= print_amount(balance) %>)</span>
+      </th>
       <th>Összeg</th>
       <th>Számla</th>
       <th>Osztály</th>
@@ -29,7 +32,6 @@
       <th>Megjegyzés</th>
     </tr>
 
-  <% balance = @current_page[:start_balance] rescue 0 -%>
   <% prev_operation = nil -%>
   <% @operations.each do |operation| %>
   <!--
