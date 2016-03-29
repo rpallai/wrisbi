@@ -270,6 +270,7 @@ class ViewController < ApplicationController
       per_page: params[:per_page],
       account_type_code: params[:account_type_code],
       account_subtype_code: params[:account_subtype_code],
+      s: params[:s],
     }.update(opts)
   end
 
