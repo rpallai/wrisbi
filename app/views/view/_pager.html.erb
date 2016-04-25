@@ -1,10 +1,10 @@
 <div class="pager">
   <div class="tabs">
-    <%= link_to("Fix soros",  {per_page: 50}, class: [continuous_paging?? 'active' : 'passive', 'continuous']) %>
-    <%= link_to("Éves",       {per_page: 'year'},     class: [(params[:per_page] == 'year') ? 'active' : 'passive', 'year']) %>
-    <%= link_to("Negyedéves", {per_page: 'quarter'},  class: [(params[:per_page] == 'quarter') ? 'active' : 'passive', 'quarter']) %>
-    <%= link_to("Havi",       {per_page: 'month'},    class: [(params[:per_page] == 'month') ? 'active' : 'passive', 'month']) %>
-    <%= link_to("Heti",       {per_page: 'week'},     class: [(params[:per_page] == 'week') ? 'active' : 'passive', 'week']) %>
+    <%= link_to("Fix soros",  get_permalink(per_page: 50, page: nil),        class: [continuous_paging?? 'active' : 'passive', 'continuous']) %>
+    <%= link_to("Éves",       get_permalink(per_page: 'year', page: nil),    class: [(params[:per_page] == 'year') ? 'active' : 'passive', 'year']) %>
+    <%= link_to("Negyedéves", get_permalink(per_page: 'quarter', page: nil), class: [(params[:per_page] == 'quarter') ? 'active' : 'passive', 'quarter']) %>
+    <%= link_to("Havi",       get_permalink(per_page: 'month', page: nil),   class: [(params[:per_page] == 'month') ? 'active' : 'passive', 'month']) %>
+    <%= link_to("Heti",       get_permalink(per_page: 'week', page: nil),    class: [(params[:per_page] == 'week') ? 'active' : 'passive', 'week']) %>
   </div>
 
   <div class="pages">
