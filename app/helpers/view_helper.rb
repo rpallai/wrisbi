@@ -52,7 +52,7 @@ module ViewHelper
     if @account
       [@account, category, :transactions]
     else
-      [current_namespace, category, :transactions]
+      [current_namespace, category, :rtransactions]
     end
   end
 
