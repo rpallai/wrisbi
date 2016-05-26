@@ -14,7 +14,7 @@ class Title < ActiveRecord::Base
           # mar egyszer modositottuk ebben a korben;
           # lehetseges, hogy egy szemely adott szamlajara tobb OpShare-t is fel akarunk irni a
           # kategoriak vegett, de ez nem tunik eletszerunek, egyelore nem tamogatjuk, csak elszallunk
-          raise "operation is dirty"
+          raise "dirty operation: " << operation.inspect
         end
         operation.update_attributes(:amount => amount)
         proxy_association.owner.send(:operation_touched, operation.id)
@@ -122,12 +122,19 @@ class Title < ActiveRecord::Base
   end
 
   private
+
+  # mindig legyen idempotens muvelet!
+  # lehet, hogy tranzakcion kivul hivtak!
   def _build_shares_and_operations
-    build_shares if respond_to?(:build_shares, true)
+    if respond_to?(:build_shares, true)
+      shares.clear
+      build_shares
+    end
+    operations.reload
     @operation_ids_untouched = operation_ids
     build_operations if amount
     #Rails.logger.debug "@operation_ids_untouched: " + @operation_ids_untouched.inspect
-    operations.delete(operations.find @operation_ids_untouched) unless @operation_ids_untouched.empty?
+    operations.find(@operation_ids_untouched).each(&:mark_for_destruction) unless @operation_ids_untouched.empty?
   end
 
   def _set_new_category_ids
