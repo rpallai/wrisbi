@@ -10,13 +10,12 @@
       <%= category.titles_count.zero?? 'no_titles' : 'has_titles' -%>
     ">
       <td>
-        <%= link_to(category.name, [@treasury.namespace, category, :titles]) %>
+        <%= category.name %>
         <% if category.business %>[<%= category.business.name %>]<% end -%>
         <!-- <% if category.applied_business %>{<%= category.applied_business.name %>}<% end -%> -->
       </td>
       <td class="title_count">
-        <%= link_to("#{category.titles_count} db",
-          polymorphic_path([@treasury.namespace, category, :titles], nonrecursive: true)) %>
+        <%= category.titles_count %> db
         <% unless category.min_date.nil? %>
           <a title="<%= category.min_date %> - <%= category.max_date %>">
             <%= (category.max_date.year * 12 + category.max_date.month) - (category.min_date.year * 12 + category.min_date.month) %>
@@ -43,6 +42,12 @@
         <% unless category.bevetel.zero? or category.kiadas.zero? %>
           <%= category.bevetel * 100 / category.kiadas.abs - 100 %>%
         <% end %>
+      </td>
+      <td class="links">
+        <%= link_to("Tr.(r)", [@treasury.namespace, category, :rtransactions], title: 'Tranzakciók rekurzívan') %>
+        <%= link_to("Tr.", [@treasury.namespace, category, :transactions], title: 'Tranzakciók') %>
+        <%= link_to("Té.(r)", [@treasury.namespace, category, :rtitles], title: 'Tételek rekurzívan') %>
+        <%= link_to("Té.", [@treasury.namespace, category, :titles], title: 'Tételek') %>
       </td>
       <td class="operations">
         <%= link_to "új alkategória",

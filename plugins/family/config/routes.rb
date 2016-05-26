@@ -1,6 +1,9 @@
 namespace :family do
   resources :categories, :only => [], :requirements => { :class_name => "Category" } do
     resources :titles, :only => :index, controller: 'view', action: 'titles'
+    resources :rtitles, :only => :index, controller: 'view', action: 'titles', :requirements => { recursive: true }
+    resources :transactions, :only => :index, controller: 'view', action: 'transactions'
+    resources :rtransactions, :only => :index, controller: 'view', action: 'transactions', :requirements => { recursive: true }
     member do
       get :last_transaction_as_template, controller: 'transactions', action: 'template_by_category'
     end
@@ -23,6 +26,9 @@ namespace :family do
   end
   resources :treasuries, :except => [:index], :requirements => { :class_name => "Family::Treasury" } do
     resources :transactions, :only => :index, controller: 'view', action: 'transactions'
+    resources :title_class, :only => [] do
+      resources :transactions, :only => :index, controller: 'view', action: 'transactions'
+    end
     resources :transactions, :only => :new
     # ez ide nem igazan kell
     resources :titles, :only => :index, controller: 'view', action: 'titles' do

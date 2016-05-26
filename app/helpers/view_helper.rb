@@ -23,11 +23,6 @@ module ViewHelper
     r
   end
 
-  def link_account(account)
-    link_to(account.person.name, [account.person, :operations])+'/'+
-      link_to(account.name, url_with_time_window([account, :operations]))
-  end
-
   def transaction_rowspan(transaction)
     1 + parties_of(transaction).length + parties_of(transaction).to_a.sum{|p| p.titles.length }
     #1 + transaction.titles.length + transaction.parties.length
@@ -43,12 +38,33 @@ module ViewHelper
     end
   end
 
+  def link_account(account)
+    link_to(account.person.name, [account.person, :operations])+'/'+
+      link_to(account.name, url_with_time_window([account, :operations]))
+  end
+
+  def transaction_link_account(account)
+    link_to(account.person.name, [account.person, :operations])+'/'+
+      link_to(account.name, url_with_time_window([account, :transactions]))
+  end
+
   def transactions_category_link(category)
     if @account
       [@account, category, :transactions]
     else
-      [current_namespace, category, :titles]
+      [current_namespace, category, :transactions]
     end
+  end
+
+  def transactions_title_class_link(class_name)
+    eval("#{current_namespace}_treasury_title_class_transactions_path(@treasury, class_name.demodulize.underscore)")
+  end
+
+  def get_title_class_name(name)
+    (
+      (current_namespace.classify + '::Title::' + name.classify).safe_constantize ||
+      ('Title::' + name.classify).safe_constantize
+    ).display_name
   end
 
   def time_dimension_as_text

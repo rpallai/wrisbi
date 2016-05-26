@@ -107,7 +107,7 @@ class ViewController < ApplicationController
       @category = Category.find(params[:category_id])
       @treasury = @category.treasury
       return if needs_deeply_concerned(@treasury)
-      if params[:nonrecursive]
+      unless params[:requirements][:recursive]
         titles = @category.titles
       else
         titles = @category.titles_r
@@ -191,7 +191,20 @@ class ViewController < ApplicationController
 
   def transactions
     @page_title = ''
-    if params[:account_id]
+    if params[:category_id]
+      @category = Category.find(params[:category_id])
+      @treasury = @category.treasury
+      return if needs_deeply_concerned(@treasury)
+      unless params[:requirements][:recursive]
+        category_ids = [@category.id]
+      else
+        category_ids = @category.subtree.ids
+      end
+      transactions = Transaction.joins(:parties => { :titles => :categories }).
+        where('categories.id IN (?)', category_ids).group('transactions.id')
+      @date_field = "transactions.date"
+      @page_title << "/" << view_context.print_category(@category, false)
+    elsif params[:account_id]
       @account = Account.find(params[:account_id])
       @treasury = @account.treasury
       return if needs_deeply_concerned(@treasury)
@@ -216,9 +229,16 @@ class ViewController < ApplicationController
       @treasury = Treasury.find(params[:treasury_id])
       return if needs_deeply_concerned(@treasury)
       transactions = @treasury.transactions
-      transactions = transactions.joins(:titles) if params[:s] and not params[:s].empty?
+      transactions = transactions.joins(:titles) if (params[:s] and not params[:s].empty?) or params[:title_class_id]
       @date_field = "transactions.date"
       @backward = true
+      if params[:title_class_id]
+        @title_class_id = params[:title_class_id]
+        transactions = transactions.where("titles.type IN (?)",[
+            self.class.parent.name + '::Title::' + params[:title_class_id].classify,
+            'Title::' + params[:title_class_id].classify,
+        ])
+      end
     end
     @page_title << '/transactions'
     if params[:unacked]
