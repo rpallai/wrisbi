@@ -85,21 +85,20 @@ class Transaction < ActiveRecord::Base
     end
   end
 
+  #
+  # Kikenyszeriti, hogy azonos penznemu felek kozott a tranzakcio summaja zerus legyen ha a tranzakcioban
+  # valahol szerepel egy atvezetes.
+  #
   def validate_transfers
-    if parties.length > 1
-      transfers = []
-      parties.each do |p|
-        transfers += p.titles.find_all{|m| m.kind_of? Title::TransferHead }
-      end
-      transfers_by_currency = transfers.group_by{|m| m.party.account.currency }
-      transfers_by_currency.each do |currency,transfers|
-        amount_sum = transfers.sum(&:amount)
+    if parties.length > 1 and parties.any?{|p| p.titles.any?{|t| t.kind_of?(Title::TransferHead) } }
+      parties.group_by{|p| p.account.currency }.each do |currency,parties|
+        amount_sum = parties.sum(&:amount)
         unless amount_sum.zero?
           errors.add(:parties, "az összeg nem nulla (#{amount_sum} #{currency})")
         end
       end
-      #XXXerrors.add(:parties, "egyező összeg különböző pénznemű számák között")
     end
+    #XXXerrors.add(:parties, "egyező összeg különböző pénznemű számák között")
   end
 
   #  def right_amount
