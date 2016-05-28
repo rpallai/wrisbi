@@ -14,10 +14,7 @@ class Party < ActiveRecord::Base
   before_validation :fill_missing_title_amount, :if => :amount
   #after_validation :create_payee, :if => 'not payee and not payee_name.blank?'
 
-  validates :amount, :numericality => true
-  validate :amount do
-    errors.add(:amount, "Nem lehet nulla") if amount and amount.zero?
-  end
+  validates :amount, :numericality => { other_than: 0 }
   validates :account_id, :presence => true
   validates_with SameTreasuryValidator, :assoc => [:account]
   validate :validate_total_amount_of_titles_equal_to_amount, :if => :amount
