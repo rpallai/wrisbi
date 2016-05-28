@@ -47,7 +47,18 @@ class Transaction < ActiveRecord::Base
     super
   end
 
+  def living_operations
+    ary = []
+    self.parties.each{|p|
+      p.titles.each{|t|
+        ary += t.operations.find_all{|o| not o.marked_for_destruction? }
+      }
+    }
+    ary
+  end
+
   private
+
   def invert?
     @invert.to_i == 1
   end
@@ -68,7 +79,6 @@ class Transaction < ActiveRecord::Base
     return true
   end
 
-  private
   def fill_missing_party_amount
     logger.debug "fill_missing_party_amount; parties.length: #{parties.length}"
     if parties.length == 2 and not parties.all?(&:amount) and parties.any?(&:amount)
