@@ -1,5 +1,9 @@
 # encoding: utf-8
 class Title < ActiveRecord::Base
+  # A before_save korul fut, "before" letrehozhatoak uj objektumok (pl operations),
+  # "after" pedig mehetnek a sanity check-ek.
+  define_callbacks :finalization
+
   belongs_to :party
   has_one :transaction, :through => :party
   has_many :category_links
@@ -40,21 +44,17 @@ class Title < ActiveRecord::Base
 
   # after_save mar nem mukodik az autosave, igy pedig figyelni kell arra, hogy SQL-ben meg nincs ott az
   # asszociacio, emiatt pl az operations.count fail, mig az operations.length mukodik.
-  #
-  # before_validation az a gond, hogy az input, amibol dolgozik a build_operations meg nincs ellenorizve,
-  # before_save pedig az, hogy a legyartott muveleteket mar nem tudjuk ellenorizni [sanity check].
-  # Ugyan a manovert a unit teszteknek kellene ellenorizni es igy a sanity check mar folosleges, de
-  # a gyakorlat mas.
-  before_validation :_set_new_category_ids
-  before_validation :_build_shares_and_operations
+  set_callback :finalization, :before, :_build_shares_and_operations
+  before_save{ run_finalizations!(true) }
+  before_save :_set_new_category_ids
+  before_save{|t|
+    t.comment = '' if t.comment.nil?
+  }
   after_update do |m|
     if m.party.account_id_changed? or m.amount_changed? or m.comment_changed?
       m.categories.each{|category| category.exporter.after_title_update(m) if category.exporter }
     end
   end
-  before_save{|t|
-    t.comment = '' if t.comment.nil?
-  }
 
   delegate :treasury, :account, :to => :party
 
@@ -63,6 +63,10 @@ class Title < ActiveRecord::Base
     return true if party.account_id_changed?
     return true if @new_category_ids
     super
+  end
+
+  def run_finalizations!(skip_validations = false)
+    run_callbacks(:finalization) if skip_validations or valid?
   end
 
   def rebuild!

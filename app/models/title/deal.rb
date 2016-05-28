@@ -17,7 +17,7 @@ class Title::Deal < Title
 
   private
   def build_shares
-    categories.each do |category|
+    Category.where(id: category_ids).each do |category|
       if business = category.applied_business
         business.shares.each{|bshare|
           shares.build(:person => bshare.person, :share => bshare.share)
