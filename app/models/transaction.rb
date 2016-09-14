@@ -100,11 +100,13 @@ class Transaction < ActiveRecord::Base
   # valahol szerepel egy atvezetes.
   #
   def validate_transfers
-    if parties.length > 1 and parties.any?{|p| p.titles.any?{|t| t.kind_of?(Title::TransferHead) } }
+    if parties.any?{|p| p.titles.any?{|t| t.kind_of?(Title::TransferHead) } }
       parties.group_by{|p| p.account.currency }.each do |currency,parties|
-        amount_sum = parties.sum(&:amount)
-        unless amount_sum.zero?
-          errors.add(:parties, "az összeg nem nulla (#{amount_sum} #{currency})")
+        if parties.length > 1
+          amount_sum = parties.sum(&:amount)
+          unless amount_sum.zero?
+            errors.add(:parties, "az összeg nem nulla (#{amount_sum} #{currency})")
+          end
         end
       end
     end
