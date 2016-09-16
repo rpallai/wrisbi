@@ -118,8 +118,8 @@ def save_deal(account, date, amount, comment, categories, importer_id = nil, for
   end
 end
 
-def save_transfer(account_from, account_to, date, amount, comment)
-  t = $treasury.transactions.build(date: date, comment: comment)
+def save_transfer(account_from, account_to, date, amount, comment, importer_id = nil, foreign_id = nil)
+  t = $treasury.transactions.build(date: date, comment: comment, importer_id: importer_id, foreign_id: foreign_id)
   #
   p = t.parties.build
   p.account = account_from
@@ -134,7 +134,7 @@ def save_transfer(account_from, account_to, date, amount, comment)
   p.titles << m
 
   if $options.verbose
-    puts "> #{date} #{amount} Ft @ #{account_from.name} => #{account_to.name}"
+    puts "> #{date} #{amount} Ft @ #{print_account(account_from)} => #{print_account(account_to)}"
     puts " #{comment}"
   end
 
@@ -164,4 +164,8 @@ def find_category(path)
     end
   end
   return category
+end
+
+def print_account(account)
+  account.person.name+'/'+account.name
 end
