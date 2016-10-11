@@ -201,7 +201,7 @@ class ViewController < ApplicationController
         category_ids = @category.subtree.ids
       end
       transactions = Transaction.joins(:parties => { :titles => :categories }).
-        where('categories.id IN (?)', category_ids).group('transactions.id')
+        where('categories.id IN (?)', category_ids)
       @date_field = "transactions.date"
       @page_title << "/" << view_context.print_category(@category, false)
     elsif params[:account_id]
@@ -218,7 +218,7 @@ class ViewController < ApplicationController
         @page_title << "/" << view_context.print_category(@category, false)
       else
         if params[:s] and not params[:s].empty?
-          transactions = Transaction.joins(:parties => :titles)
+          transactions = Transaction.joins(:titles)
         else
           transactions = Transaction.joins(:parties)
         end
@@ -263,7 +263,7 @@ class ViewController < ApplicationController
         :account => :person,
         :titles => [:categories, :operations => { :account => :person }]
       },
-    ).order(@order).order(:id)
+    ).order(@order).order(:id).distinct
 
     respond_to do |format|
       format.html {
