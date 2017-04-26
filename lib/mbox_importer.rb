@@ -39,10 +39,12 @@ def each_message(cfg, search)
       mail = Mail.read_from_string(msg.first.attr['RFC822'])
       if mail.multipart?
         # az uj relayme trukkje
-        body = mail.parts[0].body.decoded.force_encoding('UTF-8')
+        body = mail.parts[0].body
       else
-        body = mail.body.to_s.force_encoding('UTF-8')
+        body = mail.body
       end
+      body = body.decoded.force_encoding(mail.content_type_parameters['charset'])
+      body.encode!('UTF-8')
 
       if $options.verbose
         i = 1
