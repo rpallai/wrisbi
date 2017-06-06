@@ -122,7 +122,7 @@
       <td class="amount <%= print_sign(m.amount) %>"><%= print_amount m.amount -%></td>
       <td class="title">
         <%= link_to(render(partial: m, locals: { view: @account ? 'transactions_of_account' : 'transactions' }),
-          transactions_title_class_link(m.class.name)) -%>
+          transactions_title_class_link(m.class.name, @account)) -%>
       </td>
       <td class="categories">
 <% m.categories.each do |category| -%>

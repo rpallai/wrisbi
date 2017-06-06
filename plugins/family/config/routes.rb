@@ -18,6 +18,9 @@ namespace :family do
   resources :accounts, :except => [:show, :index, :new], :requirements => { :class_name => "Family::Account" } do
     #resources :titles, :only => :index, controller: 'view', action: 'titles'
     resources :transactions, :only => :index, controller: 'view', action: 'transactions'
+    resources :title_class, :only => [] do
+      resources :transactions, :only => :index, controller: 'view', action: 'transactions'
+    end
     resources :operations, :only => :index, controller: 'view', action: 'operations'
     resources :categories, :only => [] do
       resources :operations, :only => :index, controller: 'view', action: 'operations'

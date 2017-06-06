@@ -216,6 +216,16 @@ class ViewController < ApplicationController
           where('parties.account_id = ?', @account).
           where('categories.id = ?', @category)
         @page_title << "/" << view_context.print_category(@category, false)
+      elsif params[:title_class_id]
+        transactions = Transaction.joins(:titles).
+          where('parties.account_id = ?', @account)
+        @backward = true
+        @title_class_id = params[:title_class_id]
+        transactions = transactions.where("titles.type IN (?)",[
+            self.class.parent.name + '::Title::' + params[:title_class_id].classify,
+            'Title::' + params[:title_class_id].classify,
+        ])
+        @page_title << '/' << params[:title_class_id]
       else
         if params[:s] and not params[:s].empty?
           transactions = Transaction.joins(:titles)

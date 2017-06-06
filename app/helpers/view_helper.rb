@@ -56,8 +56,12 @@ module ViewHelper
     end
   end
 
-  def transactions_title_class_link(class_name)
-    eval("#{current_namespace}_treasury_title_class_transactions_path(@treasury, class_name.demodulize.underscore)")
+  def transactions_title_class_link(class_name, account)
+    if account
+      eval("#{current_namespace}_account_title_class_transactions_path(account, class_name.demodulize.underscore)")
+    else
+      eval("#{current_namespace}_treasury_title_class_transactions_path(@treasury, class_name.demodulize.underscore)")
+    end
   end
 
   def get_title_class_name(name)
